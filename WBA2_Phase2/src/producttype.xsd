@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="http://meinnamespace.meinefirma.de"
+			xmlns="http://meinnamespace.meinefirma.de"
+			elementFormDefault="qualified">
+			
+	<!-- Root-Element -->
+	<xs:element name="product">
+	<xs:complexType>
+	<xs:sequence>
+		<!-- Name -->
+		<xs:element name="inputdate" type="xs:string"/>
+		<!-- Beschreibung -->
+		<xs:element name="description" type="xs:string"/>
+		<!-- Verfallsdatum -->
+		<xs:element name="expirationdate" type="xs:date"/>
+		<!-- Besitzer/Rechte -->
+		<xs:element name="owner" type="xs:anyURI"/>
+		<!-- Status -->
+		<xs:element name="state" type="xs:string">
+			<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="inside"/>
+				<xs:enumeration value="consumed"/>
+			</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		<!-- Preis -->
+		<xs:element name="price" type="xs:float">
+			<xs:complexType>
+			<xs:attribute name="unit" type="xs:string" use="required">
+				<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="EUR"/>
+					<xs:enumeration value="USD"/>
+				</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			</xs:complexType>
+		</xs:element>
+	</xs:sequence>
+	</xs:complexType>
+	</xs:element>	
+</xs:schema>
