@@ -9,13 +9,92 @@
 	<xs:element name="producttype">
 	<xs:complexType>
 	<xs:sequence>
-		<!-- Name -->
-		<xs:element name="inputdate" type="xs:string"/>
-		<!-- Beschreibung -->
-		<xs:element name="description" type="xs:string"/>
-		<!-- pushmepls2 -->
-		
+		<!-- Produktinformationen -->
+		<xs:element name="productinformation">
+		<xs:complexType>
+		<xs:sequence>
+			<!-- Name -->
+			<xs:element name="inputdate" type="xs:string"/>
+			<!-- Beschreibung -->
+			<xs:element name="description" type="xs:string"/>
+			<!-- Zutaten -->
+			<xs:element name="ingredients">
+			<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ingredient" maxOccurs="unbounded"></xs:element>
+			</xs:sequence>
+			</xs:complexType>
+			</xs:element>
+			<!-- Nährwerte -->
+			<xs:element name="nutrients">
+			<xs:complexType>
+			<xs:sequence>
+				<!-- Kalorien -->
+				<xs:element name="caloricvalue" type="xs:float">
+					<xs:complexType>
+	             			<xs:attribute name="unit" type="caloricUnitType" use="required"/>
+					</xs:complexType>
+				</xs:element>
+				<!-- Eiweiß -->
+				<xs:element name="protein" type="xs:float"/>
+				<!-- Kohlenhydrate -->
+				<xs:element name="carbohydrates" type="xs:float"/>
+				<!-- davon Zucker -->
+				<xs:element name="ofwichsugar" type="xs:float"/>
+				<!-- Fett -->
+				<xs:element name="fat" type="xs:float"/>
+				<!-- davon gesättige Fettsäuren -->
+				<xs:element name="ofwichsaturates" type="xs:float"/>
+				<!-- Ballaststoffe -->
+				<xs:element name="roughage" type="xs:float"/>
+				<!-- Natrium -->
+				<xs:element name="sodium" type="xs:float"/>
+			</xs:sequence>
+			</xs:complexType>
+			</xs:element>
+			<!-- Derzeiter Preis -->
+			<xs:element name="currentprice" type="xs:float">
+				<xs:complexType>
+	         		<xs:attribute name="currency" type="currencyType" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<!-- Strichcode -->
+			<xs:element name="barcode" type="xs:decimal"/>
+		</xs:sequence>
+		</xs:complexType>
+		</xs:element>
+		<!-- Bestandinformation -->
+		<xs:element name="stockdata">
+		<xs:complexType>
+		<xs:sequence>
+			<xs:element name="stock" type="xs:int"/>
+			<xs:element name="minstock" type="xs:int"/>
+		</xs:sequence>
+		</xs:complexType>
+		</xs:element>
 	</xs:sequence>
 	</xs:complexType>
-	</xs:element>	
+	</xs:element>
+	
+	<!-- #################### -->	
+	<!-- Attributdefinitionen -->
+	<!-- #################### -->	
+	
+	<!-- Brennwerteinheit -->
+	<xs:simpleType name="caloricUnitType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="kcal"/>
+			<xs:enumeration value="kj"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<!-- Währung -->
+	<xs:simpleType name="currencyType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="EUR"/>
+			<xs:enumeration value="USD"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<!--  -->
 </xs:schema>

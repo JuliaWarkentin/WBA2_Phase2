@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<p:product xmlns:p="http://meinnamespace.meinefirma.de" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://meinnamespace.meinefirma.de products.xsd ">
-  <p:inputdate>2001-01-01</p:inputdate>
-  <p:outputdate>2001-01-01</p:outputdate>
-  <p:expirationdate>2001-01-01</p:expirationdate>
-  <p:owner>http://tempuri.org</p:owner>
-  <p:state>inside</p:state>
-  <p:price unit="EUR">0.0</p:price>
-</p:product>
