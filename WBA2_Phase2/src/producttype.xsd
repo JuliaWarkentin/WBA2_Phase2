@@ -13,7 +13,7 @@
 		<xs:element name="inputdate" type="xs:string"/>
 		<!-- Beschreibung -->
 		<xs:element name="description" type="xs:string"/>
-		
+		<!-- pushmepls -->
 		
 	</xs:sequence>
 	</xs:complexType>
