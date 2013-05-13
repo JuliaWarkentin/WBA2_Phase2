@@ -6,7 +6,7 @@
 			elementFormDefault="qualified">
 			
 	<!-- Root-Element -->
-	<xs:element name="profil">
+	<xs:element name="profile">
 	<xs:complexType>
 	<xs:sequence>
 		<xs:element name="name" type="xs:string"></xs:element>
@@ -14,19 +14,20 @@
 		<xs:element name="gender" type="xs:string"></xs:element>
 		<xs:element name="height" type="xs:float"></xs:element>
 		<xs:element name="weight" type="xs:float"></xs:element>
-		<xs:element name="currentpurchasevalue" type="xs:int"></xs:element>
-		<xs:element name="lastmonthpurchasevalue" type="xs:int"></xs:element>
+		<xs:element name="currentPurchaseValue" type="xs:int"></xs:element>
+		<xs:element name="lastMonthPurchaseValue" type="xs:int"></xs:element>
 		
 		<!-- Kürzlich gekaufte Produkte -->
-		<xs:element name="recentboughtproducts">
+		<xs:element name="recentBoughtProducts">
 		<xs:complexType>
 		<xs:sequence>
 			<xs:element name="product" minOccurs="0" maxOccurs="unbounded">
 			<xs:complexType>
 			<xs:sequence>
 				<xs:element name="name" type="xs:string"/>
-				<xs:element name="inputdate" type="xs:date"/>
+				<xs:element name="inputDate" type="xs:date"/>
 			</xs:sequence>
+			<xs:attribute name="href" type="xs:anyURI" use="required"/> <!-- Referenz auf Produkt -->
 			</xs:complexType>
 			</xs:element>
 		</xs:sequence>
@@ -34,15 +35,16 @@
 		</xs:element>
 		
 		<!-- Kürzlich verbrauchte Produkte -->
-		<xs:element name="recentconsumedproducts">
+		<xs:element name="recentConsumedProducts">
 		<xs:complexType>
 		<xs:sequence>
 			<xs:element name="product" minOccurs="0" maxOccurs="unbounded">
 			<xs:complexType>
 			<xs:sequence>
 				<xs:element name="name" type="xs:string"/>
-				<xs:element name="outputdate" type="xs:date"/>
+				<xs:element name="outputDate" type="xs:date"/>
 			</xs:sequence>
+			<xs:attribute name="href" type="xs:anyURI" use="required"/> <!-- Referenz auf Produkt -->
 			</xs:complexType>
 			</xs:element>
 		</xs:sequence>
