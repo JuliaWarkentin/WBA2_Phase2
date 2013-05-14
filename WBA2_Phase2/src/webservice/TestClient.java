@@ -16,7 +16,7 @@ public class TestClient {
 	    WebResource wrs = Client.create().resource(url);
 
 	    System.out.println("\nTextausgabe:");
-	    System.out.println(wrs.accept( "text/plain").get(String.class));
+	    System.out.println(wrs.accept("application/xml").get(String.class));
 	    System.out.println("\nHTML-Ausgabe:");
 	    System.out.println( wrs.accept("text/html").get(String.class));
 	}

@@ -52,7 +52,7 @@ public class ProfileService {
 		return null;
 	}
 	
-	@GET @Produces("text/plain")
+	@GET @Produces("application/xml")
 	public String getProfilePlain(@QueryParam("name") String name) throws JAXBException {
 		JAXBClasses.Profile p = getProfileByName(name);
 				
