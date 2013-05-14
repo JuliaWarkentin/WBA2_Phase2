@@ -6,6 +6,8 @@ import com.sun.jersey.api.container.grizzly.GrizzlyServerFactory;;
 public class TestServer {
 	
 	public static void main(String[] args) throws Exception {
+		ProfileService.readXML();
+		
 		String url = (args.length > 0) ? args[0] : "http://localhost:4434";
 	    String sec = (args.length > 1) ? args[1] : "60";
 
