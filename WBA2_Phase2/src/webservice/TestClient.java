@@ -8,9 +8,8 @@ public class TestClient {
 
 	public static void main(String[] args) throws JAXBException {
 		
-		
 		String url = (args.length > 0) ? args[0] : "http://localhost:4434";
-	    String nam = (args.length > 1) ? args[1] : "Bernd";
+	    String nam = (args.length > 1) ? args[1] : "Tanja";
 	    url = url + "/profiles?name=" + nam;
 	    System.out.println("URL: " + url);
 
