@@ -18,26 +18,34 @@ import JAXBClasses.ObjectFactory;
 
 @Path ("/profiles")
 public class ProfileService {
-	
-	public static FrigdeManagerStorage storage; // MasterObject mit allen lokalen Daten.
-	
-	public static void readXML() throws JAXBException{
-		// Unmarshall
-		JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
-		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-		storage  =  (FrigdeManagerStorage) unmarshaller.unmarshal(new File("fridgemanagerstorage.xml"));
+
+	@GET 
+	@Produces("application/xml")
+	public String getProfilePlain(@QueryParam("name") String name) throws JAXBException {
+		JAXBClasses.Profile p = getProfileByName(name);
+		return MyMarshaller.marshall(p);
 	}
 	
-	public String writeXML() {
-		return null;
+	@GET 
+	@Produces("text/html")
+	public String getProfileQueryPlainHtml(@QueryParam("name") String name) throws JAXBException{
+		JAXBClasses.Profile p = getProfileByName(name);
+		return MyMarshaller.marshall(p);
+	}
+	
+	@GET 
+	@Produces("text/html")
+	@Path("/{id}")
+	public String getProfileByIDPlainHtml(@PathParam("id") int id) throws JAXBException{
+		return ""+id;
 	}
 	
 	public JAXBClasses.Profile getProfileByName(String name) {
-		JAXBClasses.Profile p = new JAXBClasses.Profile();
 		// Liste der Profiles auslesen
-		Profiles profiles = storage.getProfiles();
+		Profiles profiles = Data.storage.getProfiles();
 		List<JAXBClasses.FrigdeManagerStorage.Profiles.Profile> list = profiles.getProfile();
 		// Liste nach übergebenem name durchsuchen
+		JAXBClasses.Profile p = new JAXBClasses.Profile();
 		for (JAXBClasses.FrigdeManagerStorage.Profiles.Profile profile : list) {
 			if(profile.getName().equals(name)){
 				// Gefunden. Erstelle Profile.
@@ -50,38 +58,5 @@ public class ProfileService {
 			}
 		}
 		return null;
-	}
-	
-	@GET @Produces("application/xml")
-	public String getProfilePlain(@QueryParam("name") String name) throws JAXBException {
-		JAXBClasses.Profile p = getProfileByName(name);
-				
-		JAXBContext jaxbContext = JAXBContext.newInstance(JAXBClasses.Profile.class);
-		Marshaller marshaller = jaxbContext.createMarshaller();
-		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-		StringWriter sw = new StringWriter();
-		marshaller.marshal(p, sw);
-		
-		String s = sw.toString();
-		System.out.println(s);
-		return s;
-	}
-	
-	@GET @Produces("text/html")
-	public String getProfilePlainHtml(@QueryParam("name") String name) throws JAXBException{
-		JAXBClasses.Profile p = getProfileByName(name);
-				
-		JAXBContext jaxbContext = JAXBContext.newInstance(JAXBClasses.Profile.class);
-		Marshaller marshaller = jaxbContext.createMarshaller();
-		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-		StringWriter sw = new StringWriter();
-		marshaller.marshal(p, sw);
-		
-		String xml = sw.toString();
-		String s = "<html><head><title>Profile: "+ name + "</title></head><body>\n";
-		s = s.concat("<h1>GET</h1>");
-		s = s.concat("<pre><code>"+xml+"</code></pre>");
-		s = s.concat("</body></html>");
-		return s;
 	}
 }

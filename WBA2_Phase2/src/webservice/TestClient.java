@@ -17,8 +17,8 @@ public class TestClient {
 
 	    System.out.println("\nTextausgabe:");
 	    System.out.println(wrs.accept("application/xml").get(String.class));
-	    System.out.println("\nHTML-Ausgabe:");
-	    System.out.println( wrs.accept("text/html").get(String.class));
+//	    System.out.println("\nHTML-Ausgabe:");
+//	    System.out.println( wrs.accept("text/html").get(String.class));
 	}
 
 }
