@@ -7,19 +7,25 @@
 			
 	<!-- Root-Element -->
 	<xs:element name="fridge">
+	<xs:complexType>
+	<xs:sequence>
+		<xs:element name="fridgeid" maxOccurs="1" type="xs:integer"></xs:element>
+		<xs:element name="profiles">
 		<xs:complexType>
 		<xs:sequence>
-			<xs:element name="fridgeid" maxOccurs="1" type="xs:integer"></xs:element>
-			<xs:element name="profiles" minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="profile" maxOccurs="unbounded">
 			<xs:complexType>
 			<xs:sequence>
-				<xs:element name="profileName" type="xs:string"></xs:element>
-				<xs:element name="profileRef" type="xs:anyURI"></xs:element>
+				<xs:element name="name" type="xs:string"></xs:element>
 			</xs:sequence>
+			<xs:attribute name="href" type="xs:anyURI" use="required"></xs:attribute>
 			</xs:complexType>
 			</xs:element>
 		</xs:sequence>
 		</xs:complexType>
+		</xs:element>
+	</xs:sequence>
+	</xs:complexType>
 	</xs:element>
 
 </xs:schema>
