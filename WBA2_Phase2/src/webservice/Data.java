@@ -12,8 +12,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
-import JAXBClasses.FrigdeManagerStorage;
 import JAXBClasses.Profile;
+import JAXBClasses.Profiles;
 
 public class Data {
 
@@ -42,7 +42,6 @@ public class Data {
 					System.out.println("Verzeichnis erstellt: "+ path);
 			}
 		}
-		
 		writer.write(name); 
 		writer.append(System.getProperty("line.separator"));
 		writer.write(birthdate); 
@@ -65,5 +64,27 @@ public class Data {
 		p.setHeight(Float.parseFloat(reader.readLine()));
 		p.setWeight(Float.parseFloat(reader.readLine()));
 		return p;
+	}
+	
+	public static Profiles readProfiles(int fridgeid) throws IOException, DatatypeConfigurationException {
+		Profiles profiles = new Profiles();
+		String[] list = getFilelist("data/fridges/"+fridgeid+"/profiles");
+		int[] profileIDs = new int[list.length];
+		for(int i=0; i<list.length; i++) {
+			profileIDs[i] = Integer.parseInt(list[i].substring(0, list[i].lastIndexOf('.')));
+			Profile p = readProfileByID(fridgeid, profileIDs[i]);
+			Profiles.Profile p1 = new Profiles.Profile();
+			Profiles.Profile.Name name = new Profiles.Profile.Name();
+			name.setValue(p.getName());
+			name.setHref(TestServer.url+"/fridges/"+fridgeid+"/profiles/"+profileIDs[i]);
+			p1.setName(name);
+			profiles.getProfile().add(p1);
+		}
+		return profiles;
+	}
+	
+	public static String[] getFilelist(String path) {
+		File dir = new File(path);
+		return dir.list();
 	}
 }

@@ -7,6 +7,9 @@ import java.util.List;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -26,40 +29,25 @@ public class ProfileService {
 	
 	@GET 
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public JAXBClasses.Profile getProfilePlain(@QueryParam("name") String name) throws JAXBException {
-		JAXBClasses.Profile p = getProfileByName(name);
-		return p;
+	public JAXBClasses.Profiles getProfilePlain(@PathParam("fridgeid") int fridgeid, @QueryParam("name") String name) throws JAXBException, IOException, DatatypeConfigurationException {
+		return Data.readProfiles(fridgeid);
 	}
 	
 	@GET 
 	@Path("/{id}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
 	public JAXBClasses.Profile getProfileByID(@PathParam("id") int id, @PathParam("fridgeid") int fridgeid) throws JAXBException, IOException, DatatypeConfigurationException {
-		System.out.println(fridgeid+" | "+id);
 		return Data.readProfileByID(fridgeid, id);
 	}
 	
 	@PUT
 	@Path("/{id}")
 	@Consumes({ MediaType.APPLICATION_XML})
-	//@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public void createProfileByID(@PathParam("id") int id, @PathParam("fridgeid") int fridgeid, Profile p) throws JAXBException, DatatypeConfigurationException, IOException {
-		// Profil bereits vorhanden?
-		// --> nun updaten? oder verweigern?
-		System.out.println(fridgeid+" | "+id);
-		try {
-			// Profile existiert bereits?
-			Data.readProfileByID(fridgeid, id);
-			System.out.println("Profiles exists");
-			// --> updaten?
-		} catch (IOException e) {
-			//e.printStackTrace();
-			// Profil konnte nicht geladen werden
-			// --> neues Profil erstellen
-			Data.writeProfile(fridgeid, id,
-					p.getName(), p.getBirthdate().toString(), p.getGender(), 
-					""+p.getHeight(), ""+p.getWeight());
-		}
+	public ResponseBuilder createProfileByID(@PathParam("id") int id, @PathParam("fridgeid") int fridgeid, Profile p) throws JAXBException, IOException {
+		Data.writeProfile(fridgeid, id,
+				p.getName(), p.getBirthdate().toString(), p.getGender(), 
+				""+p.getHeight(), ""+p.getWeight());
+		return Response.status(201);
 	}
 	
 	public JAXBClasses.Profile getProfileByName(String name) {

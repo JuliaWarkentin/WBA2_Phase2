@@ -86,7 +86,6 @@ public class NewProfileWindow extends JFrame implements ActionListener{
 		buttonCancel.addActionListener(this);
 		this.getContentPane().add(buttonCreate);
 		this.getContentPane().add(buttonCancel);
-
 	}
 
 	@Override
