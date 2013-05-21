@@ -11,7 +11,7 @@ public class TestServer {
 	
 	public static void main(String[] args) throws Exception {
 		//Data.readXML();
-		Data.writeProfile(1,1, "Bernd", "1990-01-01", "w", "180", "80" );
+		//Data.writeProfile(1,1, "Bernd", "1990-01-01", "w", "180", "80" );
 		String url = (args.length > 0) ? args[0] : "http://localhost:4434";
 	    String sec = (args.length > 1) ? args[1] : "60";
 

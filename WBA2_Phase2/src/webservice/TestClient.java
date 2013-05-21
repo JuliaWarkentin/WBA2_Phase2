@@ -14,7 +14,7 @@ public class TestClient {
 	
 	public static void main(String[] args) throws JAXBException {
 		
-	    String url = "http://localhost:4434/fridges/1/profiles/2";
+	    String url = "http://localhost:4434/fridges/2/profiles/1";
 	    System.out.println("URL: " + url);
 
 	    wrs = Client.create().resource(url);

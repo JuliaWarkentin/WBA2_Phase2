@@ -37,6 +37,7 @@ public class Data {
 			} catch (IOException e) {
 				// Verzeichnis nicht gefunden: --> Verzeichnis erstellen
 				File dir = new File(path);
+				System.out.println("Schreibrecht?: "+dir.canWrite());
 				if(dir.mkdir())
 					System.out.println("Verzeichnis erstellt: "+ path);
 			}
