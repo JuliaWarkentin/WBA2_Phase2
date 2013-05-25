@@ -17,7 +17,7 @@ public class TestClient {
 	    System.out.println("URL: " + url);
 	    wrs = Client.create().resource(url);
 	    
-	    testPUT();
+	    testGET();
 	}
 	
 	public static void testGET() {

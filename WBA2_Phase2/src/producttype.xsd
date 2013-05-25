@@ -15,6 +15,16 @@
 		<xs:sequence>
 			<!-- Name -->
 			<xs:element name="name" type="xs:string"/>
+			<!-- Gewicht -->
+			<xs:element name="weight">
+				<xs:complexType>
+				<xs:simpleContent>
+				<xs:extension base="xs:float">
+		        	<xs:attribute name="unit" type="weightUnitAttr" use="required"/>
+	         	</xs:extension>
+	          	</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
 			<!-- Beschreibung -->
 			<xs:element name="description" type="xs:string"/>
 			<!-- Zutaten -->
@@ -34,7 +44,7 @@
 					<xs:complexType>
 					<xs:simpleContent>
 					<xs:extension base="xs:float">
-	             		<xs:attribute name="unit" type="xs:string" use="required"/>
+	             		<xs:attribute name="unit" type="caloricUnitAttr" use="required"/>
 	             	</xs:extension>
 	             	</xs:simpleContent>
 					</xs:complexType>
@@ -67,7 +77,7 @@
 				</xs:complexType>
 			</xs:element>
 			<!-- Strichcode -->
-			<xs:element name="barcode" type="xs:decimal"/>
+			<xs:element name="barcode" type="xs:integer"/>
 		</xs:sequence>
 		</xs:complexType>
 		</xs:element>
@@ -89,6 +99,17 @@
 	<!-- #################### -->	
 	<!-- Attributdefinitionen -->
 	<!-- #################### -->	
+	
+	<!-- Masseeinheit -->
+	<xs:simpleType name="weightUnitAttr">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="liter"/>
+			<xs:enumeration value="litre"/>
+			<xs:enumeration value="ml"/>
+			<xs:enumeration value="g"/>
+			<xs:enumeration value="kg"/>
+		</xs:restriction>
+	</xs:simpleType>
 	
 	<!-- Brennwerteinheit -->
 	<xs:simpleType name="caloricUnitAttr">

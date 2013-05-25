@@ -29,7 +29,7 @@ public class ProfileService {
 	
 	@GET 
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public JAXBClasses.Profiles getProfilePlain(@PathParam("fridgeid") int fridgeid, @QueryParam("name") String name) throws JAXBException, IOException, DatatypeConfigurationException {
+	public JAXBClasses.Profiles getProfilesPlain(@PathParam("fridgeid") int fridgeid, @QueryParam("name") String name) throws JAXBException, IOException, DatatypeConfigurationException {
 		return Data.readProfiles(fridgeid);
 	}
 	
