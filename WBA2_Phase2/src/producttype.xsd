@@ -6,22 +6,22 @@
 			elementFormDefault="qualified">
 			
 	<!-- Root-Element -->
-	<xs:element name="producttype">
+	<xs:element name="productType">
 	<xs:complexType>
 	<xs:sequence>
 		<!-- Produktinformationen -->
-		<xs:element name="productinformation">
+		<xs:element name="productInformation">
 		<xs:complexType>
 		<xs:sequence>
 			<!-- Name -->
-			<xs:element name="inputdate" type="xs:string"/>
+			<xs:element name="name" type="xs:string"/>
 			<!-- Beschreibung -->
 			<xs:element name="description" type="xs:string"/>
 			<!-- Zutaten -->
 			<xs:element name="ingredients">
 			<xs:complexType>
 			<xs:sequence>
-				<xs:element name="ingredient" maxOccurs="unbounded"></xs:element>
+				<xs:element name="ingredient" maxOccurs="unbounded" type="xs:string"></xs:element>
 			</xs:sequence>
 			</xs:complexType>
 			</xs:element>
@@ -30,9 +30,13 @@
 			<xs:complexType>
 			<xs:sequence>
 				<!-- Kalorien -->
-				<xs:element name="caloricvalue" type="xs:float">
+				<xs:element name="caloricValue">
 					<xs:complexType>
-	             			<xs:attribute name="unit" type="caloricUnitType" use="required"/>
+					<xs:simpleContent>
+					<xs:extension base="xs:float">
+	             		<xs:attribute name="unit" type="xs:string" use="required"/>
+	             	</xs:extension>
+	             	</xs:simpleContent>
 					</xs:complexType>
 				</xs:element>
 				<!-- Eiweiß -->
@@ -53,9 +57,13 @@
 			</xs:complexType>
 			</xs:element>
 			<!-- Derzeiter Preis -->
-			<xs:element name="currentprice" type="xs:float">
+			<xs:element name="currentPrice">
 				<xs:complexType>
-	         		<xs:attribute name="currency" type="currencyType" use="required"/>
+				<xs:simpleContent>
+				<xs:extension base="xs:float">
+	         		<xs:attribute name="currency" type="currencyAttr" use="required"/>
+				</xs:extension>
+				</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
 			<!-- Strichcode -->
@@ -64,7 +72,7 @@
 		</xs:complexType>
 		</xs:element>
 		<!-- Bestandinformation -->
-		<xs:element name="stockdata">
+		<xs:element name="stockData">
 		<xs:complexType>
 		<xs:sequence>
 			<xs:element name="stock" type="xs:int"/>
@@ -76,12 +84,14 @@
 	</xs:complexType>
 	</xs:element>
 	
+	
+	
 	<!-- #################### -->	
 	<!-- Attributdefinitionen -->
 	<!-- #################### -->	
 	
 	<!-- Brennwerteinheit -->
-	<xs:simpleType name="caloricUnitType">
+	<xs:simpleType name="caloricUnitAttr">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="kcal"/>
 			<xs:enumeration value="kj"/>
@@ -89,7 +99,7 @@
 	</xs:simpleType>
 	
 	<!-- Währung -->
-	<xs:simpleType name="currencyType">
+	<xs:simpleType name="currencyAttr">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="EUR"/>
 			<xs:enumeration value="USD"/>
