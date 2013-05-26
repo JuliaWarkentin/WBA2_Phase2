@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="http://meinnamespace.meinefirma.de"
+			xmlns="http://meinnamespace.meinefirma.de"
+			elementFormDefault="qualified">
+	<!-- Produkttypenliste eines Kühlschranks -->	
+<!-- Root-Element -->
+<xs:element name="productTypesLOCAL">
+<xs:complexType>
+<xs:sequence>
+	<!-- Produkttyp -->
+	<xs:element name="productType" minOccurs="1" maxOccurs="unbounded">
+	<xs:complexType>
+	<xs:sequence>
+		<!-- Name (Schlüssel zu productInformationLOCAL) -->
+		<xs:element name="name" type="xs:string"></xs:element>
+		<!-- Bestandinformation -->
+		<xs:element name="stockData">
+		<xs:complexType>
+		<xs:sequence>
+			<xs:element name="stock" type="xs:int"/>
+			<xs:element name="minstock" type="xs:int"/>
+		</xs:sequence>
+		</xs:complexType>
+		</xs:element>
+	</xs:sequence>
+	<xs:attribute name="id" type="xs:int" use="required"></xs:attribute>
+	</xs:complexType>
+	</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:schema>

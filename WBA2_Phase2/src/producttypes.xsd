@@ -6,7 +6,7 @@
 			elementFormDefault="qualified">
 			
 	<!-- Root-Element -->
-	<xs:element name="products">
+	<xs:element name="productTypes">
 	<xs:complexType>
 	<xs:sequence>
 		<xs:element name="producttype" maxOccurs="unbounded">
@@ -15,6 +15,7 @@
 			<xs:element name="name" type="xs:string"/>
 			<xs:element name="stock" type="xs:int"/>
 		</xs:sequence>
+		<xs:attribute name="href" type="xs:anyURI" use="required"></xs:attribute>
 		</xs:complexType>
 		</xs:element>
 	</xs:sequence>

@@ -9,14 +9,33 @@
 	<xs:element name="product">
 	<xs:complexType>
 	<xs:sequence>
+		<!-- Name -->
+		<xs:element name="name">
+		<xs:complexType>
+		<xs:simpleContent>
+		<xs:extension base="xs:string">
+			<!-- Referenz zum Produkttypen -->
+			<xs:attribute name="href" type="xs:anyURI" use="required"></xs:attribute>
+		</xs:extension>
+		</xs:simpleContent>
+		</xs:complexType>
+		</xs:element>
 		<!-- Inputdate -->
 		<xs:element name="inputdate" type="xs:date"/>
-		<!-- Outputdate -->
-		<xs:element name="outputdate" type="xs:date"/>
+		<!-- Outputdate. (Wird nur verwendet wenn state="consumed") -->
+		<xs:element name="outputdate" type="xs:date" minOccurs="0" maxOccurs="1"/>
 		<!-- Verfallsdatum -->
 		<xs:element name="expirationdate" type="xs:date"/>
 		<!-- Besitzer/Rechte -->
-		<xs:element name="owner" type="xs:anyURI"/>
+		<xs:element name="owner">
+			<xs:complexType>
+			<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="href" type="xs:anyURI" use="required"></xs:attribute>
+			</xs:extension>
+			</xs:simpleContent>
+			</xs:complexType>
+		</xs:element>
 		<!-- Status -->
 		<xs:element name="state">
 			<xs:simpleType>
@@ -26,20 +45,25 @@
 			</xs:restriction>
 			</xs:simpleType>
 		</xs:element>
-		<!-- Preis -->
-		<xs:element name="price" type="xs:float">
+		<!-- Preis zum Kaufzeitpunkt -->
+		<xs:element name="priceWas">
 			<xs:complexType>
-			<xs:attribute name="unit" use="required">
-				<xs:simpleType>
-				<xs:restriction base="xs:string">
-					<xs:enumeration value="EUR"/>
-					<xs:enumeration value="USD"/>
-				</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
+			<xs:simpleContent>
+			<xs:extension base="xs:float">
+         		<xs:attribute name="currency" type="currencyAttr" use="required"/>
+			</xs:extension>
+			</xs:simpleContent>
 			</xs:complexType>
 		</xs:element>
 	</xs:sequence>
 	</xs:complexType>
-	</xs:element>	
+	</xs:element>
+	
+	<!-- Währung -->
+	<xs:simpleType name="currencyAttr">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="EUR"/>
+			<xs:enumeration value="USD"/>
+		</xs:restriction>
+	</xs:simpleType>
 </xs:schema>

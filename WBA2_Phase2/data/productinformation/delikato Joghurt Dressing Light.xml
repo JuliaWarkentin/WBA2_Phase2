@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<p:productType xmlns:p="http://meinnamespace.meinefirma.de" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://meinnamespace.meinefirma.de producttype.xsd ">
-  <p:productInformation>
+<p:productInformationLOCAL xmlns:p="http://meinnamespace.meinefirma.de" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://meinnamespace.meinefirma.de productinfomationLOCAL.xsd ">
     <p:name>delikato Johgurt Dressing Light</p:name>
     <p:weight unit="ml">250</p:weight>
     <p:description>Joghurt Dressing Light mit Zitronensaft und Schnittlauch verfeinert.</p:description>
@@ -38,9 +37,4 @@
     </p:nutrients>
     <p:currentPrice currency="EUR">1.49</p:currentPrice>
     <p:barcode>29066889</p:barcode>
-  </p:productInformation>
-  <p:stockData>
-    <p:stock>1</p:stock>
-    <p:minstock>0</p:minstock>
-  </p:stockData>
-</p:productType>
+  </p:productInformationLOCAL>

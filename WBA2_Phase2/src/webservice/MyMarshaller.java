@@ -8,7 +8,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import JAXBClasses.ObjectFactory;
+import jaxbClasses.ObjectFactory;
+
 
 public class MyMarshaller {
 	public static String marshall(Object o) throws JAXBException {

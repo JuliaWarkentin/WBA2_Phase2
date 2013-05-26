@@ -12,8 +12,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
-import JAXBClasses.Profile;
-import JAXBClasses.Profiles;
+import jaxbClasses.Profile;
+import jaxbClasses.Profiles;
+
 
 public class Data {
 
