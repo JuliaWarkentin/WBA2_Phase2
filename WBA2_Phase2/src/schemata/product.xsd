@@ -14,7 +14,7 @@
 		<xs:complexType>
 		<xs:simpleContent>
 		<xs:extension base="xs:string">
-			<!-- Referenz zum Produkttypen -->
+			<!-- Hyperlink zum Produkttypen -->
 			<xs:attribute name="href" type="xs:anyURI" use="required"></xs:attribute>
 		</xs:extension>
 		</xs:simpleContent>

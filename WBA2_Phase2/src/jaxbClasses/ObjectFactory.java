@@ -159,5 +159,4 @@ public class ObjectFactory {
     public Product.PriceWas createProductPriceWas() {
         return new Product.PriceWas();
     }
-    
 }

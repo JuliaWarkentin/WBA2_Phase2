@@ -33,7 +33,7 @@ public class ProducttypeService {
 		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.
 				unmarshall("data/fridges/"+ fridgeid + "/producttypesLOCAL.xml");
 		
-		// Liste der Produkttypen aus ProductTypesLOCAL ensprechend der producttype.xsd zusammenbauen
+		// Liste der Produkttypen mit Informationen aus ProductTypesLOCAL entsprechend der producttype.xsd zusammenbauen
 		ProductTypes pts = new ProductTypes();
 		ProductTypes.Producttype pt;
 		for(int i=0; i<ptsL.getProductType().size(); i++){

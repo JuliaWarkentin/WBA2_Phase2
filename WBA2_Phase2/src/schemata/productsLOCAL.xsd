@@ -13,15 +13,15 @@
 		<xs:element name="product" minOccurs="1" maxOccurs="unbounded">
 		<xs:complexType>
 		<xs:sequence>
-			<!-- Name -->
-			<xs:element name="name" type="xs:string"></xs:element>
+			<!-- Schlüssel zu Producttype -->
+			<xs:element name="productTypeID" type="xs:int"></xs:element>
 			<!-- Inputdate -->
-			<xs:element name="inputdate" type="xs:date"/>
+			<xs:element name="inputDate" type="xs:date"/>
 			<!-- Outputdate. (Wird nur verwendet wenn state="consumed") -->
-			<xs:element name="outputdate" type="xs:date" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="outputDate" type="xs:date" minOccurs="0" maxOccurs="1"/>
 			<!-- Verfallsdatum -->
-			<xs:element name="expirationdate" type="xs:date"/>
-			<!-- Besitzer/Rechte Schlüssel -->
+			<xs:element name="expirationDate" type="xs:date"/>
+			<!-- Schlüssel zum Bestitzer/Profil -->
 			<xs:element name="ownerID" type="xs:int"/>
 			<!-- Status -->
 			<xs:element name="state">

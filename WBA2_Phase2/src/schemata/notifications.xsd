@@ -9,7 +9,7 @@
 	<xs:element name="notifications">
 	<xs:complexType>
 	<xs:sequence>
-		<xs:element name="notification">
+		<xs:element name="notification" minOccurs="1" maxOccurs="unbounded">
 		<xs:complexType>
 		<xs:sequence>
 			<xs:element name="type"></xs:element>
