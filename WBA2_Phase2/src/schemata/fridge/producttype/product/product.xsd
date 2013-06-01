@@ -9,7 +9,7 @@
 	<xs:element name="product">
 	<xs:complexType>
 	<xs:sequence>
-		<!-- Name -->
+		<!-- Name (des Produkttypen)-->
 		<xs:element name="name">
 		<xs:complexType>
 		<xs:simpleContent>

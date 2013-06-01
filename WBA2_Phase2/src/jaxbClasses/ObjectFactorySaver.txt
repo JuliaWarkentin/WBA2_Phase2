@@ -159,4 +159,45 @@ public class ObjectFactory {
     public Product.PriceWas createProductPriceWas() {
         return new Product.PriceWas();
     }
+    
+     /**
+     * Create an instance of {@link NotificationsLOCAL }
+     * 
+     */
+    public NotificationsLOCAL createNotificationsLOCAL() {
+        return new NotificationsLOCAL();
+    }
+
+    /**
+     * Create an instance of {@link NotificationsLOCAL.Notification }
+     * 
+     */
+    public NotificationsLOCAL.Notification createNotificationsLOCALNotification() {
+        return new NotificationsLOCAL.Notification();
+    }
+    
+    /**
+     * Create an instance of {@link Notifications }
+     * 
+     */
+    public Notifications createNotifications() {
+        return new Notifications();
+    }
+
+    /**
+     * Create an instance of {@link Notifications.Notification }
+     * 
+     */
+    public Notifications.Notification createNotificationsNotification() {
+     
+        return new Notifications.Notification();
+    }
+    
+    /**
+     * Create an instance of {@link Notification }
+     * 
+     */
+    public Notification createNotification() {
+        return new Notification();
+    }
 }

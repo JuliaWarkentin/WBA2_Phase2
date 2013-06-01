@@ -3,6 +3,8 @@ package webservice;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import javax.ws.rs.*;
@@ -74,14 +76,48 @@ public class ProfileService {
 		return createProfile(psL.getProfile().get(indexFound));
 	}
 	
+	@POST
+	@Consumes({ MediaType.APPLICATION_XML})
+	public Response addProfile(@PathParam("fridgeid") int fridgeid, Profile p) throws JAXBException, URISyntaxException{
+		ProfilesLOCAL psL = (ProfilesLOCAL) MyMarshaller.
+				unmarshall("data/fridges/"+ fridgeid + "/profilesLOCAL.xml");
+		
+		// Nach einer freien Profile-id suchen
+		int freeID = -1; boolean found;
+		for(int i=1; i<=50 && freeID==-1; i++){
+			found = true;
+			for(jaxbClasses.ProfilesLOCAL.Profile profile : psL.getProfile()){
+				if(profile.getId() == i) { // id belegt?
+					found = false;
+					break;
+				}
+			}
+			if(found) // id noch frei?
+				freeID = i; // übernehmen
+		}
+		
+		// Neues Profil anlegen
+		jaxbClasses.ProfilesLOCAL.Profile profile = new jaxbClasses.ProfilesLOCAL.Profile();
+		profile.setId(freeID);
+		profile.setName(p.getName());
+		profile.setBirthdate(p.getBirthdate());
+		profile.setGender(p.getGender());
+		profile.setHeight(p.getHeight());
+		profile.setWeight(p.getWeight());
+		
+		psL.getProfile().add(profile);
+		
+		// Daten auf Platte speichern
+		MyMarshaller.marshall(psL, "data/fridges/"+ fridgeid + "/profilesLOCAL.xml");
+		
+		// Neu erstellte URI in Repsone angeben:
+		return Response.created(new URI("fridges/"+fridgeid+"/profiles/"+freeID)).build();
+	}
+	
 	@PUT
 	@Path("/{id}")
 	@Consumes({ MediaType.APPLICATION_XML})
 	public Response createProfileByID(@PathParam("id") int id, @PathParam("fridgeid") int fridgeid, Profile p) throws JAXBException, IOException {
-		Data.writeProfile(fridgeid, id,
-				p.getName(), p.getBirthdate().toString(), p.getGender(), 
-				""+ p.getHeight(), ""+ p.getWeight());
-		System.out.println("name: "+p.getName());
 		return null;
 	}
 	

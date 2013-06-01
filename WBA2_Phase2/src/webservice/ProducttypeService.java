@@ -1,9 +1,12 @@
 package webservice;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -21,6 +24,7 @@ import jaxbClasses.ProductTypes;
 import jaxbClasses.ProductTypesLOCAL;
 import jaxbClasses.Profile;
 import jaxbClasses.Profiles;
+import jaxbClasses.ProfilesLOCAL;
 import jaxbClasses.ProductType.ProductInformation;
 
 
@@ -70,6 +74,45 @@ public class ProducttypeService {
 		// REST-ProductType erstellen
 		return createProductType(ptsL.getProductType().get(indexFound), piL);
 	}
+	
+	@POST
+	@Consumes({ MediaType.APPLICATION_XML})
+	public Response addProducttype(@PathParam("fridgeid") int fridgeid, ProductType pt) throws JAXBException, URISyntaxException{
+		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.
+				unmarshall("data/fridges/"+ fridgeid + "/producttypesLOCAL.xml");
+		
+		// Nach einer freien Prooducttype-id suchen
+		int freeID = -1; boolean found;
+		for(int i=1; i<=50 && freeID==-1; i++){
+			found = true;
+			for(ProductTypesLOCAL.ProductType  producttype: ptsL.getProductType()){
+				if(producttype.getId() == i) { // id belegt?
+					found = false;
+					break;
+				}
+			}
+			if(found) // id noch frei?
+				freeID = i; // übernehmen
+		}
+		
+		// Neues Producttype anlegen (Produktinformationen werden ignoriert)
+		ProductTypesLOCAL.ProductType producttype = new jaxbClasses.ProductTypesLOCAL.ProductType();
+		producttype.setId(freeID);
+		producttype.setName(pt.getProductInformation().getName());
+		ProductTypesLOCAL.ProductType.StockData stockdata = new ProductTypesLOCAL.ProductType.StockData();
+		stockdata.setMinstock(pt.getStockData().getMinstock());
+		stockdata.setStock(pt.getStockData().getStock());
+		producttype.setStockData(stockdata);
+		
+		ptsL.getProductType().add(producttype);
+		
+		// Daten auf Platte speichern
+		MyMarshaller.marshall(ptsL, "data/fridges/"+ fridgeid + "/producttypesLOCAL.xml");
+		
+		// Neu erstellte URI in Repsone angeben:
+		return Response.created(new URI("fridges/"+fridgeid+"/profiles/"+freeID)).build();
+	}
+	
 	
 	@PUT
 	@Path("/{id}")

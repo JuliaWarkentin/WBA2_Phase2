@@ -12,13 +12,11 @@ import jaxbClasses.ObjectFactory;
 
 
 public class MyMarshaller {
-	public static String marshall(Object o) throws JAXBException {
+	public static void marshall(Object o, String path) throws JAXBException {
 		JAXBContext jaxbContext = JAXBContext.newInstance(o.getClass());
 		Marshaller marshaller = jaxbContext.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-		StringWriter sw = new StringWriter();
-		marshaller.marshal(o, sw);
-		return sw.toString();
+		marshaller.marshal(o, new File(path));
 	}
 	
 	public static Object unmarshall(String path) throws JAXBException {

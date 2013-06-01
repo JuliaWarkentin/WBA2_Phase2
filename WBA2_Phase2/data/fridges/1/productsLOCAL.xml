@@ -1,53 +1,61 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<p:productsLOCAL xmlns:p="http://meinnamespace.meinefirma.de" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://meinnamespace.meinefirma.de productsLOCAL.xsd ">
-  <p:product id="1">
-    <p:productTypeID>2</p:productTypeID>
-    <p:inputDate>2000-01-01</p:inputDate>
-    <p:outputDate>2000-01-05</p:outputDate>
-    <p:expirationDate>2000-01-15</p:expirationDate>
-    <p:ownerID>5</p:ownerID>
-    <p:state>consumed</p:state>
-    <p:priceWas currency="EUR">0.79</p:priceWas>
-  </p:product>
-   <p:product id="2">
-    <p:productTypeID>2</p:productTypeID>
-    <p:inputDate>2000-01-01</p:inputDate>
-    <p:outputDate>2000-01-06</p:outputDate>
-    <p:expirationDate>2000-01-15</p:expirationDate>
-    <p:ownerID>5</p:ownerID>
-    <p:state>consumed</p:state>
-    <p:priceWas currency="EUR">0.79</p:priceWas>
-  </p:product>
-  <p:product id="3">
-    <p:productTypeID>2</p:productTypeID>
-    <p:inputDate>2001-01-01</p:inputDate>
-    <p:expirationDate>2001-01-15</p:expirationDate>
-    <p:ownerID>4</p:ownerID>
-    <p:state>inside</p:state>
-    <p:priceWas currency="EUR">0.89</p:priceWas>
-  </p:product>
-   <p:product id="4">
-    <p:productTypeID>2</p:productTypeID>
-    <p:inputDate>2001-01-01</p:inputDate>
-    <p:expirationDate>2001-01-15</p:expirationDate>
-    <p:ownerID>4</p:ownerID>
-    <p:state>inside</p:state>
-    <p:priceWas currency="EUR">0.89</p:priceWas>
-  </p:product>
-   <p:product id="5">
-    <p:productTypeID>2</p:productTypeID>
-    <p:inputDate>2001-01-01</p:inputDate>
-    <p:expirationDate>2001-01-15</p:expirationDate>
-    <p:ownerID>4</p:ownerID>
-    <p:state>inside</p:state>
-    <p:priceWas currency="EUR">0.89</p:priceWas>
-  </p:product>
-  <p:product id="6">
-    <p:productTypeID>1</p:productTypeID>
-    <p:inputDate>2001-01-02</p:inputDate>
-    <p:expirationDate>2001-02-05</p:expirationDate>
-    <p:ownerID>4</p:ownerID>
-    <p:state>inside</p:state>
-    <p:priceWas currency="EUR">1.49</p:priceWas>
-  </p:product>
-</p:productsLOCAL>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<productsLOCAL xmlns="http://meinnamespace.meinefirma.de">
+    <product id="1">
+        <productTypeID>2</productTypeID>
+        <inputDate>2000-01-01</inputDate>
+        <outputDate>2000-01-05</outputDate>
+        <expirationDate>2000-01-15</expirationDate>
+        <ownerID>5</ownerID>
+        <state>consumed</state>
+        <priceWas currency="EUR">0.79</priceWas>
+    </product>
+    <product id="2">
+        <productTypeID>2</productTypeID>
+        <inputDate>2000-01-01</inputDate>
+        <outputDate>2000-01-06</outputDate>
+        <expirationDate>2000-01-15</expirationDate>
+        <ownerID>5</ownerID>
+        <state>consumed</state>
+        <priceWas currency="EUR">0.79</priceWas>
+    </product>
+    <product id="3">
+        <productTypeID>2</productTypeID>
+        <inputDate>2001-01-01</inputDate>
+        <expirationDate>2001-01-15</expirationDate>
+        <ownerID>4</ownerID>
+        <state>inside</state>
+        <priceWas currency="EUR">0.89</priceWas>
+    </product>
+    <product id="4">
+        <productTypeID>2</productTypeID>
+        <inputDate>2001-01-01</inputDate>
+        <expirationDate>2001-01-15</expirationDate>
+        <ownerID>4</ownerID>
+        <state>inside</state>
+        <priceWas currency="EUR">0.89</priceWas>
+    </product>
+    <product id="5">
+        <productTypeID>2</productTypeID>
+        <inputDate>2001-01-01</inputDate>
+        <expirationDate>2001-01-15</expirationDate>
+        <ownerID>4</ownerID>
+        <state>inside</state>
+        <priceWas currency="EUR">0.89</priceWas>
+    </product>
+    <product id="6">
+        <productTypeID>1</productTypeID>
+        <inputDate>2001-01-02</inputDate>
+        <expirationDate>2001-02-05</expirationDate>
+        <ownerID>4</ownerID>
+        <state>inside</state>
+        <priceWas currency="EUR">1.49</priceWas>
+    </product>
+    <product id="7">
+        <productTypeID>1</productTypeID>
+        <inputDate>2000-01-01</inputDate>
+        <expirationDate>2000-01-02</expirationDate>
+        <ownerID>4</ownerID>
+        <state>inside</state>
+        <priceWas currency="EUR">1.39</priceWas>
+    </product>
+</productsLOCAL>

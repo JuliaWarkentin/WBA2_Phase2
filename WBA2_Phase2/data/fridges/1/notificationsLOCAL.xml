@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<notificationsLOCAL xmlns="http://meinnamespace.meinefirma.de">
+    <notification id="2">
+        <type>warning</type>
+        <date>2001-01-01</date>
+        <head>A product is nearly expiration!</head>
+        <text>&quot;milsani Frische Vollmilch&quot; läuft bald ab.</text>
+    </notification>
+    <notification id="3">
+        <type>warning</type>
+        <date>2001-01-01</date>
+        <head>A product was stolen!</head>
+        <text>&quot;milsani Frische Vollmilch&quot; wurde von einer nicht berechtigten Person verbaucht.</text>
+    </notification>
+    <notification id="4">
+        <type>notification</type>
+        <date>2001-01-01</date>
+        <head>Products reordered</head>
+        <text>Es wurden 5 &quot;milsani Frische Vollmilch&quot; Produkte nachbestellt.</text>
+    </notification>
+</notificationsLOCAL>

@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<p:productTypesLOCAL xmlns:p="http://meinnamespace.meinefirma.de" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://meinnamespace.meinefirma.de producttypesLOCAL.xsd ">
-  <p:productType id="1">
-    <p:name>delikato Joghurt Dressing Light</p:name>
-    <p:stockData>
-      <p:stock>1</p:stock>
-      <p:minstock>0</p:minstock>
-    </p:stockData>
-  </p:productType>
-  <p:productType id="2">
-    <p:name>Milsani Frische Vollmilch</p:name>
-    <p:stockData>
-      <p:stock>3</p:stock>
-      <p:minstock>1</p:minstock>
-    </p:stockData>
-  </p:productType>
-</p:productTypesLOCAL>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<productTypesLOCAL xmlns="http://meinnamespace.meinefirma.de">
+    <productType id="1">
+        <name>delikato Joghurt Dressing Light</name>
+        <stockData>
+            <stock>1</stock>
+            <minstock>0</minstock>
+        </stockData>
+    </productType>
+    <productType id="2">
+        <name>Milsani Frische Vollmilch</name>
+        <stockData>
+            <stock>3</stock>
+            <minstock>1</minstock>
+        </stockData>
+    </productType>
+</productTypesLOCAL>
