@@ -30,11 +30,11 @@ public class TestClient {
 	public static  WebResource wrs;
 	
 	public static void main(String[] args) throws JAXBException, DatatypeConfigurationException {
-	    String url = "http://localhost:4434/fridges/1/producttypes/1/products";
+	    String url = "http://localhost:4434/fridges/1/notifications/1";
 	    System.out.println("URL: " + url);
 	    wrs = Client.create().resource(url);
 	    
-	    testPOSTproducts();
+	    testDELETE();
 	}
 	
 	public static void testGET() {
@@ -119,6 +119,11 @@ public class TestClient {
 //	    wrs.type(MediaType.APPLICATION_XML).put(String.class, 
 //	    		"<?xml version=\"1.0\" encoding=\"UTF-8\"?><p:profile xmlns:p=\"http://meinnamespace.meinefirma.de\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://meinnamespace.meinefirma.de profile.xsd \"><p:name>Julia</p:name><p:birthdate>2001-01-01</p:birthdate><p:gender>m</p:gender><p:height>170</p:height><p:weight>60</p:weight><p:currentPurchaseValue>0</p:currentPurchaseValue><p:lastMonthPurchaseValue>0</p:lastMonthPurchaseValue><p:recentBoughtProducts/><p:recentConsumedProducts/></p:profile>");
 	    System.out.println("ende Client");
+	}
+	
+	public static void testDELETE(){
+		ClientResponse r = wrs.type(MediaType.APPLICATION_XML).delete(ClientResponse.class);
+		System.out.println(r.toString());
 	}
 	
 	public static void printClientResponse(){

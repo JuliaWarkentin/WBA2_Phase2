@@ -42,14 +42,6 @@
         <state>inside</state>
         <priceWas currency="EUR">0.89</priceWas>
     </product>
-    <product id="6">
-        <productTypeID>1</productTypeID>
-        <inputDate>2001-01-02</inputDate>
-        <expirationDate>2001-02-05</expirationDate>
-        <ownerID>4</ownerID>
-        <state>inside</state>
-        <priceWas currency="EUR">1.49</priceWas>
-    </product>
     <product id="7">
         <productTypeID>1</productTypeID>
         <inputDate>2000-01-01</inputDate>

@@ -19,6 +19,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 
+import com.sun.jersey.api.NotFoundException;
+
 import jaxbClasses.ObjectFactory;
 import jaxbClasses.ProductInformationLOCAL;
 import jaxbClasses.ProductTypes;
@@ -29,8 +31,8 @@ import jaxbClasses.ProfilesLOCAL;
 
 
 
-@Path ("fridges/{fridgeid}/profiles")
-public class ProfileService {
+@Path ("fridges/{fridgeID}/profiles")
+public class ProfileResources {
 
 	// Ressource: /fridges/{id}/profiles
 	//--------------------------------------------
@@ -38,9 +40,9 @@ public class ProfileService {
 	
 	@GET 
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public Profiles getProfilesPlain(@PathParam("fridgeid") int fridgeid, @QueryParam("name") String name) throws JAXBException, IOException, DatatypeConfigurationException {
+	public Profiles getProfilesPlain(@PathParam("fridgeID") int fridgeID, @QueryParam("name") String name) throws JAXBException, IOException, DatatypeConfigurationException {
 		ProfilesLOCAL psL = (ProfilesLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeid + "/profilesLOCAL.xml");
+				unmarshall("data/fridges/"+ fridgeID + "/profilesLOCAL.xml");
 		
 		// Liste der Profiles aus ProfilesLOCAL ensprechend der profiles.xsd (REST) zusammenbauen
 		Profiles pts = new Profiles();
@@ -48,7 +50,7 @@ public class ProfileService {
 		for(int i=0; i<psL.getProfile().size(); i++){
 			p = new Profiles.Profile();
 			Profiles.Profile.Name n = new Profiles.Profile.Name();
-			n.setHref("fridges/"+fridgeid+"/profiles/"+psL.getProfile().get(i).getId());
+			n.setHref("fridges/"+fridgeID+"/profiles/"+psL.getProfile().get(i).getId());
 			n.setValue(psL.getProfile().get(i).getName());
 			p.setName(n);
 			pts.getProfile().add(p);
@@ -57,16 +59,16 @@ public class ProfileService {
 	}
 	
 	@GET 
-	@Path("/{id}")
+	@Path("/{profileID}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public Profile getProfileByID(@PathParam("id") int id, @PathParam("fridgeid") int fridgeid) throws JAXBException, IOException, DatatypeConfigurationException {
+	public Profile getProfileByID(@PathParam("profileID") int profileID, @PathParam("fridgeID") int fridgeID) throws JAXBException, IOException, DatatypeConfigurationException {
 		ProfilesLOCAL psL = (ProfilesLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeid + "/profilesLOCAL.xml");
+				unmarshall("data/fridges/"+ fridgeID + "/profilesLOCAL.xml");
 		
 		// Liste nach passender id durchsuchen. Index merken
 		int indexFound = -1;
 		for (int i=0; i<psL.getProfile().size(); i++) {
-			 if(psL.getProfile().get(i).getId() == id){
+			 if(psL.getProfile().get(i).getId() == profileID){
 				 indexFound = i;
 			 	break;
 			 }
@@ -78,9 +80,9 @@ public class ProfileService {
 	
 	@POST
 	@Consumes({ MediaType.APPLICATION_XML})
-	public Response addProfile(@PathParam("fridgeid") int fridgeid, Profile p) throws JAXBException, URISyntaxException{
+	public Response addProfile(@PathParam("fridgeID") int fridgeID, Profile p) throws JAXBException, URISyntaxException{
 		ProfilesLOCAL psL = (ProfilesLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeid + "/profilesLOCAL.xml");
+				unmarshall("data/fridges/"+ fridgeID + "/profilesLOCAL.xml");
 		
 		// Nach einer freien Profile-id suchen
 		int freeID = -1; boolean found;
@@ -108,17 +110,33 @@ public class ProfileService {
 		psL.getProfile().add(profile);
 		
 		// Daten auf Platte speichern
-		MyMarshaller.marshall(psL, "data/fridges/"+ fridgeid + "/profilesLOCAL.xml");
+		MyMarshaller.marshall(psL, "data/fridges/"+ fridgeID + "/profilesLOCAL.xml");
 		
 		// Neu erstellte URI in Repsone angeben:
-		return Response.created(new URI("fridges/"+fridgeid+"/profiles/"+freeID)).build();
+		return Response.created(new URI("fridges/"+fridgeID+"/profiles/"+freeID)).build();
 	}
 	
-	@PUT
-	@Path("/{id}")
-	@Consumes({ MediaType.APPLICATION_XML})
-	public Response createProfileByID(@PathParam("id") int id, @PathParam("fridgeid") int fridgeid, Profile p) throws JAXBException, IOException {
-		return null;
+	@DELETE
+	@Path("/{profileID}")
+	public void deleteProfile(@PathParam("profileID") int profileID, @PathParam("fridgeID") int fridgeID) throws JAXBException {
+		ProfilesLOCAL psL = (ProfilesLOCAL) MyMarshaller.
+				unmarshall("data/fridges/"+ fridgeID + "/profilesLOCAL.xml");
+		
+		//Suche Profil
+		boolean found = false;
+		for(int i=0; i<psL.getProfile().size(); i++){
+			if(psL.getProfile().get(i).getId() == profileID) { // gefunden?
+				found = true;
+				psL.getProfile().remove(i); // löschen
+				break;
+			}
+		}
+		if(!found) { // Profil existiert nicht?
+			throw new NotFoundException("Profile not found");
+		}
+		
+		// Änderung übernehmen und speichern.
+		MyMarshaller.marshall(psL, "data/fridges/"+ fridgeID + "/profilesLOCAL.xml");
 	}
 	
 	private Profile createProfile(ProfilesLOCAL.Profile p){
@@ -130,26 +148,5 @@ public class ProfileService {
 		profile.setHeight(p.getHeight());
 		profile.setWeight(p.getWeight());
 		return profile;
-	}
-	
-	public jaxbClasses.Profile getProfileByName(String name) {
-		/*
-		// Liste der Profiles auslesen
-		Profiles profiles = Data.storage.getProfiles();
-		List<JAXBClasses.FrigdeManagerStorage.Profiles.Profile> list = profiles.getProfile();
-		// Liste nach übergebenem name durchsuchen
-		JAXBClasses.Profile p = new JAXBClasses.Profile();
-		for (JAXBClasses.FrigdeManagerStorage.Profiles.Profile profile : list) {
-			if(profile.getName().equals(name)){
-				// Gefunden. Erstelle Profile.
-				p.setName(profile.getName());
-				p.setGender(profile.getGender());
-				p.setBirthdate(profile.getBirthdate());
-				p.setHeight(profile.getHeight());
-				p.setWeight(profile.getWeight());
-				return p;
-			}
-		}*/
-		return null;
 	}
 }

@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -18,6 +19,8 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
 
+import com.sun.jersey.api.NotFoundException;
+
 import jaxbClasses.ProductInformationLOCAL;
 import jaxbClasses.ProductType;
 import jaxbClasses.ProductTypes;
@@ -28,21 +31,21 @@ import jaxbClasses.ProfilesLOCAL;
 import jaxbClasses.ProductType.ProductInformation;
 
 
-@Path ("fridges/{fridgeid}/producttypes")
-public class ProducttypeService {
+@Path ("fridges/{fridgeID}/producttypes")
+public class ProducttypeResources {
 	
 	@GET 
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public ProductTypes getProducttypes(@PathParam("fridgeid") int fridgeid) throws JAXBException {
+	public ProductTypes getProducttypes(@PathParam("fridgeID") int fridgeID) throws JAXBException {
 		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeid + "/producttypesLOCAL.xml");
+				unmarshall("data/fridges/"+ fridgeID + "/producttypesLOCAL.xml");
 		
 		// Liste der Produkttypen mit Informationen aus ProductTypesLOCAL entsprechend der producttype.xsd zusammenbauen
 		ProductTypes pts = new ProductTypes();
 		ProductTypes.Producttype pt;
 		for(int i=0; i<ptsL.getProductType().size(); i++){
 			pt = new ProductTypes.Producttype();
-			pt.setHref("fridges/"+fridgeid+"/producttypes/"+ptsL.getProductType().get(i).getId());
+			pt.setHref("fridges/"+fridgeID+"/producttypes/"+ptsL.getProductType().get(i).getId());
 			pt.setName(ptsL.getProductType().get(i).getName());
 			pt.setStock(ptsL.getProductType().get(i).getStockData().getStock());
 			pts.getProducttype().add(pt);
@@ -51,16 +54,16 @@ public class ProducttypeService {
 	}
 	
 	@GET 
-	@Path("/{id}")
+	@Path("/{producttypeID}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public ProductType getProducttypeByID(@PathParam("id") int id, @PathParam("fridgeid") int fridgeid) throws JAXBException  {
+	public ProductType getProducttypeByID(@PathParam("producttypeID") int producttypeID, @PathParam("fridgeID") int fridgeID) throws JAXBException  {
 		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeid + "/producttypesLOCAL.xml");
+				unmarshall("data/fridges/"+ fridgeID + "/producttypesLOCAL.xml");
 		
 		// Liste nach passender id durchsuchen. Index merken
 		int indexFound = -1;
 		for (int i=0; i<ptsL.getProductType().size(); i++) {
-			 if(ptsL.getProductType().get(i).getId() == id){
+			 if(ptsL.getProductType().get(i).getId() == producttypeID){
 				 indexFound = i;
 			 	break;
 			 }
@@ -77,9 +80,9 @@ public class ProducttypeService {
 	
 	@POST
 	@Consumes({ MediaType.APPLICATION_XML})
-	public Response addProducttype(@PathParam("fridgeid") int fridgeid, ProductType pt) throws JAXBException, URISyntaxException{
+	public Response addProducttype(@PathParam("fridgeID") int fridgeID, ProductType pt) throws JAXBException, URISyntaxException{
 		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeid + "/producttypesLOCAL.xml");
+				unmarshall("data/fridges/"+ fridgeID + "/producttypesLOCAL.xml");
 		
 		// Nach einer freien Prooducttype-id suchen
 		int freeID = -1; boolean found;
@@ -107,18 +110,41 @@ public class ProducttypeService {
 		ptsL.getProductType().add(producttype);
 		
 		// Daten auf Platte speichern
-		MyMarshaller.marshall(ptsL, "data/fridges/"+ fridgeid + "/producttypesLOCAL.xml");
+		MyMarshaller.marshall(ptsL, "data/fridges/"+ fridgeID + "/producttypesLOCAL.xml");
 		
 		// Neu erstellte URI in Repsone angeben:
-		return Response.created(new URI("fridges/"+fridgeid+"/profiles/"+freeID)).build();
+		return Response.created(new URI("fridges/"+fridgeID+"/profiles/"+freeID)).build();
+	}
+	
+	@DELETE
+	@Path("/{producttypeID}")
+	public void deleteProducttype(@PathParam("producttypeID") int producttypeID, @PathParam("fridgeID") int fridgeID) throws JAXBException {
+		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.
+				unmarshall("data/fridges/"+ fridgeID + "/producttypesLOCAL.xml");
+		
+		//Suche Produkttyp
+		boolean found = false;
+		for(int i=0; i<ptsL.getProductType().size(); i++){
+			if(ptsL.getProductType().get(i).getId() == producttypeID) { // gefunden?
+				found = true;
+				ptsL.getProductType().remove(i); // löschen
+				break;
+			}
+		}
+		if(!found) { // Produkttyp existiert nicht?
+			throw new NotFoundException("Producttyp not found");
+		}
+		
+		// Änderung übernehmen und speichern.
+		MyMarshaller.marshall(ptsL, "data/fridges/"+ fridgeID + "/producttypesLOCAL.xml");
 	}
 	
 	
 	@PUT
-	@Path("/{id}")
+	@Path("/{producttypeID}")
 	@Consumes({ MediaType.APPLICATION_XML})
-	public ResponseBuilder createProfileByID(@PathParam("id") int id, @PathParam("fridgeid") int fridgeid, Profile p) throws JAXBException, IOException {
-		Data.writeProfile(fridgeid, id,
+	public ResponseBuilder createProfileByID(@PathParam("producttypeID") int producttypeID, @PathParam("fridgeID") int fridgeID, Profile p) throws JAXBException, IOException {
+		Data.writeProfile(fridgeID, producttypeID,
 				p.getName(), p.getBirthdate().toString(), p.getGender(), 
 				""+p.getHeight(), ""+p.getWeight());
 		return Response.status(201);
@@ -163,8 +189,8 @@ public class ProducttypeService {
 		
 	}
 	
-	private ProductType getProducttype(int id, int fridgeid) throws JAXBException {
-		return (ProductType) MyMarshaller.unmarshall("data/fridges/"+ fridgeid + "/producttypes/"+ id);
+	private ProductType getProducttype(int producttypeID, int fridgeID) throws JAXBException {
+		return (ProductType) MyMarshaller.unmarshall("data/fridges/"+ fridgeID + "/producttypes/"+ producttypeID);
 	}
 	
 }

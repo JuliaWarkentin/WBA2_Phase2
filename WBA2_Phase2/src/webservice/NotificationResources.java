@@ -19,6 +19,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 
+import com.sun.jersey.api.NotFoundException;
+
 import jaxbClasses.Notification;
 import jaxbClasses.Notifications;
 import jaxbClasses.NotificationsLOCAL;
@@ -26,18 +28,19 @@ import jaxbClasses.ObjectFactory;
 import jaxbClasses.ProductInformationLOCAL;
 import jaxbClasses.ProductTypes;
 import jaxbClasses.ProductTypesLOCAL;
+import jaxbClasses.ProductsLOCAL;
 import jaxbClasses.Profile;
 import jaxbClasses.Profiles;
 import jaxbClasses.ProfilesLOCAL;
 
-@Path ("fridges/{fridgeid}/notifications")
-public class NotificationService {
+@Path ("fridges/{fridgeID}/notifications")
+public class NotificationResources {
 	
 	@GET 
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public Notifications getNotifications(@PathParam("fridgeid") int fridgeid, @QueryParam("name") String name) throws JAXBException, IOException, DatatypeConfigurationException {
+	public Notifications getNotifications(@PathParam("fridgeID") int fridgeID, @QueryParam("name") String name) throws JAXBException, IOException, DatatypeConfigurationException {
 		NotificationsLOCAL nsL = (NotificationsLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeid + "/notificationsLOCAL.xml");
+				unmarshall("data/fridges/"+ fridgeID + "/notificationsLOCAL.xml");
 		
 		// Liste der Notifications aus notificationLOCAL.xml ensprechend der notifications.xsd (REST) zusammenbauen
 		Notifications ns = new Notifications();
@@ -45,7 +48,7 @@ public class NotificationService {
 		System.out.println(nsL.getNotification().size());
 		for(int i=0; i<nsL.getNotification().size(); i++){
 			n = new Notifications.Notification();
-			n.setHref("fridges/"+ fridgeid +"/notifications/"+ nsL.getNotification().get(i).getId());
+			n.setHref("fridges/"+ fridgeID +"/notifications/"+ nsL.getNotification().get(i).getId());
 			n.setType(nsL.getNotification().get(i).getType());
 			n.setDate(nsL.getNotification().get(i).getDate());
 			n.setHead(nsL.getNotification().get(i).getHead());
@@ -58,9 +61,9 @@ public class NotificationService {
 	@GET 
 	@Path("/{id}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public Notification getNotification(@PathParam("id") int id, @PathParam("fridgeid") int fridgeid) throws JAXBException, IOException, DatatypeConfigurationException {
+	public Notification getNotification(@PathParam("id") int id, @PathParam("fridgeID") int fridgeID) throws JAXBException, IOException, DatatypeConfigurationException {
 		NotificationsLOCAL nsL = (NotificationsLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeid + "/notificationsLOCAL.xml");
+				unmarshall("data/fridges/"+ fridgeID + "/notificationsLOCAL.xml");
 		
 		// Liste nach passender id durchsuchen. Index merken
 		int indexFound = -1;
@@ -82,9 +85,9 @@ public class NotificationService {
 	
 	@POST
 	@Consumes({ MediaType.APPLICATION_XML})
-	public Response addNotification(@PathParam("fridgeid") int fridgeid, Notification n) throws JAXBException, URISyntaxException{
+	public Response addNotification(@PathParam("fridgeID") int fridgeID, Notification n) throws JAXBException, URISyntaxException{
 		NotificationsLOCAL nsL = (NotificationsLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeid + "/notificationsLOCAL.xml");
+				unmarshall("data/fridges/"+ fridgeID + "/notificationsLOCAL.xml");
 		// Nach einer freien Profile-id suchen
 		int freeID = -1; boolean found;
 		for(int i=1; i<=50 && freeID==-1; i++) {
@@ -110,17 +113,40 @@ public class NotificationService {
 		nsL.getNotification().add(notification);
 		
 		// Daten auf Platte speichern
-		MyMarshaller.marshall(nsL, "data/fridges/"+ fridgeid + "/notificationsLOCAL.xml");
+		MyMarshaller.marshall(nsL, "data/fridges/"+ fridgeID + "/notificationsLOCAL.xml");
 		
 		// Neu erstellte URI in Repsone angeben:
-		return Response.created(new URI("fridges/"+fridgeid+"/notifications/"+freeID)).build();
+		return Response.created(new URI("fridges/"+fridgeID+"/notifications/"+freeID)).build();
+	}
+	
+	@DELETE
+	@Path("/{notificationID}")
+	public void deleteProduct(@PathParam("notificationID") int notificationID, @PathParam("fridgeID") int fridgeID) throws JAXBException {
+		NotificationsLOCAL nsL = (NotificationsLOCAL) MyMarshaller.
+				unmarshall("data/fridges/"+ fridgeID + "/notificationsLOCAL.xml");
+		
+		//Suche Nachricht
+		boolean found = false;
+		for(int i=0; i<nsL.getNotification().size(); i++){
+			if(nsL.getNotification().get(i).getId() == notificationID) { // gefunden?
+				found = true;
+				nsL.getNotification().remove(i); // löschen
+				break;
+			}
+		}
+		if(!found) { // Nachricht gefunden?
+			throw new NotFoundException("Product not found");
+		}
+		
+		// Änderung übernehmen und speichern.
+		MyMarshaller.marshall(nsL, "data/fridges/"+ fridgeID + "/notificationsLOCAL.xml");
 	}
 	
 	@PUT
 	@Path("/{id}")
 	@Consumes({ MediaType.APPLICATION_XML})
-	public Response createProfileByID(@PathParam("id") int id, @PathParam("fridgeid") int fridgeid, Profile p) throws JAXBException, IOException {
-		Data.writeProfile(fridgeid, id,
+	public Response createProfileByID(@PathParam("id") int id, @PathParam("fridgeID") int fridgeID, Profile p) throws JAXBException, IOException {
+		Data.writeProfile(fridgeID, id,
 				p.getName(), p.getBirthdate().toString(), p.getGender(), 
 				""+ p.getHeight(), ""+ p.getWeight());
 		System.out.println("name: "+p.getName());

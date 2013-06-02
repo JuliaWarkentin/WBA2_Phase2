@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -18,6 +19,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
+
+import com.sun.jersey.api.NotFoundException;
 
 import jaxbClasses.CurrencyAttr;
 import jaxbClasses.Product;
@@ -33,28 +36,28 @@ import jaxbClasses.ProfilesLOCAL;
 import jaxbClasses.ProductType.ProductInformation;
 
 
-@Path ("fridges/{fridgeid}/producttypes/{producttypeid}/products")
-public class ProductsService {
+@Path ("fridges/{fridgeID}/producttypes/{producttypeID}/products")
+public class ProductResources {
 	
 	@GET 
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public Products getProducts(@PathParam("fridgeid") int fridgeid, @PathParam("producttypeid") int producttypeid) throws JAXBException {
+	public Products getProducts(@PathParam("fridgeID") int fridgeID, @PathParam("producttypeID") int producttypeID) throws JAXBException {
 		ProductsLOCAL psL = (ProductsLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeid + "/productsLOCAL.xml");
+				unmarshall("data/fridges/"+ fridgeID + "/productsLOCAL.xml");
 		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeid + "/producttypesLOCAL.xml");
+				unmarshall("data/fridges/"+ fridgeID + "/producttypesLOCAL.xml");
 		
 		Products ps = new Products();
 		Products.Product psp;
 		Products.Product.Name pspn;
 		for(int i=0; i<psL.getProduct().size(); i++){
-			if(psL.getProduct().get(i).getProductTypeID() == producttypeid) {
+			if(psL.getProduct().get(i).getProductTypeID() == producttypeID) {
 				psp = new Products.Product();
 				pspn = new Products.Product.Name();
 				// href zur Produktinstanz für mehr Informationen
-				psp.setHref("fridges/"+fridgeid+"/producttypes/"+ psL.getProduct().get(i).getProductTypeID() +"/products/"+ psL.getProduct().get(i).getId());
+				psp.setHref("fridges/"+fridgeID+"/producttypes/"+ psL.getProduct().get(i).getProductTypeID() +"/products/"+ psL.getProduct().get(i).getId());
 				// href zum Produkttypen mit produktnamen
-				pspn.setHref("fridges/"+fridgeid+"/producttypes/"+psL.getProduct().get(i).getProductTypeID());
+				pspn.setHref("fridges/"+fridgeID+"/producttypes/"+psL.getProduct().get(i).getProductTypeID());
 				pspn.setValue(getNameFromProductTypesLOCALbyID(ptsL.getProductType(), psL.getProduct().get(i).getProductTypeID()));
 				psp.setName(pspn);
 				
@@ -79,11 +82,11 @@ public class ProductsService {
 	@GET
 	@Path("/{id}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public Product getProduct(@PathParam("id") int id, @PathParam("fridgeid") int fridgeid, @PathParam("producttypeid") int producttypeid) throws JAXBException {
+	public Product getProduct(@PathParam("id") int id, @PathParam("fridgeID") int fridgeID, @PathParam("producttypeID") int producttypeID) throws JAXBException {
 		ProductsLOCAL psL = (ProductsLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeid + "/productsLOCAL.xml");
+				unmarshall("data/fridges/"+ fridgeID + "/productsLOCAL.xml");
 		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeid + "/producttypesLOCAL.xml");
+				unmarshall("data/fridges/"+ fridgeID + "/producttypesLOCAL.xml");
 		
 		// Liste nach passender id durchsuchen. Index merken
 		int indexFound = -1;
@@ -95,14 +98,14 @@ public class ProductsService {
 		}
 		
 		// Passt gefundendes Produkt zum produkttypen?
-		if (psL.getProduct().get(indexFound).getProductTypeID() != producttypeid) {
+		if (psL.getProduct().get(indexFound).getProductTypeID() != producttypeID) {
 			System.out.println("Angefordertes Produkt passt nicht zum Produkttypen");
 			return null;
 		}
 		
 		Product p = new Product();
 		Product.Name pn = new Product.Name();
-		pn.setHref("fridges/"+fridgeid+"/producttypes/"+psL.getProduct().get(indexFound).getProductTypeID());
+		pn.setHref("fridges/"+fridgeID+"/producttypes/"+psL.getProduct().get(indexFound).getProductTypeID());
 		pn.setValue(getNameFromProductTypesLOCALbyID(ptsL.getProductType(), psL.getProduct().get(indexFound).getProductTypeID()));
 		p.setName(pn);
 		p.setInputdate(psL.getProduct().get(indexFound).getInputDate());
@@ -110,8 +113,8 @@ public class ProductsService {
 			p.setOutputdate(psL.getProduct().get(indexFound).getOutputDate());
 		p.setExpirationdate(psL.getProduct().get(indexFound).getExpirationDate());
 		Product.Owner po = new Product.Owner();
-		po.setHref("fridges/"+fridgeid+"/profiles/"+psL.getProduct().get(indexFound).getOwnerID());
-		po.setValue(getProfileNameByID(psL.getProduct().get(indexFound).getOwnerID(), fridgeid));
+		po.setHref("fridges/"+fridgeID+"/profiles/"+psL.getProduct().get(indexFound).getOwnerID());
+		po.setValue(getProfileNameByID(psL.getProduct().get(indexFound).getOwnerID(), fridgeID));
 		p.setOwner(po);
 		p.setState(psL.getProduct().get(indexFound).getState());
 		Product.PriceWas pp = new Product.PriceWas();
@@ -124,9 +127,9 @@ public class ProductsService {
 	
 	@POST
 	@Consumes({ MediaType.APPLICATION_XML})
-	public Response addProduct(@PathParam("fridgeid") int fridgeid, @PathParam("producttypeid") int producttypeid, Product p) throws JAXBException, URISyntaxException{
+	public Response addProduct(@PathParam("fridgeID") int fridgeID, @PathParam("producttypeID") int producttypeID, Product p) throws JAXBException, URISyntaxException{
 		ProductsLOCAL psL = (ProductsLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeid + "/productsLOCAL.xml");
+				unmarshall("data/fridges/"+ fridgeID + "/productsLOCAL.xml");
 		
 		// Nach einer freien Product-id suchen
 		int freeID = -1; boolean found;
@@ -145,7 +148,7 @@ public class ProductsService {
 		// Neues Product anlegen
 		ProductsLOCAL.Product product = new ProductsLOCAL.Product();
 		product.setId(freeID);
-		product.setProductTypeID(producttypeid);
+		product.setProductTypeID(producttypeID);
 		product.setInputDate(p.getInputdate());
 		product.setExpirationDate(p.getExpirationdate());
 		String url = p.getOwner().getHref();
@@ -158,15 +161,39 @@ public class ProductsService {
 		psL.getProduct().add(product);
 		
 		// Daten auf Platte speichern
-		MyMarshaller.marshall(psL, "data/fridges/"+ fridgeid + "/productsLOCAL.xml");
+		MyMarshaller.marshall(psL, "data/fridges/"+ fridgeID + "/productsLOCAL.xml");
 		
 		// Neu erstellte URI in Response angeben:
-		return Response.created(new URI("fridges/"+fridgeid+"/producttype/"+producttypeid+"/products/"+freeID)).build();
+		return Response.created(new URI("fridges/"+fridgeID+"/producttype/"+producttypeID+"/products/"+freeID)).build();
 	}
 	
-	private String getProfileNameByID(int profileid, int fridgeid) throws JAXBException{
+	@DELETE
+	@Path("/{productID}")
+	public void deleteProduct(@PathParam("productID") int productID, @PathParam("producttypeID") int producttypeID, @PathParam("fridgeID") int fridgeID) throws JAXBException {
+		ProductsLOCAL psL = (ProductsLOCAL) MyMarshaller.
+				unmarshall("data/fridges/"+ fridgeID + "/productsLOCAL.xml");
+		
+		//Suche Produkt
+		boolean found = false;
+		for(int i=0; i<psL.getProduct().size(); i++){
+			if(psL.getProduct().get(i).getId() == productID && 
+					psL.getProduct().get(i).getProductTypeID() == producttypeID) { // gefunden?
+				found = true;
+				psL.getProduct().remove(i); // löschen
+				break;
+			}
+		}
+		if(!found) { // Product gefunden?
+			throw new NotFoundException("Product not found");
+		}
+		
+		// Änderung übernehmen und speichern.
+		MyMarshaller.marshall(psL, "data/fridges/"+ fridgeID + "/productsLOCAL.xml");
+	}
+	
+	private String getProfileNameByID(int profileid, int fridgeID) throws JAXBException{
 		ProfilesLOCAL psL = (ProfilesLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeid + "/profilesLOCAL.xml");
+				unmarshall("data/fridges/"+ fridgeID + "/profilesLOCAL.xml");
 		for(ProfilesLOCAL.Profile p : psL.getProfile()){
 			if(p.getId() == profileid)
 				return p.getName();
