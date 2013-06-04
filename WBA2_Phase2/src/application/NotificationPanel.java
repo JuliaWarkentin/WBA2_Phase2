@@ -15,43 +15,62 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.border.EtchedBorder;
 
+import jaxbClasses.Notification;
 import jaxbClasses.Notifications;
 
 import com.sun.jersey.api.client.Client;
 
 public class NotificationPanel extends JPanel implements MouseListener{
 	public static final String[] COLHEADS = { "Type", "Head", "Date" };
+	JLabel label = new JLabel("Notifications");
+	JButton buttonSub = new JButton("Subscribe to...");
+	JTable table;
+	JScrollPane scroll;
+	JTextArea textArea;
+	
 	
 	public NotificationPanel() {
+		int width = 430;
+		
 		setLayout(null);
 		setLocation(150, 0);
-		setSize(430, 400);
-		setBackground(Color.green);
+		setSize(width, 400);
+//		setBackground(Color.green);
 		
-		JTable table = new JTable(getTableData(), COLHEADS);
+		table = new JTable(getTableData(), COLHEADS);
 		table.setColumnSelectionAllowed(false);
 		table.addMouseListener(this);
 		JScrollPane scroll = new JScrollPane(table);
-		scroll.setBounds(0, 0, 400, 200);
 		
-//		add(new JLabel("Notifications"));
+		textArea = new JTextArea();
+		textArea.setText("Select a message...");
+		textArea.setEditable(false);
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
+		
+		label.setBounds(0, 0, 100, 50);
+		buttonSub.setBounds(width/2 - 150/2, 10, 150, 30);
+		scroll.setBounds(0, 50, width, 200); // Tabelle
+		textArea.setBounds(0, 250, width, 100);	// Textfeld
+
+		add(label);
+		add(buttonSub);
 		add(scroll);
-		
-		JTextArea text = new JTextArea();
-		text.setText("Click a message obove.");
-		text.setBounds(0, 200, 400, 200);
-		add(text);
+		add(textArea);
 	}
 	
-	
-	public static String[][] getTableData() {
+	int[] tableIDs;
+	public String[][] getTableData() {
 		// .../notification Ressource anspechen
 		String url = "http://"+SessionData.host+":4434/fridges/"+SessionData.fridgeID+"/notifications";
 	    System.out.println("URL: " + url);
@@ -62,14 +81,34 @@ public class NotificationPanel extends JPanel implements MouseListener{
 	    
 	    // Daten auf Tabelle abbilden
 	    String[][] data = new String[ns.getNotification().size()][3];
+	    tableIDs = new int[ns.getNotification().size()];
 	    for(int i=0; i<ns.getNotification().size(); i++) {
 	    	Notifications.Notification n = new Notifications.Notification();
 	    	data[i][0] = ns.getNotification().get(i).getType();
 	    	data[i][1] = ns.getNotification().get(i).getHead();
 	    	data[i][2] = ns.getNotification().get(i).getDate().toString();
+	    	// ID aus hyperlink speichern
+	    	String href = ns.getNotification().get(i).getHref();
+	    	tableIDs[i] = Integer.parseInt(href.substring(href.length()-1)); System.out.println(tableIDs[i]);
 	    }
 	    System.out.println(Arrays.deepToString(data));
 		return data;
+	}
+	
+	public void updateTextArea() {
+		int column = table.getSelectedRow();
+		System.out.println("Column index: "+column+" | Noti-ID: "+ tableIDs[column]);
+		
+		// .../notification/{id} Ressource anspechen
+		String url = "http://"+SessionData.host+":4434/fridges/"+SessionData.fridgeID+"/notifications/"+ tableIDs[column];
+	    System.out.println("URL: " + url);
+	    SessionData.wrs = Client.create().resource(url);
+	    
+	    // GET - daten besorgen
+	    Notification ns = SessionData.wrs.accept("application/xml").get(Notification.class);
+	    
+	    this.textArea.setText(ns.getText());
+	    
 	}
 
 	@Override
@@ -82,7 +121,7 @@ public class NotificationPanel extends JPanel implements MouseListener{
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("mousePressed");
+		updateTextArea();
 	}
 
 

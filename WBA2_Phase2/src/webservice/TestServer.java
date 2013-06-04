@@ -17,6 +17,7 @@ public class TestServer {
 	public static String url = "http://localhost:4434";
 	public static void main(String[] args) throws Exception {
 	    SelectorThread srv = GrizzlyServerFactory.create(url);
+	    System.out.println("Grizzly Port: " + srv.getPort() + " | " + srv.getPortLowLevel());
 	    System.out.println("URL: " + url);
 	    Thread.sleep( 10000 * Integer.parseInt("120"));
 	    srv.stopEndpoint();

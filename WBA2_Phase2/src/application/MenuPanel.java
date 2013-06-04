@@ -10,6 +10,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.LookAndFeel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class MenuPanel extends JPanel implements ActionListener{
 	
@@ -18,15 +21,15 @@ public class MenuPanel extends JPanel implements ActionListener{
 	JButton buttonProfiles = new JButton("Profiles");
 	
 	public MenuPanel() {
-		setLayout(new FlowLayout());
+		setLayout(null);
 		setSize(150, 400);
-		setBackground(Color.red);
+//		setBackground(Color.red);
 		
 		int x = 10, y = 45, yOffset = 20;
-//		int width = 80, height = 20;
-//		buttonProducts.setBounds(x, 0*y+yOffset, width, height);
-//		buttonNotifi.setBounds(x, 1*y+yOffset, width, height);
-//		buttonProfiles.setBounds(x, 2*y+yOffset, width, height);
+		int width = 110, height = 30;
+		buttonProducts.setBounds(x, 0*y+yOffset, width, height);
+		buttonNotifi.setBounds(x, 1*y+yOffset, width, height);
+		buttonProfiles.setBounds(x, 2*y+yOffset, width, height);
 		
 		buttonNotifi.addActionListener(this);
 		buttonProducts.addActionListener(this);
@@ -45,10 +48,25 @@ public class MenuPanel extends JPanel implements ActionListener{
 	}
 	
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		MenuPanel m = new MenuPanel();
 		NotificationPanel n = new NotificationPanel();
 		
-		JFrame f = new JFrame("fridger");
+		JFrame f = new JFrame("Fridgemanager!");
 		f.getContentPane().add(m);
 		f.getContentPane().add(n);
 		f.getContentPane().add(new JLabel("asd"));
