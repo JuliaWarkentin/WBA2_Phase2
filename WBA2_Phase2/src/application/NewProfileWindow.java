@@ -43,10 +43,8 @@ public class NewProfileWindow extends JFrame implements ActionListener{
 		super("Create new Profile:");
 		addWindowListener(new WindowClosingAdapter(true));
 		
-		int x = 10;
-		int y = 45; int yOffset = 20;
-		int width = 80;
-		int height = 20;
+		int x = 10, y = 45, yOffset = 20;
+		int width = 80, height = 20;
 		labelName.setBounds(x, 0*y+yOffset, width, height);
 		labelBirthdate.setBounds(x, 1*y+yOffset, width, height);
 		labelGender.setBounds(x, 2*y+yOffset, width, height);

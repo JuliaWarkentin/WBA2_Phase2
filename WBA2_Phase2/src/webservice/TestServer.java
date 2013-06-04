@@ -18,7 +18,8 @@ public class TestServer {
 	public static void main(String[] args) throws Exception {
 	    SelectorThread srv = GrizzlyServerFactory.create(url);
 	    System.out.println("URL: " + url);
-	    Thread.sleep( 1000 * Integer.parseInt("120"));
+	    Thread.sleep( 10000 * Integer.parseInt("120"));
 	    srv.stopEndpoint();
+	    System.out.println("Server AUS!");
 	}
 }

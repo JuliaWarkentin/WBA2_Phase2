@@ -30,7 +30,7 @@ public class TestClient {
 	public static  WebResource wrs;
 	
 	public static void main(String[] args) throws JAXBException, DatatypeConfigurationException {
-	    String url = "http://localhost:4434/fridges/1/notifications/1";
+	    String url = "http://localhost:4434/fridges/1/notifications";
 	    System.out.println("URL: " + url);
 	    wrs = Client.create().resource(url);
 	    
