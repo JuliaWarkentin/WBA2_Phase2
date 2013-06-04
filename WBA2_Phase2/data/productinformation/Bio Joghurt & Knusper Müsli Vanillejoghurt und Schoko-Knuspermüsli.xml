@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:productInformationLOCAL xmlns:p="http://meinnamespace.meinefirma.de" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+
+xsi:schemaLocation="http://meinnamespace.meinefirma.de productinfomationLOCAL.xsd ">
+    <p:name>Bio Joghurt & Knusper Müsli Vanillejoghurt und Schoko-Knuspermüsli</p:name>
+    <p:weight unit="g">150</p:weight>
+    <p:description>Bio Joghurt mit 13% Vanille-Zubereitung und 13% Bio-Knuspermüsli mit Scokolade, 3,5% Fett im Milchanteil.Dieses Müsli kann Spuren von 
+
+Schalenfrüchten, Milch, Erdnüssen, Sesam und Soja enthalten.</p:description>
+    <p:ingredients>
+      <p:ingredient>Joghurt</p:ingredient>
+      <p:ingredient>Knuspermüsli-Mischung</p:ingredient>
+      <p:ingredient>13% Vanille-Zubereitung</p:ingredient>
+      <p:ingredient>Zucker</p:ingredient>
+    <p:nutrients>
+      <p:caloricValue unit="kcal">150</p:caloricValue>
+      <p:protein>4.7</p:protein>
+      <p:carbohydrates>22.3</p:carbohydrates>
+      <p:ofwichsugar>17.5</p:ofwichsugar>
+      <p:fat>4.3</p:fat>
+      <p:ofwichsaturates>2.5</p:ofwichsaturates>
+      <p:roughage>0.9</p:roughage>
+      <p:sodium>0.06</p:sodium>
+    </p:nutrients>
+    <p:currentPrice currency="EUR">0.69</p:currentPrice>
+    <p:barcode>29044900</p:barcode>
+  </p:productInformationLOCAL>
