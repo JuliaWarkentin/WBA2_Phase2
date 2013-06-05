@@ -48,6 +48,21 @@ public class MenuPanel extends JPanel implements ActionListener{
 	}
 	
 	public static void main(String[] args) {
+		turnonNimbus();
+		MenuPanel m = new MenuPanel();
+		NotificationPanel n = new NotificationPanel();
+		
+		JFrame f = new JFrame("Fridgemanager!");
+		f.getContentPane().add(m);
+		f.getContentPane().add(n);
+		f.getContentPane().add(new JLabel("asd"));
+		f.addWindowListener(new WindowClosingAdapter(true));
+		f.setLocation(100, 100);
+		f.setSize(600, 400);
+		f.setVisible(true);
+	 }
+	
+	public static void turnonNimbus(){
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (ClassNotFoundException e) {
@@ -63,17 +78,5 @@ public class MenuPanel extends JPanel implements ActionListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		MenuPanel m = new MenuPanel();
-		NotificationPanel n = new NotificationPanel();
-		
-		JFrame f = new JFrame("Fridgemanager!");
-		f.getContentPane().add(m);
-		f.getContentPane().add(n);
-		f.getContentPane().add(new JLabel("asd"));
-		f.addWindowListener(new WindowClosingAdapter(true));
-		f.setLocation(100, 100);
-		f.setSize(600, 400);
-		f.setVisible(true);
-		
-	 }
+	}
 }
