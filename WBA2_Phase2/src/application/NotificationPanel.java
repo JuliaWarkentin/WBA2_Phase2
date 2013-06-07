@@ -30,7 +30,7 @@ import jaxbClasses.Notifications;
 
 import com.sun.jersey.api.client.Client;
 
-public class NotificationPanel extends JPanel implements MouseListener{
+public class NotificationPanel extends JPanel implements MouseListener, ActionListener{
 	public static final String[] COLHEADS = { "Type", "Head", "Date" };
 	JLabel label = new JLabel("Notifications");
 	JButton buttonSub = new JButton("Subscribe to...");
@@ -38,8 +38,12 @@ public class NotificationPanel extends JPanel implements MouseListener{
 	JScrollPane scroll;
 	JTextArea textArea;
 	
+	XmppSession xmpp;
 	
-	public NotificationPanel() {
+	
+	public NotificationPanel(XmppSession xmpp) {
+		this.xmpp = xmpp;
+		
 		int width = 430;
 		
 		setLayout(null);
@@ -62,7 +66,8 @@ public class NotificationPanel extends JPanel implements MouseListener{
 		buttonSub.setBounds(width/2 - 150/2, 10, 150, 30);
 		scroll.setBounds(0, 50, width, 200); // Tabelle
 		textArea.setBounds(0, 250, width, 100);	// Textfeld
-
+		
+		buttonSub.addActionListener(this);
 		add(label);
 		add(buttonSub);
 		add(scroll);
@@ -110,6 +115,13 @@ public class NotificationPanel extends JPanel implements MouseListener{
 	    this.textArea.setText(ns.getText());
 	    
 	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand() == ("Subscribe to...")) {
+			SubscriptionList sl = new SubscriptionList(xmpp.getNodes());
+		}
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -144,6 +156,8 @@ public class NotificationPanel extends JPanel implements MouseListener{
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 
 	
 }

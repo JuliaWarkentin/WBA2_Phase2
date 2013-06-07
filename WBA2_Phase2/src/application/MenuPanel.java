@@ -14,6 +14,8 @@ import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.jivesoftware.smack.XMPPException;
+
 public class MenuPanel extends JPanel implements ActionListener{
 	
 	JButton buttonProducts = new JButton("Products");
@@ -48,9 +50,12 @@ public class MenuPanel extends JPanel implements ActionListener{
 	}
 	
 	public static void main(String[] args) {
+		XmppSession xmpp = new XmppSession("hans69", "hans69");
+		xmpp.discoverNodes();
+		
 		turnonNimbus();
 		MenuPanel m = new MenuPanel();
-		NotificationPanel n = new NotificationPanel();
+		NotificationPanel n = new NotificationPanel(xmpp);
 		
 		JFrame f = new JFrame("Fridgemanager!");
 		f.getContentPane().add(m);

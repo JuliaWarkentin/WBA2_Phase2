@@ -35,9 +35,6 @@ public class testPub {
 
 		// Pubsubmgr mit dieser Verbindung erstellen
 		PubSubManager psm = new PubSubManager(con);
-//		System.out.println(psm.discoverNodes("testNode").);;
-		discoverServices(con);
-		discoverNodes(con);
 		
 		// Knoten "besorgen" und neues Nachricht(Item) hinzufügen
 		LeafNode node = psm.getNode("testNode");
@@ -49,29 +46,4 @@ public class testPub {
 		System.out.println("testPub - ende");
 		con.disconnect();
 	}
-
-	public static void discoverServices(Connection con) throws XMPPException {
-		System.out.println("Discovering Services...");
-		ServiceDiscoveryManager mgr = ServiceDiscoveryManager.getInstanceFor(con);
-		DiscoverItems items = mgr.discoverItems("localhost");
-		Iterator<DiscoverItems.Item> iter = items.getItems();
-		while (iter.hasNext()) {
-		   DiscoverItems.Item i = iter.next();
-		   System.out.println(i.toXML());
-		}
-	}
-	
-	public static void discoverNodes(Connection con) throws XMPPException {
-		System.out.println("Discovering Nodes...");
-		ServiceDiscoveryManager mgr = ServiceDiscoveryManager.getInstanceFor(con);
-		DiscoverItems items = mgr.discoverItems("pubsub.localhost");
-		Iterator<DiscoverItems.Item> iter = items.getItems();
-		while (iter.hasNext()) {
-		   DiscoverItems.Item i = iter.next();
-		   System.out.println(i.getEntityID());
-		   System.out.println(i.getNode());
-		   System.out.println(i.getName());
-		}
-	}
-
 }
