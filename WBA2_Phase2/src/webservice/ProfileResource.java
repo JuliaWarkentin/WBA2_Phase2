@@ -22,48 +22,50 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import com.sun.jersey.api.NotFoundException;
 
 import jaxbClasses.ObjectFactory;
-import jaxbClasses.ProductInformationLOCAL;
-import jaxbClasses.ProductTypes;
-import jaxbClasses.ProductTypesLOCAL;
 import jaxbClasses.Profile;
 import jaxbClasses.Profiles;
 import jaxbClasses.ProfilesLOCAL;
 
-
-
-@Path ("fridges/{fridgeID}/profiles")
-public class ProfileResources {
-
-	// Ressource: /fridges/{id}/profiles
-	//--------------------------------------------
-	// Gibt die Liste aller Profiles aus, die zu einem Kühlschrank{id} gehören
+@Path ("/profiles")
+public class ProfileResource {
 	
 	@GET 
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public Profiles getProfilesPlain(@PathParam("fridgeID") int fridgeID, @QueryParam("name") String name) throws JAXBException, IOException, DatatypeConfigurationException {
-		ProfilesLOCAL psL = (ProfilesLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeID + "/profilesLOCAL.xml");
-		
-		// Liste der Profiles aus ProfilesLOCAL ensprechend der profiles.xsd (REST) zusammenbauen
-		Profiles pts = new Profiles();
+	public Profiles getProfiles(@QueryParam("name") String queryName) throws JAXBException {
+		ProfilesLOCAL psL = (ProfilesLOCAL) MyMarshaller.unmarshall("data/profilesLOCAL.xml");
+		Profiles ps = new Profiles();
 		Profiles.Profile p;
-		for(int i=0; i<psL.getProfile().size(); i++){
-			p = new Profiles.Profile();
-			Profiles.Profile.Name n = new Profiles.Profile.Name();
-			n.setHref("fridges/"+fridgeID+"/profiles/"+psL.getProfile().get(i).getId());
-			n.setValue(psL.getProfile().get(i).getName());
-			p.setName(n);
-			pts.getProfile().add(p);
+		
+		if(queryName == null){ 	// Ohne QueryParam. Liste ungefiltert
+			// Liste der Profiles mit Daten ProfilesLOCAL entsprechend der profiles.xsd (REST) zusammenbauen
+			for(int i=0; i<psL.getProfile().size(); i++){
+				p = new Profiles.Profile();
+				p.setHref("/profiles/"+psL.getProfile().get(i).getId()); 	// Hyperlink für mehr Details
+				p.setName(psL.getProfile().get(i).getName());				// und Name
+				ps.getProfile().add(p);
+			}
 		}
-		return pts;
+		else {	// Profile nach Namen ausgeben
+			System.out.print("QuerySearch on Profiles: "+queryName);
+			for(int i=0; i<psL.getProfile().size(); i++){
+				System.out.println(" compared with "+psL.getProfile().get(i).getName());
+				if(queryName == psL.getProfile().get(i).getName()) {
+					p = new Profiles.Profile();
+					p.setHref("/profiles/"+psL.getProfile().get(i).getId()); 	// Hyperlink für mehr Details
+					p.setName(psL.getProfile().get(i).getName());				// und Name
+					ps.getProfile().add(p);
+					System.out.println("Siehst du mich?!");
+				}
+			}
+		}
+		return ps;
 	}
 	
 	@GET 
 	@Path("/{profileID}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public Profile getProfileByID(@PathParam("profileID") int profileID, @PathParam("fridgeID") int fridgeID) throws JAXBException, IOException, DatatypeConfigurationException {
-		ProfilesLOCAL psL = (ProfilesLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeID + "/profilesLOCAL.xml");
+	public Profile getProfileByID(@PathParam("profileID") int profileID) throws JAXBException {
+		ProfilesLOCAL psL = (ProfilesLOCAL) MyMarshaller.unmarshall("data/profilesLOCAL.xml");
 		
 		// Liste nach passender id durchsuchen. Index merken
 		int indexFound = -1;
@@ -74,10 +76,21 @@ public class ProfileResources {
 			 }
 		}
 		System.out.println(psL.getProfile().get(indexFound).getName());
-		
 		return createProfile(psL.getProfile().get(indexFound));
 	}
 	
+	private Profile createProfile(ProfilesLOCAL.Profile p){
+		// REST-Profil zusammenstellen
+		Profile profile = new Profile();
+		profile.setName(p.getName());
+		profile.setBirthdate(p.getBirthdate());
+		profile.setGender(p.getGender());
+		profile.setHeight(p.getHeight());
+		profile.setWeight(p.getWeight());
+		return profile;
+	}
+	
+	/*
 	@POST
 	@Consumes({ MediaType.APPLICATION_XML})
 	public Response addProfile(@PathParam("fridgeID") int fridgeID, Profile p) throws JAXBException, URISyntaxException{
@@ -139,14 +152,6 @@ public class ProfileResources {
 		MyMarshaller.marshall(psL, "data/fridges/"+ fridgeID + "/profilesLOCAL.xml");
 	}
 	
-	private Profile createProfile(ProfilesLOCAL.Profile p){
-		// REST-Profile zusammenstellen
-		Profile profile = new Profile();
-		profile.setName(p.getName());
-		profile.setBirthdate(p.getBirthdate());
-		profile.setGender(p.getGender());
-		profile.setHeight(p.getHeight());
-		profile.setWeight(p.getWeight());
-		return profile;
-	}
+	
+	*/
 }

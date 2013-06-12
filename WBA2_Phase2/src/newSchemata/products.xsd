@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://www.teamklinge.de/fridgemanager/schemas" 
+	xmlns="http://www.teamklinge.de/fridgemanager/schemas" 
+	elementFormDefault="qualified">
+			
+	<xs:element name="products">
+	<xs:complexType>
+	<xs:sequence>
+		<xs:element name="product" minOccurs="1" maxOccurs="unbounded">
+		<xs:complexType>
+		<xs:sequence>
+			<!-- Prdodukttyp -->
+			<xs:element name="productType">
+			<xs:complexType>
+			<xs:sequence>
+				<xs:element name="name" type="xs:string"></xs:element> <!-- Nur namen anzeigen -->
+			</xs:sequence>
+			<!-- Hyperlink zum Produkttypen für mehr Infos-->
+			<xs:attribute name="href" type="xs:anyURI" use="required"></xs:attribute>
+			</xs:complexType>
+			</xs:element>
+			<!-- Status -->
+			<xs:element name="state">
+				<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="inside"/>
+					<xs:enumeration value="consumed"/>
+				</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+		<!-- Referenz zum Produkt selbst mit mehr Informationen -->
+		<xs:attribute name="href" type="xs:anyURI" use="required"></xs:attribute> 
+		</xs:complexType>
+		</xs:element>
+	</xs:sequence>
+	</xs:complexType>
+	</xs:element>
+</xs:schema>
+
+
+<!-- <productType href="...">blabla</> -->
+<!-- xs:element name="pruductType">
+			<xs:complexType>
+			<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="href" type="xs:anyURI" use="required"></xs:attribute>
+			</xs:extension>
+			</xs:simpleContent>
+			</xs:complexType>
+			</xs:element> 
+			-->

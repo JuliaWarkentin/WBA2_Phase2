@@ -21,34 +21,28 @@ import javax.xml.datatype.DatatypeConfigurationException;
 
 import com.sun.jersey.api.NotFoundException;
 
-import jaxbClasses.ProductInformationLOCAL;
 import jaxbClasses.ProductType;
 import jaxbClasses.ProductTypes;
 import jaxbClasses.ProductTypesLOCAL;
-import jaxbClasses.Profile;
 import jaxbClasses.Profiles;
-import jaxbClasses.ProfilesLOCAL;
-import jaxbClasses.ProductType.ProductInformation;
 
 
-@Path ("fridges/{fridgeID}/producttypes")
-public class ProducttypeResources {
+@Path ("/producttypes")
+public class ProducttypeResource {
 	
 	@GET 
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public ProductTypes getProducttypes(@PathParam("fridgeID") int fridgeID) throws JAXBException {
-		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeID + "/producttypesLOCAL.xml");
+	public ProductTypes getProducttypes() throws JAXBException {
+		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.unmarshall("data/producttypesLOCAL.xml");
 		
-		// Liste der Produkttypen mit Informationen aus ProductTypesLOCAL entsprechend der producttype.xsd zusammenbauen
+		// Liste der Produkttypen mit Daten ProductTypesLOCAL entsprechend der producttypes.xsd (REST) zusammenbauen
 		ProductTypes pts = new ProductTypes();
-		ProductTypes.Producttype pt;
+		ProductTypes.ProductType pt;
 		for(int i=0; i<ptsL.getProductType().size(); i++){
-			pt = new ProductTypes.Producttype();
-			pt.setHref("fridges/"+fridgeID+"/producttypes/"+ptsL.getProductType().get(i).getId());
-			pt.setName(ptsL.getProductType().get(i).getName());
-			pt.setStock(ptsL.getProductType().get(i).getStockData().getStock());
-			pts.getProducttype().add(pt);
+			pt = new ProductTypes.ProductType();
+			pt.setHref("/producttypes/"+ptsL.getProductType().get(i).getId()); 	// Hyperlink für mehr Details
+			pt.setName(ptsL.getProductType().get(i).getName());					// und Name
+			pts.getProductType().add(pt);
 		}
 		return pts;
 	}
@@ -56,28 +50,52 @@ public class ProducttypeResources {
 	@GET 
 	@Path("/{producttypeID}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public ProductType getProducttypeByID(@PathParam("producttypeID") int producttypeID, @PathParam("fridgeID") int fridgeID) throws JAXBException  {
-		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeID + "/producttypesLOCAL.xml");
+	public ProductType getProducttypeByID(@PathParam("producttypeID") int producttypeID) throws JAXBException  {
+		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.unmarshall("data/producttypesLOCAL.xml");
 		
 		// Liste nach passender id durchsuchen. Index merken
 		int indexFound = -1;
 		for (int i=0; i<ptsL.getProductType().size(); i++) {
-			 if(ptsL.getProductType().get(i).getId() == producttypeID){
+			 if(producttypeID ==ptsL.getProductType().get(i).getId()) {
 				 indexFound = i;
 			 	break;
 			 }
 		}
 		System.out.println(ptsL.getProductType().get(indexFound).getName());
 		
-		// Mittels Produktnamen Produkinformationen beziehen
-		ProductInformationLOCAL piL = (ProductInformationLOCAL) MyMarshaller.
-				unmarshall("data/productinformation/" + ptsL.getProductType().get(indexFound).getName() + ".xml");
+		ProductType pt = new ProductType();
+		ProductTypesLOCAL.ProductType ptL = new ProductTypesLOCAL.ProductType();
 		
 		// REST-ProductType erstellen
-		return createProductType(ptsL.getProductType().get(indexFound), piL);
+		return createProductType(ptsL.getProductType().get(indexFound));
 	}
 	
+	private ProductType createProductType(ProductTypesLOCAL.ProductType ptL) {
+		// Namen und Beschreibung
+		ProductType pt = new ProductType();
+		pt.setName(ptL.getName());
+		pt.setDescription(ptL.getDescription());
+		// Zutaten
+		ProductType.Ingredients ingredients = new ProductType.Ingredients();
+		ingredients.getIngredient().addAll(ptL.getIngredients().getIngredient());
+		pt.setIngredients(ingredients);
+		// Nährwerte
+		ProductType.Nutrients nutrients = new ProductType.Nutrients();
+		ProductType.Nutrients.CaloricValue caloricValue = new ProductType.Nutrients.CaloricValue();
+		caloricValue.setUnit(ptL.getNutrients().getCaloricValue().getUnit()); 
+		caloricValue.setValue(ptL.getNutrients().getCaloricValue().getValue());
+		nutrients.setCaloricValue(caloricValue);
+		nutrients.setProtein(ptL.getNutrients().getProtein());
+		nutrients.setCarbohydrates(ptL.getNutrients().getCarbohydrates());
+		nutrients.setOfwichsugar(ptL.getNutrients().getOfwichsugar());
+		nutrients.setFat(ptL.getNutrients().getFat());
+		nutrients.setOfwichsaturates(ptL.getNutrients().getOfwichsaturates());
+		nutrients.setRoughage(ptL.getNutrients().getRoughage());
+		nutrients.setSodium(ptL.getNutrients().getSodium());
+		pt.setNutrients(nutrients);
+		return pt;
+	}
+	/*
 	@POST
 	@Consumes({ MediaType.APPLICATION_XML})
 	public Response addProducttype(@PathParam("fridgeID") int fridgeID, ProductType pt) throws JAXBException, URISyntaxException{
@@ -150,47 +168,10 @@ public class ProducttypeResources {
 		return Response.status(201);
 	}
 	
-	private ProductType createProductType(ProductTypesLOCAL.ProductType ptL, ProductInformationLOCAL piL) {
-		
-		// Namen und Beschreibung
-		ProductType pt = new ProductType();
-		ProductType.ProductInformation pi = new ProductType.ProductInformation();
-		pi.setName(piL.getName());
-		pi.setDescription(piL.getDescription());
-		
-		// Zutaten
-		ProductType.ProductInformation.Ingredients ingredients = new ProductType.ProductInformation.Ingredients();
-		ingredients.getIngredient().addAll(piL.getIngredients().getIngredient());
-		pi.setIngredients(ingredients);
-		
-		// Nährwerte
-		ProductType.ProductInformation.Nutrients nutrients = new ProductType.ProductInformation.Nutrients();
-		ProductType.ProductInformation.Nutrients.CaloricValue caloricValue = new ProductType.ProductInformation.Nutrients.CaloricValue();
-		caloricValue.setUnit(piL.getNutrients().getCaloricValue().getUnit()); 
-		caloricValue.setValue(piL.getNutrients().getCaloricValue().getValue());
-		nutrients.setCaloricValue(caloricValue);
-		nutrients.setProtein(piL.getNutrients().getProtein());
-		nutrients.setCarbohydrates(piL.getNutrients().getCarbohydrates());
-		nutrients.setOfwichsugar(piL.getNutrients().getOfwichsugar());
-		nutrients.setFat(piL.getNutrients().getFat());
-		nutrients.setOfwichsaturates(piL.getNutrients().getOfwichsaturates());
-		nutrients.setRoughage(piL.getNutrients().getRoughage());
-		nutrients.setSodium(piL.getNutrients().getSodium());
-		pi.setNutrients(nutrients);
-		
-		// Bestand
-		ProductType.StockData stockdata = new ProductType.StockData();
-		stockdata.setStock(ptL.getStockData().getStock());
-		stockdata.setMinstock(ptL.getStockData().getMinstock());
-		
-		pt.setProductInformation(pi);
-		pt.setStockData(stockdata);
-		return pt;
-		
-	}
+	
 	
 	private ProductType getProducttype(int producttypeID, int fridgeID) throws JAXBException {
 		return (ProductType) MyMarshaller.unmarshall("data/fridges/"+ fridgeID + "/producttypes/"+ producttypeID);
 	}
-	
+	*/
 }

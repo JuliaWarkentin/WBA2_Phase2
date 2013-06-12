@@ -24,7 +24,6 @@ import com.sun.jersey.api.NotFoundException;
 
 import jaxbClasses.CurrencyAttr;
 import jaxbClasses.Product;
-import jaxbClasses.ProductInformationLOCAL;
 import jaxbClasses.ProductType;
 import jaxbClasses.ProductTypes;
 import jaxbClasses.ProductTypesLOCAL;
@@ -33,39 +32,29 @@ import jaxbClasses.ProductsLOCAL;
 import jaxbClasses.Profile;
 import jaxbClasses.Profiles;
 import jaxbClasses.ProfilesLOCAL;
-import jaxbClasses.ProductType.ProductInformation;
 
 
-@Path ("fridges/{fridgeID}/producttypes/{producttypeID}/products")
+@Path ("/products")
 public class ProductResources {
 	
 	@GET 
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public Products getProducts(@PathParam("fridgeID") int fridgeID, @PathParam("producttypeID") int producttypeID) throws JAXBException {
-		ProductsLOCAL psL = (ProductsLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeID + "/productsLOCAL.xml");
-		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeID + "/producttypesLOCAL.xml");
+	public Products getProducts() throws JAXBException {
+		ProductsLOCAL psL = (ProductsLOCAL) MyMarshaller.unmarshall("data/productsLOCAL.xml");
+		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.unmarshall("data/producttypesLOCAL.xml");
 		
 		Products ps = new Products();
 		Products.Product psp;
-		Products.Product.Name pspn;
 		for(int i=0; i<psL.getProduct().size(); i++){
-			if(psL.getProduct().get(i).getProductTypeID() == producttypeID) {
-				psp = new Products.Product();
-				pspn = new Products.Product.Name();
-				// href zur Produktinstanz für mehr Informationen
-				psp.setHref("fridges/"+fridgeID+"/producttypes/"+ psL.getProduct().get(i).getProductTypeID() +"/products/"+ psL.getProduct().get(i).getId());
-				// href zum Produkttypen mit produktnamen
-				pspn.setHref("fridges/"+fridgeID+"/producttypes/"+psL.getProduct().get(i).getProductTypeID());
-				pspn.setValue(getNameFromProductTypesLOCALbyID(ptsL.getProductType(), psL.getProduct().get(i).getProductTypeID()));
-				psp.setName(pspn);
-				
-				psp.setInputdate(psL.getProduct().get(i).getInputDate());
-				psp.setState(psL.getProduct().get(i).getState());
-				
-				ps.getProduct().add(psp);
-			}
+			psp = new Products.Product();
+			psp.setHref("/products/"+psL.getProduct().get(i).getId()); // Hyperlink zum Produkt
+			Products.Product.ProductType pt = new Products.Product.ProductType();
+			int ptID = psL.getProduct().get(i).getProductType().getId();
+			pt.setHref("/producttypes/"+ptID); // Hyperlink zum zugehörigen Produkttyp
+			pt.setName(getNameFromProductTypesLOCALbyID(ptsL.getProductType(), ptID));
+			psp.setProductType(pt);
+			psp.setState(psL.getProduct().get(i).getState());
+			ps.getProduct().add(psp);
 		}
 		return ps;
 	}
@@ -80,51 +69,70 @@ public class ProductResources {
 	}
 	
 	@GET
-	@Path("/{id}")
+	@Path("/{productID}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public Product getProduct(@PathParam("id") int id, @PathParam("fridgeID") int fridgeID, @PathParam("producttypeID") int producttypeID) throws JAXBException {
-		ProductsLOCAL psL = (ProductsLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeID + "/productsLOCAL.xml");
-		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeID + "/producttypesLOCAL.xml");
+	public Product getProduct(@PathParam("productID") int productID) throws JAXBException {
+		ProductsLOCAL psL = (ProductsLOCAL) MyMarshaller.unmarshall("data/productsLOCAL.xml");
+		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.unmarshall("data/producttypesLOCAL.xml");
+		ProfilesLOCAL pfsL = (ProfilesLOCAL) MyMarshaller.unmarshall("data/profilesLOCAL.xml");
 		
 		// Liste nach passender id durchsuchen. Index merken
+		ProductsLOCAL.Product pL = new ProductsLOCAL.Product();
 		int indexFound = -1;
 		for (int i=0; i<psL.getProduct().size(); i++) {
-			 if(psL.getProduct().get(i).getId() == id){
+			 if(psL.getProduct().get(i).getId() == productID){
+				 pL = psL.getProduct().get(i);
 				 indexFound = i;
 			 	break;
 			 }
 		}
 		
-		// Passt gefundendes Produkt zum produkttypen?
-		if (psL.getProduct().get(indexFound).getProductTypeID() != producttypeID) {
-			System.out.println("Angefordertes Produkt passt nicht zum Produkttypen");
-			return null;
-		}
-		
 		Product p = new Product();
-		Product.Name pn = new Product.Name();
-		pn.setHref("fridges/"+fridgeID+"/producttypes/"+psL.getProduct().get(indexFound).getProductTypeID());
-		pn.setValue(getNameFromProductTypesLOCALbyID(ptsL.getProductType(), psL.getProduct().get(indexFound).getProductTypeID()));
-		p.setName(pn);
-		p.setInputdate(psL.getProduct().get(indexFound).getInputDate());
-		if(psL.getProduct().get(indexFound).getState() == "consumed")
-			p.setOutputdate(psL.getProduct().get(indexFound).getOutputDate());
-		p.setExpirationdate(psL.getProduct().get(indexFound).getExpirationDate());
-		Product.Owner po = new Product.Owner();
-		po.setHref("fridges/"+fridgeID+"/profiles/"+psL.getProduct().get(indexFound).getOwnerID());
-		po.setValue(getProfileNameByID(psL.getProduct().get(indexFound).getOwnerID(), fridgeID));
-		p.setOwner(po);
-		p.setState(psL.getProduct().get(indexFound).getState());
-		Product.PriceWas pp = new Product.PriceWas();
-		pp.setCurrency(psL.getProduct().get(indexFound).getPriceWas().getCurrency());
-		pp.setValue(psL.getProduct().get(indexFound).getPriceWas().getValue());
-		p.setPriceWas(pp);
+		Product.ProductType pt = new Product.ProductType();
+		pt.setHref("/producttypes/"+pL.getProductType().getId());
+		pt.setName(getProducttypeNamebyID(ptsL, pL.getProductType().getId()));
+		p.setProductType(pt);
+		p.setInputdate(pL.getInputDate());
+		if(pL.getState() == "consumed")
+			p.setOutputdate(pL.getOutputDate());
+		p.setExpirationdate(pL.getExpirationDate());
+		Product.Owner o = new Product.Owner();
+		Product.Owner.Profile op = new Product.Owner.Profile();
+		op.setHref("/profiles/"+pL.getProfile().getId());
+		op.setName(getProfileNamebyID(pfsL, pL.getProfile().getId()));
+		o.setProfile(op);
+		p.setOwner(o);
+		p.setState(pL.getState());
+		Product.PriceWas pw = new Product.PriceWas();
+		pw.setCurrency(pL.getPriceWas().getCurrency());
+		pw.setValue(pL.getPriceWas().getValue());
+		p.setPriceWas(pw);
 		
 		return p;
 	}
 	
+	private String getProfileNamebyID(ProfilesLOCAL pfsL, int id) {
+		for(int i=0; i<pfsL.getProfile().size(); i++) {
+			if(id == pfsL.getProfile().get(i).getId()) {
+				return pfsL.getProfile().get(i).getName();
+			}
+		}
+		System.out.println("getProfileNamebyID failed...");
+		return null;
+	}
+	
+	private String getProducttypeNamebyID(ProductTypesLOCAL ptsL, int id) {
+		for(int i=0; i<ptsL.getProductType().size(); i++) {
+			if(id == ptsL.getProductType().get(i).getId()) {
+				return ptsL.getProductType().get(i).getName();
+			}
+		}
+		System.out.println("getProducttypeNamebyID failed...");
+		return null;
+	}
+	
+	
+	/*
 	@POST
 	@Consumes({ MediaType.APPLICATION_XML})
 	public Response addProduct(@PathParam("fridgeID") int fridgeID, @PathParam("producttypeID") int producttypeID, Product p) throws JAXBException, URISyntaxException{
@@ -200,5 +208,5 @@ public class ProductResources {
 		}
 		System.out.println("getProfileNameByID fehlgeschlagen!");
 		return null;
-	}
+	}*/
 }

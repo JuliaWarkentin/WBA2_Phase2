@@ -1,11 +1,9 @@
 <?xml version="1.0"?>
-
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-			targetNamespace="http://meinnamespace.meinefirma.de"
-			xmlns="http://meinnamespace.meinefirma.de"
-			elementFormDefault="qualified">
-			
-	<!-- Root-Element -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://www.teamklinge.de/fridgemanager/schemas" 
+	xmlns="http://www.teamklinge.de/fridgemanager/schemas" 
+	elementFormDefault="qualified">
+	
 	<xs:element name="productsLOCAL">
 	<xs:complexType>
 	<xs:sequence>
@@ -14,15 +12,23 @@
 		<xs:complexType>
 		<xs:sequence>
 			<!-- Schlüssel zu Producttype -->
-			<xs:element name="productTypeID" type="xs:int"></xs:element>
-			<!-- Inputdate -->
-			<xs:element name="inputDate" type="xs:date"/>
-			<!-- Outputdate. (Wird nur verwendet wenn state="consumed") -->
-			<xs:element name="outputDate" type="xs:date" minOccurs="0" maxOccurs="1"/>
-			<!-- Verfallsdatum -->
-			<xs:element name="expirationDate" type="xs:date"/>
+			<xs:element name="productType">
+			<xs:complexType>
+				<xs:attribute name="id" type="xs:int" use="required"/>
+			</xs:complexType>
+			</xs:element>
+			<!-- Schlüssel zum Kühlschrank-->
+			<xs:element name="fridge">
+			<xs:complexType>
+				<xs:attribute name="id" type="xs:int" use="required"/>
+			</xs:complexType>
+			</xs:element>
 			<!-- Schlüssel zum Bestitzer/Profil -->
-			<xs:element name="ownerID" type="xs:int"/>
+			<xs:element name="profile">
+			<xs:complexType>
+				<xs:attribute name="id" type="xs:int" use="required"/>
+			</xs:complexType>
+			</xs:element>
 			<!-- Status -->
 			<xs:element name="state">
 				<xs:simpleType>
@@ -32,6 +38,12 @@
 				</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
+			<!-- Inputdate -->
+			<xs:element name="inputDate" type="xs:date"/>
+			<!-- Outputdate. (Wird nur beachtet wenn state="consumed") -->
+			<xs:element name="outputDate" type="xs:date" minOccurs="0" maxOccurs="1"/>
+			<!-- Verfallsdatum -->
+			<xs:element name="expirationDate" type="xs:date"/>
 			<!-- Preis zum Kaufzeitpunkt -->
 			<xs:element name="priceWas">
 				<xs:complexType>
@@ -43,7 +55,7 @@
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
-		<!-- Schlüssel zum ProduktTypen -->
+		<!-- Identification -->
 		<xs:attribute name="id" type="xs:int" use="required"/>
 		</xs:complexType>
 		</xs:element>

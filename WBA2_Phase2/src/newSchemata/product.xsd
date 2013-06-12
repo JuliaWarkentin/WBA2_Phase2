@@ -1,23 +1,20 @@
 <?xml version="1.0"?>
-
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-			targetNamespace="http://meinnamespace.meinefirma.de"
-			xmlns="http://meinnamespace.meinefirma.de"
-			elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://www.teamklinge.de/fridgemanager/schemas" 
+	xmlns="http://www.teamklinge.de/fridgemanager/schemas" 
+	elementFormDefault="qualified">
 			
-	<!-- Root-Element -->
 	<xs:element name="product">
 	<xs:complexType>
 	<xs:sequence>
-		<!-- Name (des Produkttypen)-->
-		<xs:element name="name">
+		<!-- Prdodukttyp -->
+		<xs:element name="productType">
 		<xs:complexType>
-		<xs:simpleContent>
-		<xs:extension base="xs:string">
-			<!-- Hyperlink zum Produkttypen -->
-			<xs:attribute name="href" type="xs:anyURI" use="required"></xs:attribute>
-		</xs:extension>
-		</xs:simpleContent>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"></xs:element> <!-- Nur namen anzeigen -->
+		</xs:sequence>
+		<!-- Hyperlink zum Produkttypen für mehr Infos-->
+		<xs:attribute name="href" type="xs:anyURI" use="required"></xs:attribute>
 		</xs:complexType>
 		</xs:element>
 		<!-- Inputdate -->
@@ -29,11 +26,18 @@
 		<!-- Besitzer/Rechte -->
 		<xs:element name="owner">
 			<xs:complexType>
-			<xs:simpleContent>
-			<xs:extension base="xs:string">
+			<xs:sequence>
+				<!-- Profil -->
+				<xs:element name="profile">
+				<xs:complexType>
+				<xs:sequence>
+					<xs:element name="name" type="xs:string"></xs:element> <!-- Nur namen anzeigen -->
+				</xs:sequence>
+				<!-- Hyperlink zum Profil für mehr Infos -->
 				<xs:attribute name="href" type="xs:anyURI" use="required"></xs:attribute>
-			</xs:extension>
-			</xs:simpleContent>
+				</xs:complexType>
+				</xs:element>
+			</xs:sequence>
 			</xs:complexType>
 		</xs:element>
 		<!-- Status -->

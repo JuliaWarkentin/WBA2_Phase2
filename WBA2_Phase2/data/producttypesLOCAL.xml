@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:productTypesLOCAL xmlns:p="http://www.teamklinge.de/fridgemanager/schemas"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.teamklinge.de/fridgemanager/schemas
+						producttypesLOCAL.xsd">
+	<p:productType id="2">
+		<p:name>Milsani Frische Vollmilch</p:name>
+		<p:weight unit="litre">1</p:weight>
+		<p:description>3,5% Fett länger haltbar pasteurisiert, homogenisiert.
+			Eine Portion (250 ml) Milch deckt die empfohlene Tagesdosis an
+			Calcium eines Erwachsenen zu ca. 38% (laut
+			Nährwert-Kennzeichnungsverordnung).
+		</p:description>
+		<p:ingredients>
+			<p:ingredient>Milch</p:ingredient>
+			<p:ingredient>Mehr Milch</p:ingredient>
+			<p:ingredient>Nochmals Milch</p:ingredient>
+		</p:ingredients>
+		<p:nutrients>
+			<p:caloricValue unit="kcal">64</p:caloricValue>
+			<p:protein>3.3</p:protein>
+			<p:carbohydrates>4.8</p:carbohydrates>
+			<p:ofwichsugar>4.8</p:ofwichsugar>
+			<p:fat>3.5</p:fat>
+			<p:ofwichsaturates>2.3</p:ofwichsaturates>
+			<p:roughage>0</p:roughage>
+			<p:sodium>0.05</p:sodium>
+		</p:nutrients>
+		<p:currentPrice currency="EUR">0.89</p:currentPrice>
+		<p:barcode>29065004</p:barcode>
+	</p:productType>
+	<p:productType id="1">
+		<p:name>delikato Johgurt Dressing Light</p:name>
+		<p:weight unit="ml">250</p:weight>
+		<p:description>Joghurt Dressing Light mit Zitronensaft und
+			Schnittlauch verfeinert.</p:description>
+		<p:ingredients>
+			<p:ingredient>Wärmebehandeltes Johurterzeugnis (55%)</p:ingredient>
+			<p:ingredient>Trinkwasser</p:ingredient>
+			<p:ingredient>Zucker</p:ingredient>
+			<p:ingredient>Rapsöl</p:ingredient>
+			<p:ingredient>Schnittlauch</p:ingredient>
+			<p:ingredient>Branntweinessig</p:ingredient>
+			<p:ingredient>Zitronensaft aus Zitronensaftkonzentrat</p:ingredient>
+			<p:ingredient>jodiertes Speisesalz</p:ingredient>
+			<p:ingredient>Verdickungsmittel</p:ingredient>
+			<p:ingredient>Xanthan</p:ingredient>
+			<p:ingredient>Guarkernmehl</p:ingredient>
+			<p:ingredient>Eigelb</p:ingredient>
+			<p:ingredient>Maisstärke</p:ingredient>
+			<p:ingredient>Speissalz</p:ingredient>
+			<p:ingredient>Glukosesirup</p:ingredient>
+			<p:ingredient>Zitonenextrakt</p:ingredient>
+			<p:ingredient>Senfsaaten</p:ingredient>
+			<p:ingredient>Gewürze</p:ingredient>
+			<p:ingredient>Weinessig</p:ingredient>
+			<p:ingredient>Sellerie</p:ingredient>
+		</p:ingredients>
+		<p:nutrients>
+			<p:caloricValue unit="kcal">108</p:caloricValue>
+			<p:protein>2.5</p:protein>
+			<p:carbohydrates>11.2</p:carbohydrates>
+			<p:ofwichsugar>9.7</p:ofwichsugar>
+			<p:fat>5.8</p:fat>
+			<p:ofwichsaturates>0.5</p:ofwichsaturates>
+			<p:roughage>0.3</p:roughage>
+			<p:sodium>0.28</p:sodium>
+		</p:nutrients>
+		<p:currentPrice currency="EUR">1.49</p:currentPrice>
+		<p:barcode>29066889</p:barcode>
+	</p:productType>
+</p:productTypesLOCAL>

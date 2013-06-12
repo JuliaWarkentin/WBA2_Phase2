@@ -7,7 +7,6 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import jaxbClasses.ObjectFactory;
-import jaxbClasses.ProductInformationLOCAL;
 import jaxbClasses.Profile;
 
 import com.sun.grizzly.http.SelectorThread;
@@ -19,6 +18,8 @@ public class TestServer {
 	    SelectorThread srv = GrizzlyServerFactory.create(url);
 	    System.out.println("Grizzly Port: " + srv.getPort() + " | " + srv.getPortLowLevel());
 	    System.out.println("URL: " + url);
+	    System.out.println("Dafuq");
+	    System.out.println(srv.toString());
 	    Thread.sleep( 10000 * Integer.parseInt("120"));
 	    srv.stopEndpoint();
 	    System.out.println("Server AUS!");

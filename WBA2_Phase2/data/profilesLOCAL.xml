@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:profilesLOCAL xmlns:p="http://www.teamklinge.de/fridgemanager/schemas" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.teamklinge.de/fridgemanager/schemas 
+						profilesLOCAL.xsd ">
+						
+    <p:profile id="4">
+        <p:name>Bernd</p:name>
+        <p:birthdate>1970-01-01</p:birthdate>
+        <p:gender>m</p:gender>
+        <p:height>180.0</p:height>
+        <p:weight>70.0</p:weight>
+    </p:profile>
+    <p:profile id="5">
+        <p:name>Berthold Heisterkamm</p:name>
+        <p:birthdate>1980-01-01</p:birthdate>
+        <p:gender>m</p:gender>
+        <p:height>170.0</p:height>
+        <p:weight>80.0</p:weight>
+    </p:profile>
+    <p:profile id="6">
+        <p:name>Wieland Schlehufer</p:name>
+        <p:birthdate>1980-01-01</p:birthdate>
+        <p:gender>m</p:gender>
+        <p:height>170.0</p:height>
+        <p:weight>80.0</p:weight>
+    </p:profile>
+    <p:profile id="7">
+        <p:name>Dr. Otto</p:name>
+        <p:birthdate>1980-01-01</p:birthdate>
+        <p:gender>m</p:gender>
+        <p:height>170.0</p:height>
+        <p:weight>80.0</p:weight>
+    </p:profile>
+    <p:profile id="8">
+        <p:name>Deine Muddah</p:name>
+        <p:birthdate>1980-01-01</p:birthdate>
+        <p:gender>m</p:gender>
+        <p:height>170.0</p:height>
+        <p:weight>80.0</p:weight>
+    </p:profile>
+</p:profilesLOCAL>

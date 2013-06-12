@@ -1,17 +1,22 @@
 <?xml version="1.0"?>
-
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-			targetNamespace="http://meinnamespace.meinefirma.de"
-			xmlns="http://meinnamespace.meinefirma.de"
-			elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://www.teamklinge.de/fridgemanager/schemas" 
+	xmlns="http://www.teamklinge.de/fridgemanager/schemas" 
+	elementFormDefault="qualified">
 			
-	<!-- Root-Element -->
 	<xs:element name="notificationsLOCAL">
 	<xs:complexType>
 	<xs:sequence>
 		<xs:element name="notification" minOccurs="1" maxOccurs="unbounded">
 		<xs:complexType>
 		<xs:sequence>
+			<!-- Schlüssel zum Bestitzer/Profil -->
+			<xs:element name="profile">
+			<xs:complexType>
+				<xs:attribute name="id" type="xs:int" use="required"/>
+			</xs:complexType>
+			</xs:element>
+			<!-- Nachrichten-Typ -->
 			<xs:element name="type">
 				<xs:simpleType>
 				<xs:restriction base="xs:string">

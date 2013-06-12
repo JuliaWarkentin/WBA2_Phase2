@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://www.teamklinge.de/fridgemanager/schemas" 
+	xmlns="http://www.teamklinge.de/fridgemanager/schemas" 
+	elementFormDefault="qualified">
+	
+	<xs:element name="profile">
+	<xs:complexType>
+	<xs:sequence>
+		<xs:element name="name" type="xs:string"></xs:element>
+		<xs:element name="birthdate" type="xs:date"></xs:element>
+		<xs:element name="gender" type="xs:string"></xs:element>
+		<xs:element name="height" type="xs:float"></xs:element>
+		<xs:element name="weight" type="xs:float"></xs:element>
+	</xs:sequence>
+	</xs:complexType>
+	</xs:element>	
+</xs:schema>
