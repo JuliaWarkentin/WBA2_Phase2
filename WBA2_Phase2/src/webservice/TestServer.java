@@ -20,7 +20,7 @@ public class TestServer {
 	    System.out.println("URL: " + url);
 	    System.out.println("Dafuq");
 	    System.out.println(srv.toString());
-	    Thread.sleep( 10000 * Integer.parseInt("120"));
+	    Thread.sleep(100000); // 100 sekunden
 	    srv.stopEndpoint();
 	    System.out.println("Server AUS!");
 	}

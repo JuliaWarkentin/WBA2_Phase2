@@ -263,6 +263,14 @@ public class ObjectFactory {
     }
     
      /**
+     * Create an instance of {@link Products.Product.InFridge }
+     * 
+     */
+    public Products.Product.InFridge createProductsProductInFridge() {
+        return new Products.Product.InFridge();
+    }
+    
+     /**
      * Create an instance of {@link Product }
      * 
      */
@@ -284,6 +292,14 @@ public class ObjectFactory {
      */
     public Product.ProductType createProductProductType() {
         return new Product.ProductType();
+    }
+    
+    /**
+     * Create an instance of {@link Product.InFridge }
+     * 
+     */
+    public Product.InFridge createProductInFridge() {
+        return new Product.InFridge();
     }
 
     /**
@@ -324,5 +340,209 @@ public class ObjectFactory {
      */
     public NotificationsLOCAL.Notification.Profile createNotificationsLOCALNotificationProfile() {
         return new NotificationsLOCAL.Notification.Profile();
+    }
+    
+    public Notifications createNotifications() {
+        return new Notifications();
+    }
+
+    /**
+     * Create an instance of {@link Notifications.Notification }
+     * 
+     */
+    public Notifications.Notification createNotificationsNotification() {
+        return new Notifications.Notification();
+    }
+
+    /**
+     * Create an instance of {@link Notifications.Notification.SendTo }
+     * 
+     */
+    public Notifications.Notification.SendTo createNotificationsNotificationSendTo() {
+        return new Notifications.Notification.SendTo();
+    }
+
+    /**
+     * Create an instance of {@link Notifications.Notification.SendTo.Profile }
+     * 
+     */
+    public Notifications.Notification.SendTo.Profile createNotificationsNotificationSendToProfile() {
+        return new Notifications.Notification.SendTo.Profile();
+    }
+    
+    /**
+     * Create an instance of {@link Notification }
+     * 
+     */
+    public Notification createNotification() {
+        return new Notification();
+    }
+
+    /**
+     * Create an instance of {@link Notification.SendTo }
+     * 
+     */
+    public Notification.SendTo createNotificationSendTo() {
+        return new Notification.SendTo();
+    }
+
+    /**
+     * Create an instance of {@link Notification.SendTo.Profile }
+     * 
+     */
+    public Notification.SendTo.Profile createNotificationSendToProfile() {
+        return new Notification.SendTo.Profile();
+    }
+    
+     /**
+     * Create an instance of {@link FridgesLOCAL }
+     * 
+     */
+    public FridgesLOCAL createFridgesLOCAL() {
+        return new FridgesLOCAL();
+    }
+
+    /**
+     * Create an instance of {@link FridgesLOCAL.Fridge }
+     * 
+     */
+    public FridgesLOCAL.Fridge createFridgesLOCALFridge() {
+        return new FridgesLOCAL.Fridge();
+    }
+
+    /**
+     * Create an instance of {@link FridgesLOCAL.Fridge.ProductTypes }
+     * 
+     */
+    public FridgesLOCAL.Fridge.ProductTypes createFridgesLOCALFridgeProductTypes() {
+        return new FridgesLOCAL.Fridge.ProductTypes();
+    }
+
+    /**
+     * Create an instance of {@link FridgesLOCAL.Fridge.ProductTypes.ProductType }
+     * 
+     */
+    public FridgesLOCAL.Fridge.ProductTypes.ProductType createFridgesLOCALFridgeProductTypesProductType() {
+        return new FridgesLOCAL.Fridge.ProductTypes.ProductType();
+    }
+
+    /**
+     * Create an instance of {@link FridgesLOCAL.Fridge.ProductTypes.ProductType.Products }
+     * 
+     */
+    public FridgesLOCAL.Fridge.ProductTypes.ProductType.Products createFridgesLOCALFridgeProductTypesProductTypeProducts() {
+        return new FridgesLOCAL.Fridge.ProductTypes.ProductType.Products();
+    }
+
+    /**
+     * Create an instance of {@link FridgesLOCAL.Fridge.Profiles }
+     * 
+     */
+    public FridgesLOCAL.Fridge.Profiles createFridgesLOCALFridgeProfiles() {
+        return new FridgesLOCAL.Fridge.Profiles();
+    }
+
+    /**
+     * Create an instance of {@link FridgesLOCAL.Fridge.ProductTypes.ProductType.StockData }
+     * 
+     */
+    public FridgesLOCAL.Fridge.ProductTypes.ProductType.StockData createFridgesLOCALFridgeProductTypesProductTypeStockData() {
+        return new FridgesLOCAL.Fridge.ProductTypes.ProductType.StockData();
+    }
+
+    /**
+     * Create an instance of {@link FridgesLOCAL.Fridge.ProductTypes.ProductType.Products.Product }
+     * 
+     */
+    public FridgesLOCAL.Fridge.ProductTypes.ProductType.Products.Product createFridgesLOCALFridgeProductTypesProductTypeProductsProduct() {
+        return new FridgesLOCAL.Fridge.ProductTypes.ProductType.Products.Product();
+    }
+
+    /**
+     * Create an instance of {@link FridgesLOCAL.Fridge.Profiles.Profile }
+     * 
+     */
+    public FridgesLOCAL.Fridge.Profiles.Profile createFridgesLOCALFridgeProfilesProfile() {
+        return new FridgesLOCAL.Fridge.Profiles.Profile();
+    }
+    
+    /**
+     * Create an instance of {@link Fridges }
+     * 
+     */
+    public Fridges createFridges() {
+        return new Fridges();
+    }
+
+    /**
+     * Create an instance of {@link Fridges.Fridge }
+     * 
+     */
+    public Fridges.Fridge createFridgesFridge() {
+        return new Fridges.Fridge();
+    }
+    
+    /**
+     * Create an instance of {@link Fridge }
+     * 
+     */
+    public Fridge createFridge() {
+        return new Fridge();
+    }
+
+    /**
+     * Create an instance of {@link Fridge.ProductTypes }
+     * 
+     */
+    public Fridge.ProductTypes createFridgeProductTypes() {
+        return new Fridge.ProductTypes();
+    }
+
+    /**
+     * Create an instance of {@link Fridge.ProductTypes.ProductType }
+     * 
+     */
+    public Fridge.ProductTypes.ProductType createFridgeProductTypesProductType() {
+        return new Fridge.ProductTypes.ProductType();
+    }
+
+    /**
+     * Create an instance of {@link Fridge.ProductTypes.ProductType.Products }
+     * 
+     */
+    public Fridge.ProductTypes.ProductType.Products createFridgeProductTypesProductTypeProducts() {
+        return new Fridge.ProductTypes.ProductType.Products();
+    }
+
+    /**
+     * Create an instance of {@link Fridge.Profiles }
+     * 
+     */
+    public Fridge.Profiles createFridgeProfiles() {
+        return new Fridge.Profiles();
+    }
+
+    /**
+     * Create an instance of {@link Fridge.ProductTypes.ProductType.StockData }
+     * 
+     */
+    public Fridge.ProductTypes.ProductType.StockData createFridgeProductTypesProductTypeStockData() {
+        return new Fridge.ProductTypes.ProductType.StockData();
+    }
+
+    /**
+     * Create an instance of {@link Fridge.ProductTypes.ProductType.Products.Product }
+     * 
+     */
+    public Fridge.ProductTypes.ProductType.Products.Product createFridgeProductTypesProductTypeProductsProduct() {
+        return new Fridge.ProductTypes.ProductType.Products.Product();
+    }
+
+    /**
+     * Create an instance of {@link Fridge.Profiles.Profile }
+     * 
+     */
+    public Fridge.Profiles.Profile createFridgeProfilesProfile() {
+        return new Fridge.Profiles.Profile();
     }
 }

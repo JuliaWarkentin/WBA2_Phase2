@@ -49,7 +49,7 @@ public class ProfileResource {
 			System.out.print("QuerySearch on Profiles: "+queryName);
 			for(int i=0; i<psL.getProfile().size(); i++){
 				System.out.println(" compared with "+psL.getProfile().get(i).getName());
-				if(queryName == psL.getProfile().get(i).getName()) {
+				if(queryName.equals(psL.getProfile().get(i).getName())) {
 					p = new Profiles.Profile();
 					p.setHref("/profiles/"+psL.getProfile().get(i).getId()); 	// Hyperlink für mehr Details
 					p.setName(psL.getProfile().get(i).getName());				// und Name
@@ -90,12 +90,22 @@ public class ProfileResource {
 		return profile;
 	}
 	
+	public static String getProfileNamebyID(int profileID) throws JAXBException {
+		ProfilesLOCAL psL = (ProfilesLOCAL) MyMarshaller.unmarshall("data/profilesLOCAL.xml");
+		for(int i=0; i<psL.getProfile().size(); i++) {
+			if(profileID == psL.getProfile().get(i).getId()) {
+				return psL.getProfile().get(i).getName();
+			}
+		}
+		System.out.println("getProfileNamebyID failed...");
+		return null;
+	}
 	/*
+	
 	@POST
 	@Consumes({ MediaType.APPLICATION_XML})
 	public Response addProfile(@PathParam("fridgeID") int fridgeID, Profile p) throws JAXBException, URISyntaxException{
-		ProfilesLOCAL psL = (ProfilesLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeID + "/profilesLOCAL.xml");
+		ProfilesLOCAL psL = (ProfilesLOCAL) MyMarshaller.unmarshall("data/ + "/profilesLOCAL.xml");
 		
 		// Nach einer freien Profile-id suchen
 		int freeID = -1; boolean found;
@@ -128,7 +138,7 @@ public class ProfileResource {
 		// Neu erstellte URI in Repsone angeben:
 		return Response.created(new URI("fridges/"+fridgeID+"/profiles/"+freeID)).build();
 	}
-	
+	/*
 	@DELETE
 	@Path("/{profileID}")
 	public void deleteProfile(@PathParam("profileID") int profileID, @PathParam("fridgeID") int fridgeID) throws JAXBException {

@@ -1,22 +1,36 @@
 <?xml version="1.0"?>
-
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-			targetNamespace="http://meinnamespace.meinefirma.de"
-			xmlns="http://meinnamespace.meinefirma.de"
-			elementFormDefault="qualified">
+	targetNamespace="http://www.teamklinge.de/fridgemanager/schemas" 
+	xmlns="http://www.teamklinge.de/fridgemanager/schemas"
+	elementFormDefault="qualified">
 			
-	<!-- Root-Element -->
 	<xs:element name="notification">
 	<xs:complexType>
 	<xs:sequence>
+		<!-- Gesendet an -->
+		<xs:element name="sendTo">
+			<xs:complexType>
+			<xs:sequence>
+				<!-- Profil -->
+				<xs:element name="profile">
+				<xs:complexType>
+				<xs:sequence>
+					<xs:element name="name" type="xs:string"></xs:element> <!-- Nur namen anzeigen -->
+				</xs:sequence>
+				<xs:attribute name="href" type="xs:anyURI" use="required"></xs:attribute> <!-- Hyperlink zum Profil für mehr Infos -->
+				</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			</xs:complexType>
+		</xs:element>
 		<xs:element name="type">
-				<xs:simpleType>
-				<xs:restriction base="xs:string">
-					<xs:enumeration value="warning"/>
-					<xs:enumeration value="notification"/>
-				</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
+			<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="warning"/>
+				<xs:enumeration value="notification"/>
+			</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
 		<xs:element name="date" type="xs:date"></xs:element>
 		<xs:element name="head" type="xs:string"></xs:element>
 		<xs:element name="text" type="xs:string"></xs:element>

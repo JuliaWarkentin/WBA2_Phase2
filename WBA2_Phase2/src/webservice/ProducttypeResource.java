@@ -25,6 +25,7 @@ import jaxbClasses.ProductType;
 import jaxbClasses.ProductTypes;
 import jaxbClasses.ProductTypesLOCAL;
 import jaxbClasses.Profiles;
+import jaxbClasses.ProfilesLOCAL;
 
 
 @Path ("/producttypes")
@@ -50,7 +51,7 @@ public class ProducttypeResource {
 	@GET 
 	@Path("/{producttypeID}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public ProductType getProducttypeByID(@PathParam("producttypeID") int producttypeID) throws JAXBException  {
+	public ProductType getProducttype(@PathParam("producttypeID") int producttypeID) throws JAXBException  {
 		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.unmarshall("data/producttypesLOCAL.xml");
 		
 		// Liste nach passender id durchsuchen. Index merken
@@ -94,6 +95,17 @@ public class ProducttypeResource {
 		nutrients.setSodium(ptL.getNutrients().getSodium());
 		pt.setNutrients(nutrients);
 		return pt;
+	}
+	
+	public static String getProducttypeNamebyID(int producttypeID) throws JAXBException {
+		ProductTypesLOCAL ptL = (ProductTypesLOCAL) MyMarshaller.unmarshall("data/producttypesLOCAL.xml");
+		for(int i=0; i<ptL.getProductType().size(); i++) {
+			if(producttypeID == ptL.getProductType().get(i).getId()) {
+				return ptL.getProductType().get(i).getName();
+			}
+		}
+		System.out.println("getProducttypeNamebyID failed...");
+		return null;
 	}
 	/*
 	@POST

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:fridgesLOCAL xmlns:p="http://www.teamklinge.de/fridgemanager/schemas" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.teamklinge.de/fridgemanager/schemas fridgesLOCAL.xsd ">
+  <p:fridge id="1">
+    <p:name>Bernds Kühlschrank</p:name>
+    <p:profiles>
+      <p:profile id="4"/>
+      <p:profile id="5"/>
+      <p:profile id="6"/>
+    </p:profiles>
+    <p:productTypes>
+      <p:productType id="2">
+        <p:stockData>
+          <p:minStock>2</p:minStock>
+          <p:maxStock>6</p:maxStock>
+        </p:stockData>
+        <p:products>
+          <p:product id="4"/>
+          <p:product id="5"/>
+        </p:products>
+      </p:productType>
+      <p:productType id="1">
+        <p:stockData>
+          <p:minStock>1</p:minStock>
+          <p:maxStock>2</p:maxStock>
+        </p:stockData>
+        <p:products>
+          <p:product id="7"/>
+        </p:products>
+      </p:productType>
+    </p:productTypes>
+  </p:fridge>
+  <p:fridge id="2">
+    <p:name>Superfridge 2000</p:name>
+    <p:profiles>
+      <p:profile id="8"/>
+    </p:profiles>
+    <p:productTypes>
+      <p:productType id="2">
+        <p:stockData>
+          <p:minStock>1</p:minStock>
+          <p:maxStock>3</p:maxStock>
+        </p:stockData>
+        <p:products>
+          <p:product id="1"/>
+          <p:product id="2"/>
+          <p:product id="3"/>
+        </p:products>
+      </p:productType>
+    </p:productTypes>
+  </p:fridge>
+</p:fridgesLOCAL>

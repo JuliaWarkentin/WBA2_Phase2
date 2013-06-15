@@ -49,23 +49,19 @@ public class ProductResources {
 			psp = new Products.Product();
 			psp.setHref("/products/"+psL.getProduct().get(i).getId()); // Hyperlink zum Produkt
 			Products.Product.ProductType pt = new Products.Product.ProductType();
-			int ptID = psL.getProduct().get(i).getProductType().getId();
-			pt.setHref("/producttypes/"+ptID); // Hyperlink zum zugehörigen Produkttyp
-			pt.setName(getNameFromProductTypesLOCALbyID(ptsL.getProductType(), ptID));
+			int producttypeID = psL.getProduct().get(i).getProductType().getId();
+			pt.setHref("/producttypes/"+producttypeID); // Hyperlink zum zugehörigen Produkttyp
+			pt.setName(ProducttypeResource.getProducttypeNamebyID(producttypeID));
+			Products.Product.InFridge fridge = new Products.Product.InFridge();
+			int fridgeID = psL.getProduct().get(i).getFridge().getId();
+			fridge.setHref("/fridges/"+fridgeID);
+			fridge.setName(FridgeResource.getFridgeNamebyID(fridgeID));
+			psp.setInFridge(fridge);
 			psp.setProductType(pt);
 			psp.setState(psL.getProduct().get(i).getState());
 			ps.getProduct().add(psp);
 		}
 		return ps;
-	}
-	
-	private String getNameFromProductTypesLOCALbyID(List<ProductTypesLOCAL.ProductType> list, int id) {
-		for(ProductTypesLOCAL.ProductType pt : list){
-			if(pt.getId() == id)
-				return pt.getName();
-		}
-		System.out.println("getNameFromProductTypesLOCALbyID fehlgeschlagen!");
-		return null;
 	}
 	
 	@GET
@@ -92,6 +88,10 @@ public class ProductResources {
 		pt.setHref("/producttypes/"+pL.getProductType().getId());
 		pt.setName(getProducttypeNamebyID(ptsL, pL.getProductType().getId()));
 		p.setProductType(pt);
+		Product.InFridge f = new Product.InFridge();
+		f.setHref("/fridges/"+pL.getFridge().getId());
+		f.setName(FridgeResource.getFridgeNamebyID(pL.getFridge().getId()));
+		p.setInFridge(f);
 		p.setInputdate(pL.getInputDate());
 		if(pL.getState() == "consumed")
 			p.setOutputdate(pL.getOutputDate());
@@ -109,6 +109,17 @@ public class ProductResources {
 		p.setPriceWas(pw);
 		
 		return p;
+	}
+	
+	public static String getProductStatebyID(int productID) throws JAXBException {
+		ProductsLOCAL psL = (ProductsLOCAL) MyMarshaller.unmarshall("data/productsLOCAL.xml");
+		for(int i=0; i<psL.getProduct().size(); i++) {
+			if(productID == psL.getProduct().get(i).getId()) {
+				return psL.getProduct().get(i).getState();
+			}
+		}
+		System.out.println("getProductStatebyID failed...");
+		return null;
 	}
 	
 	private String getProfileNamebyID(ProfilesLOCAL pfsL, int id) {

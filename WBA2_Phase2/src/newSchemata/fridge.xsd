@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.teamklinge.de/fridgemanager/schemas" 
+	xmlns="http://www.teamklinge.de/fridgemanager/schemas"
+	elementFormDefault="qualified">
+			
+	<xs:element name="fridge">
+	<xs:complexType>
+	<xs:sequence>
+		<!-- Name des Kühlschranks -->
+		<xs:element name="name" type="xs:string"></xs:element>
+		<!-- Zum Kühlschrank zugehörige Profile -->
+		<xs:element name="profiles">
+		<xs:complexType>
+		<xs:sequence>
+			<xs:element name="profile" minOccurs="0" maxOccurs="unbounded">
+			<xs:complexType>
+			<xs:sequence>
+				<xs:element name="name" type="xs:string"/> <!-- Nur namen anzeigen -->
+			</xs:sequence>
+			<xs:attribute name="href" type="xs:anyURI" use="required"/> <!-- Hyperlink zum Profil für mehr Infos-->
+			</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		</xs:complexType>
+		</xs:element>
+		<!-- Liste von enthaltenden Produkttypen -->
+		<xs:element name="productTypes">
+		<xs:complexType>
+		<xs:sequence>
+			<xs:element name="productType" minOccurs="0" maxOccurs="unbounded">
+			<xs:complexType>
+			<xs:sequence>
+				<xs:element name="name" type="xs:string"></xs:element>
+				<!-- Bestandinformationen zu diesem Produkttypen-->
+				<xs:element name="stockData">
+				<xs:complexType>
+				<xs:sequence>
+					<xs:element name="currentStock" type="xs:int"></xs:element> <!-- errechnet sich aus den Produktverweisen -->
+					<xs:element name="minStock" type="xs:int"></xs:element>
+					<xs:element name="maxStock" type="xs:int"></xs:element>
+				</xs:sequence>
+				</xs:complexType>
+				</xs:element>
+				<!-- "Instanzen" zu diesem Produkttypen -->
+				<xs:element name="products">
+				<xs:complexType>
+				<xs:sequence>
+					<xs:element name="product" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+					<xs:sequence>
+						<!-- Status -->
+						<xs:element name="state">
+							<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="inside"/>
+								<xs:enumeration value="consumed"/>
+							</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="href" type="xs:anyURI" use="required"></xs:attribute> 
+					</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+				</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="href" type="xs:anyURI" use="required"/> <!-- Hyperlink zum Profil für mehr Infos-->
+			</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		</xs:complexType>
+		</xs:element>
+	</xs:sequence>
+	</xs:complexType>
+	</xs:element>
+
+</xs:schema>

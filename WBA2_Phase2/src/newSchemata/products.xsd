@@ -14,10 +14,18 @@
 			<xs:element name="productType">
 			<xs:complexType>
 			<xs:sequence>
-				<xs:element name="name" type="xs:string"></xs:element> <!-- Nur namen anzeigen -->
+				<xs:element name="name" type="xs:string"/> <!-- Nur namen anzeigen -->
 			</xs:sequence>
-			<!-- Hyperlink zum Produkttypen für mehr Infos-->
-			<xs:attribute name="href" type="xs:anyURI" use="required"></xs:attribute>
+			<xs:attribute name="href" type="xs:anyURI" use="required"/> <!-- Hyperlink zum Produkttypen für mehr Infos-->
+			</xs:complexType>
+			</xs:element>
+			<!-- In welchem Kühlschrank? -->
+			<xs:element name="inFridge">
+			<xs:complexType>
+			<xs:sequence>
+				<xs:element name="name" type="xs:string"/> <!-- Nur namen anzeigen -->
+			</xs:sequence>
+			<xs:attribute name="href" type="xs:anyURI" use="required"/> <!-- Hyperlink zum Kühlschrank für mehr Infos-->
 			</xs:complexType>
 			</xs:element>
 			<!-- Status -->

@@ -33,7 +33,6 @@ public class TestClient {
 	    String url = "http://localhost:4434/fridges/1/notifications";
 	    System.out.println("URL: " + url);
 	    wrs = Client.create().resource(url);
-	    
 	    testDELETE();
 	}
 	

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.teamklinge.de/fridgemanager/schemas" 
+	xmlns="http://www.teamklinge.de/fridgemanager/schemas"
+	elementFormDefault="qualified">
+			
+	<xs:element name="fridges">
+	<xs:complexType>
+	<xs:sequence>
+		<xs:element name="fridge" maxOccurs="unbounded">
+		<xs:complexType>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/> <!-- Für die Liste nur Namen anzeigen -->
+		</xs:sequence>
+		<xs:attribute name="href" type="xs:anyURI" use="required"/> <!-- Hyperlink zum Frigde für mehr Infos -->
+		</xs:complexType>
+		</xs:element>
+	</xs:sequence>
+	</xs:complexType>
+	</xs:element>	
+</xs:schema>

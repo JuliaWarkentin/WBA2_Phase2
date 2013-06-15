@@ -10,7 +10,7 @@
 		<xs:element name="notification" minOccurs="1" maxOccurs="unbounded">
 		<xs:complexType>
 		<xs:sequence>
-			<!-- Schlüssel zum Bestitzer/Profil -->
+			<!-- Schlüssel zum Bestitzer/Profil (sendTo)-->
 			<xs:element name="profile">
 			<xs:complexType>
 				<xs:attribute name="id" type="xs:int" use="required"/>
