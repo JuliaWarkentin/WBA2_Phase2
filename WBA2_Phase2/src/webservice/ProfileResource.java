@@ -100,12 +100,12 @@ public class ProfileResource {
 		System.out.println("getProfileNamebyID failed...");
 		return null;
 	}
-	/*
+	
 	
 	@POST
 	@Consumes({ MediaType.APPLICATION_XML})
 	public Response addProfile(@PathParam("fridgeID") int fridgeID, Profile p) throws JAXBException, URISyntaxException{
-		ProfilesLOCAL psL = (ProfilesLOCAL) MyMarshaller.unmarshall("data/ + "/profilesLOCAL.xml");
+		ProfilesLOCAL psL = (ProfilesLOCAL) MyMarshaller.unmarshall("data/profilesLOCAL.xml");
 		
 		// Nach einer freien Profile-id suchen
 		int freeID = -1; boolean found;
@@ -133,10 +133,10 @@ public class ProfileResource {
 		psL.getProfile().add(profile);
 		
 		// Daten auf Platte speichern
-		MyMarshaller.marshall(psL, "data/fridges/"+ fridgeID + "/profilesLOCAL.xml");
+		MyMarshaller.marshall(psL, "data/profilesLOCAL.xml");
 		
-		// Neu erstellte URI in Repsone angeben:
-		return Response.created(new URI("fridges/"+fridgeID+"/profiles/"+freeID)).build();
+		// Neu erstellte URI im Response angeben:
+		return Response.created(new URI("/profiles/"+freeID)).build();
 	}
 	/*
 	@DELETE

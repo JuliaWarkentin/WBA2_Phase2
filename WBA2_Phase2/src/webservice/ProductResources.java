@@ -142,13 +142,10 @@ public class ProductResources {
 		return null;
 	}
 	
-	
-	/*
 	@POST
 	@Consumes({ MediaType.APPLICATION_XML})
 	public Response addProduct(@PathParam("fridgeID") int fridgeID, @PathParam("producttypeID") int producttypeID, Product p) throws JAXBException, URISyntaxException{
-		ProductsLOCAL psL = (ProductsLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeID + "/productsLOCAL.xml");
+		ProductsLOCAL psL = (ProductsLOCAL) MyMarshaller.unmarshall("data/productsLOCAL.xml");
 		
 		// Nach einer freien Product-id suchen
 		int freeID = -1; boolean found;
@@ -167,25 +164,38 @@ public class ProductResources {
 		// Neues Product anlegen
 		ProductsLOCAL.Product product = new ProductsLOCAL.Product();
 		product.setId(freeID);
-		product.setProductTypeID(producttypeID);
+		ProductsLOCAL.Product.ProductType pt = new ProductsLOCAL.Product.ProductType();
+		String href = p.getProductType().getHref();
+		pt.setId(Integer.parseInt(href.substring(href.lastIndexOf("/")+1))); // ID aus href beziehen
+		product.setProductType(pt);
+		
+		ProductsLOCAL.Product.Fridge f = new ProductsLOCAL.Product.Fridge();
+		href = p.getInFridge().getHref();
+		f.setId(Integer.parseInt(href.substring(href.lastIndexOf("/")+1)));
+		product.setFridge(f);
+		
 		product.setInputDate(p.getInputdate());
 		product.setExpirationDate(p.getExpirationdate());
-		String url = p.getOwner().getHref();
-		product.setOwnerID(Integer.parseInt(url.substring(url.length()-1)));	// aus Hyperlink OwnerID bestimmen
+		
+		ProductsLOCAL.Product.Profile profile = new ProductsLOCAL.Product.Profile();
+		href = p.getOwner().getProfile().getHref();
+		profile.setId(Integer.parseInt(href.substring(href.lastIndexOf("/")+1)));
+		product.setProfile(profile);	// aus Hyperlink profileID bestimmen
 		product.setState("inside"); 	// Eine neu angelegte Product-Instanz immer erst "inside"
 		ProductsLOCAL.Product.PriceWas priceWas = new ProductsLOCAL.Product.PriceWas();
-		priceWas.setCurrency(CurrencyAttr.EUR);
-		priceWas.setValue(1.39f);
+		priceWas.setCurrency(p.getPriceWas().getCurrency());
+		priceWas.setValue(p.getPriceWas().getValue());
 		product.setPriceWas(priceWas);
 		psL.getProduct().add(product);
 		
 		// Daten auf Platte speichern
-		MyMarshaller.marshall(psL, "data/fridges/"+ fridgeID + "/productsLOCAL.xml");
+		MyMarshaller.marshall(psL, "data/productsLOCAL.xml");
 		
 		// Neu erstellte URI in Response angeben:
-		return Response.created(new URI("fridges/"+fridgeID+"/producttype/"+producttypeID+"/products/"+freeID)).build();
+		return Response.created(new URI("/products/"+freeID)).build();
 	}
 	
+	/*
 	@DELETE
 	@Path("/{productID}")
 	public void deleteProduct(@PathParam("productID") int productID, @PathParam("producttypeID") int producttypeID, @PathParam("fridgeID") int fridgeID) throws JAXBException {

@@ -93,13 +93,12 @@ public class NotificationResources {
 		return n;
 	}
 	
-	/*
+	
 	@POST
 	@Consumes({ MediaType.APPLICATION_XML})
-	public Response addNotification(@PathParam("fridgeID") int fridgeID, Notification n) throws JAXBException, URISyntaxException{
-		NotificationsLOCAL nsL = (NotificationsLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeID + "/notificationsLOCAL.xml");
-		// Nach einer freien Profile-id suchen
+	public Response addNotification(Notification n) throws JAXBException, URISyntaxException{
+		NotificationsLOCAL nsL = (NotificationsLOCAL) MyMarshaller.unmarshall("data/notificationsLOCAL.xml");
+		// Nach einer freien id suchen
 		int freeID = -1; boolean found;
 		for(int i=1; i<=50 && freeID==-1; i++) {
 			found = true;
@@ -116,6 +115,10 @@ public class NotificationResources {
 		// Neue Notification anlegen
 		jaxbClasses.NotificationsLOCAL.Notification notification = new jaxbClasses.NotificationsLOCAL.Notification();
 		notification.setId(freeID);
+		NotificationsLOCAL.Notification.Profile p = new NotificationsLOCAL.Notification.Profile();
+		String href = n.getSendTo().getProfile().getHref();
+		p.setId(Integer.parseInt(href.substring(href.lastIndexOf("/")+1))); // ID aus der href beziehen
+		notification.setProfile(p);
 		notification.setType(n.getType());
 		notification.setDate(n.getDate());
 		notification.setHead(n.getHead());
@@ -124,12 +127,12 @@ public class NotificationResources {
 		nsL.getNotification().add(notification);
 		
 		// Daten auf Platte speichern
-		MyMarshaller.marshall(nsL, "data/fridges/"+ fridgeID + "/notificationsLOCAL.xml");
+		MyMarshaller.marshall(nsL, "data/notificationsLOCAL.xml");
 		
 		// Neu erstellte URI in Repsone angeben:
-		return Response.created(new URI("fridges/"+fridgeID+"/notifications/"+freeID)).build();
+		return Response.created(new URI("/notifications/"+freeID)).build();
 	}
-	
+	/*
 	@DELETE
 	@Path("/{notificationID}")
 	public void deleteProduct(@PathParam("notificationID") int notificationID, @PathParam("fridgeID") int fridgeID) throws JAXBException {

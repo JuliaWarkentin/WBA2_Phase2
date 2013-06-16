@@ -107,12 +107,12 @@ public class ProducttypeResource {
 		System.out.println("getProducttypeNamebyID failed...");
 		return null;
 	}
+	
 	/*
 	@POST
 	@Consumes({ MediaType.APPLICATION_XML})
-	public Response addProducttype(@PathParam("fridgeID") int fridgeID, ProductType pt) throws JAXBException, URISyntaxException{
-		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeID + "/producttypesLOCAL.xml");
+	public Response addProducttype(ProductType pt) throws JAXBException, URISyntaxException{
+		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.unmarshall("data/producttypesLOCAL.xml");
 		
 		// Nach einer freien Prooducttype-id suchen
 		int freeID = -1; boolean found;
@@ -145,7 +145,7 @@ public class ProducttypeResource {
 		// Neu erstellte URI in Repsone angeben:
 		return Response.created(new URI("fridges/"+fridgeID+"/profiles/"+freeID)).build();
 	}
-	
+	/*
 	@DELETE
 	@Path("/{producttypeID}")
 	public void deleteProducttype(@PathParam("producttypeID") int producttypeID, @PathParam("fridgeID") int fridgeID) throws JAXBException {

@@ -25,6 +25,7 @@ import jaxbClasses.Fridge;
 import jaxbClasses.Fridges;
 import jaxbClasses.FridgesLOCAL;
 import jaxbClasses.ProductTypesLOCAL;
+import jaxbClasses.Profile;
 import jaxbClasses.ProfilesLOCAL;
 
 @Path ("/fridges")
@@ -91,44 +92,166 @@ public class FridgeResource {
 		
 		// -> Producttypes
 		Fridge.ProductTypes pts = new Fridge.ProductTypes();
-		
-		for(int i=0; i<fL.getProductTypes().getProductType().size(); i++) {
-			int producttypeID = fL.getProductTypes().getProductType().get(i).getId();
-			Fridge.ProductTypes.ProductType pt = new Fridge.ProductTypes.ProductType();
-			pt.setHref("/producttypes/"+producttypeID);
-			pt.setName(ProducttypeResource.getProducttypeNamebyID(producttypeID));
-			
-			
-			// -> Products
-			Fridge.ProductTypes.ProductType.Products pds = new Fridge.ProductTypes.ProductType.Products();
-			FridgesLOCAL.Fridge.ProductTypes.ProductType.Products pdsL = new FridgesLOCAL.Fridge.ProductTypes.ProductType.Products();
-			pdsL = fL.getProductTypes().getProductType().get(i).getProducts();
-			int currentStock = 0;
-			for(int j=0; j<pdsL.getProduct().size(); j++) {
-				Fridge.ProductTypes.ProductType.Products.Product p = new Fridge.ProductTypes.ProductType.Products.Product();
-				p.setHref("/products/"+pdsL.getProduct().get(j).getId());
-				String state = ProductResources.getProductStatebyID(pdsL.getProduct().get(j).getId());
-				p.setState(state);
-				if(state.equals("inside")) 
-					currentStock++;
-				pds.getProduct().add(p);
+		if(fL.getProductTypes() != null) {
+			for(int i=0; i<fL.getProductTypes().getProductType().size(); i++) {
+				int producttypeID = fL.getProductTypes().getProductType().get(i).getId();
+				Fridge.ProductTypes.ProductType pt = new Fridge.ProductTypes.ProductType();
+				pt.setHref("/producttypes/"+producttypeID);
+				pt.setName(ProducttypeResource.getProducttypeNamebyID(producttypeID));
 				
-			}
-			pt.setProducts(pds);
+				
+				// -> Products
+				Fridge.ProductTypes.ProductType.Products pds = new Fridge.ProductTypes.ProductType.Products();
+				FridgesLOCAL.Fridge.ProductTypes.ProductType.Products pdsL = new FridgesLOCAL.Fridge.ProductTypes.ProductType.Products();
+				pdsL = fL.getProductTypes().getProductType().get(i).getProducts();
+				int currentStock = 0;
+				for(int j=0; j<pdsL.getProduct().size(); j++) {
+					Fridge.ProductTypes.ProductType.Products.Product p = new Fridge.ProductTypes.ProductType.Products.Product();
+					p.setHref("/products/"+pdsL.getProduct().get(j).getId());
+					String state = ProductResources.getProductStatebyID(pdsL.getProduct().get(j).getId());
+					p.setState(state);
+					if(state.equals("inside")) 
+						currentStock++;
+					pds.getProduct().add(p);
+					
+				}
+				pt.setProducts(pds);
+				
+				// -> StockData
+				FridgesLOCAL.Fridge.ProductTypes.ProductType.StockData stockL = new FridgesLOCAL.Fridge.ProductTypes.ProductType.StockData();
+				stockL = fL.getProductTypes().getProductType().get(i).getStockData();
+				Fridge.ProductTypes.ProductType.StockData stock = new Fridge.ProductTypes.ProductType.StockData();
+				stock.setCurrentStock(currentStock);
+				stock.setMinStock(stockL.getMinStock());
+				stock.setMaxStock(stockL.getMaxStock());
+				pt.setStockData(stock);
+							
 			
-			// -> StockData
-			FridgesLOCAL.Fridge.ProductTypes.ProductType.StockData stockL = new FridgesLOCAL.Fridge.ProductTypes.ProductType.StockData();
-			stockL = fL.getProductTypes().getProductType().get(i).getStockData();
-			Fridge.ProductTypes.ProductType.StockData stock = new Fridge.ProductTypes.ProductType.StockData();
-			stock.setCurrentStock(currentStock);
-			stock.setMinStock(stockL.getMinStock());
-			stock.setMaxStock(stockL.getMaxStock());
-			pt.setStockData(stock);
-						
-		
-			pts.getProductType().add(pt);
+				pts.getProductType().add(pt);
+			}
 		}
 		f.setProductTypes(pts);
 		return f;
+	}
+	
+	@POST
+	@Consumes({ MediaType.APPLICATION_XML})
+	public Response addFridge(Fridge f) throws JAXBException, URISyntaxException{
+		FridgesLOCAL fsL = (FridgesLOCAL) MyMarshaller.unmarshall("data/fridgesLOCAL.xml");
+		
+		// Nach einer freien Fridge-id suchen
+		int freeID = -1; boolean found;
+		for(int i=1; i<=50 && freeID==-1; i++){
+			found = true;
+			for(FridgesLOCAL.Fridge fridge : fsL.getFridge()){
+				if(fridge.getId() == i) { // id belegt?
+					found = false;
+					break;
+				}
+			}
+			if(found) // id noch frei?
+				freeID = i; // übernehmen
+		}
+		
+		// Kühlschrank anlegen. (Name und Profil des Erstellers. Weitere Profile und Produkte über PUT)
+		FridgesLOCAL.Fridge fridge = new FridgesLOCAL.Fridge();
+		fridge.setId(freeID);
+		fridge.setName(f.getName());
+		
+		FridgesLOCAL.Fridge.Profiles ps = new FridgesLOCAL.Fridge.Profiles();
+		FridgesLOCAL.Fridge.Profiles.Profile p = new FridgesLOCAL.Fridge.Profiles.Profile();
+		String href = f.getProfiles().getProfile().get(0).getHref();
+		p.setId(Integer.parseInt(href.substring(href.lastIndexOf("/")+1))); // ID aus href beziehen
+		ps.getProfile().add(p);
+		fridge.setProfiles(ps);
+		
+		fsL.getFridge().add(fridge);
+		
+		// Daten auf Platte speichern
+		MyMarshaller.marshall(fsL, "data/fridgesLOCAL.xml");
+		
+		// Neu erstellte URI im Response angeben:
+		return Response.created(new URI("/fridges/"+freeID)).build();
+	}
+	
+	@PUT
+	@Path("/{fridgeID}")
+	@Consumes({ MediaType.APPLICATION_XML})
+	public Response updateFridge(@PathParam("fridgeID") int fridgeID, Fridge f) throws JAXBException, URISyntaxException{
+		FridgesLOCAL fsL = (FridgesLOCAL) MyMarshaller.unmarshall("data/fridgesLOCAL.xml");
+		
+		//Suche Fridge
+		FridgesLOCAL.Fridge fL = new FridgesLOCAL.Fridge();
+		boolean found = false;
+		int indexFound = -1;
+		for(int i=0; i<fsL.getFridge().size(); i++){
+			if(fsL.getFridge().get(i).getId() == fridgeID && 
+					fsL.getFridge().get(i).getId() == fridgeID) { // gefunden?
+				found = true; indexFound = i;
+				fL = fsL.getFridge().get(i); // Fridge herausnehmen
+				break;
+			}
+		}
+		if(!found) {
+			throw new NotFoundException("Fridge not found");
+		}
+		
+		// FridgeLOCAL erstellen aus übergebenen Fridge und der FridgeID;
+		FridgesLOCAL.Fridge fridge = createFridgeLOCAL(fsL, f, fridgeID);
+		
+		// Fridge aktualisieren (Ersetze Kühlschrank durch Client´s übergebenen)
+		fsL.getFridge().set(indexFound, fridge);
+		
+		// Daten auf Platte speichern
+		MyMarshaller.marshall(fsL, "data/fridgesLOCAL.xml");
+		
+		// URI im Response angeben:
+		return Response.created(new URI("/fridges/"+fridgeID)).build();
+	}
+	
+	private FridgesLOCAL.Fridge createFridgeLOCAL(FridgesLOCAL fsL, Fridge f, int fridgeID) {
+		FridgesLOCAL.Fridge fridge = new FridgesLOCAL.Fridge();
+		fridge.setId(fridgeID);
+		fridge.setName(f.getName());
+		
+		// -> Profile
+		FridgesLOCAL.Fridge.Profiles ps = new FridgesLOCAL.Fridge.Profiles();
+		FridgesLOCAL.Fridge.Profiles.Profile p;
+		for(int i=0; i<f.getProfiles().getProfile().size(); i++) {
+			p = new FridgesLOCAL.Fridge.Profiles.Profile();
+			String href = f.getProfiles().getProfile().get(i).getHref();
+			p.setId(Integer.parseInt(href.substring(href.lastIndexOf("/")+1))); // ID aus href beziehen
+			ps.getProfile().add(p);
+		}
+		fridge.setProfiles(ps);
+		
+		// -> Produkttypen
+		FridgesLOCAL.Fridge.ProductTypes pts = new FridgesLOCAL.Fridge.ProductTypes();
+		FridgesLOCAL.Fridge.ProductTypes.ProductType pt;
+		FridgesLOCAL.Fridge.ProductTypes.ProductType.StockData sd;
+		for(int i=0; i<f.getProductTypes().getProductType().size(); i++) {
+			pt = new FridgesLOCAL.Fridge.ProductTypes.ProductType();
+			String href = f.getProductTypes().getProductType().get(i).getHref();
+			pt.setId(Integer.parseInt(href.substring(href.lastIndexOf("/")+1)));
+			
+			sd = new FridgesLOCAL.Fridge.ProductTypes.ProductType.StockData();
+			sd.setMinStock(f.getProductTypes().getProductType().get(i).getStockData().getMinStock());
+			sd.setMaxStock(f.getProductTypes().getProductType().get(i).getStockData().getMaxStock());
+			pt.setStockData(sd);
+			
+			// -> Produkt(instanzen)
+			FridgesLOCAL.Fridge.ProductTypes.ProductType.Products pds = new FridgesLOCAL.Fridge.ProductTypes.ProductType.Products();
+			FridgesLOCAL.Fridge.ProductTypes.ProductType.Products.Product product;
+			for(int j=0; j<f.getProductTypes().getProductType().get(i).getProducts().getProduct().size(); j++) {
+				product = new FridgesLOCAL.Fridge.ProductTypes.ProductType.Products.Product();
+				href = f.getProductTypes().getProductType().get(i).getProducts().getProduct().get(j).getHref();
+				product.setId(Integer.parseInt(href.substring(href.lastIndexOf("/")+1)));
+				pds.getProduct().add(product);
+			}
+			pt.setProducts(pds);
+			pts.getProductType().add(pt);
+		}
+		fridge.setProductTypes(pts);
+		return fridge;
 	}
 }

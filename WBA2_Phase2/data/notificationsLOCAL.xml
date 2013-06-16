@@ -1,24 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<p:notificationsLOCAL xmlns:p="http://www.teamklinge.de/fridgemanager/schemas" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.teamklinge.de/fridgemanager/schemas notificationsLOCAL.xsd ">
-  <p:notification id="2">
-    <p:profile id="4"/>
-    <p:type>warning</p:type>
-    <p:date>2001-01-01</p:date>
-    <p:head>A product is nearly expiration!</p:head>
-    <p:text>&quot;milsani Frische Vollmilch&quot; läuft bald ab.</p:text>
-  </p:notification>
-  <p:notification id="3">
-    <p:profile id="4"/>
-    <p:type>warning</p:type>
-    <p:date>2001-01-01</p:date>
-    <p:head>A product was stolen!</p:head>
-    <p:text>&quot;milsani Frische Vollmilch&quot; wurde von einer nicht berechtigten Person verbaucht.</p:text>
-  </p:notification>
-  <p:notification id="4">
-    <p:profile id="4"/>
-    <p:type>notification</p:type>
-    <p:date>2001-01-01</p:date>
-    <p:head>Products reordered</p:head>
-    <p:text>Es wurden 5 &quot;milsani Frische Vollmilch&quot; Produkte nachbestellt.</p:text>
-  </p:notification>
-</p:notificationsLOCAL>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<notificationsLOCAL xmlns="http://www.teamklinge.de/fridgemanager/schemas">
+    <notification id="2">
+        <profile id="4"/>
+        <type>warning</type>
+        <date>2001-01-01</date>
+        <head>A product is nearly expiration!</head>
+        <text>&quot;milsani Frische Vollmilch&quot; läuft bald ab.</text>
+    </notification>
+    <notification id="3">
+        <profile id="4"/>
+        <type>warning</type>
+        <date>2001-01-01</date>
+        <head>A product was stolen!</head>
+        <text>&quot;milsani Frische Vollmilch&quot; wurde von einer nicht berechtigten Person verbaucht.</text>
+    </notification>
+    <notification id="4">
+        <profile id="4"/>
+        <type>notification</type>
+        <date>2001-01-01</date>
+        <head>Products reordered</head>
+        <text>Es wurden 5 &quot;milsani Frische Vollmilch&quot; Produkte nachbestellt.</text>
+    </notification>
+    <notification id="1">
+        <profile id="4"/>
+        <type>warning</type>
+        <date>1990-01-01</date>
+        <head>Product stolen</head>
+        <text>Ein Produkt wurde gestohlen</text>
+    </notification>
+    <notification id="5">
+        <profile id="4"/>
+        <type>warning</type>
+        <date>1990-01-01</date>
+        <head>Product stolen</head>
+        <text>Ein Produkt wurde gestohlen</text>
+    </notification>
+</notificationsLOCAL>
