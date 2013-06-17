@@ -25,6 +25,8 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 
+import xmpp.XmppSession;
+
 import jaxbClasses.Notification;
 import jaxbClasses.Notifications;
 

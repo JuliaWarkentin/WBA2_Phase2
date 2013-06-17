@@ -21,6 +21,8 @@ import org.jivesoftware.smackx.pubsub.PubSubManager;
 import org.jivesoftware.smackx.pubsub.PublishModel;
 import org.jivesoftware.smackx.pubsub.SimplePayload;
 
+import xmpp.XmppSession;
+
 public class testPub {
 
 	/**

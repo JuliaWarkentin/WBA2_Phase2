@@ -10,6 +10,8 @@ import org.jivesoftware.smackx.pubsub.LeafNode;
 import org.jivesoftware.smackx.pubsub.PubSubManager;
 import org.jivesoftware.smackx.pubsub.PublishModel;
 
+import xmpp.XmppSession;
+
 public class testCreate {
 	
 	/**

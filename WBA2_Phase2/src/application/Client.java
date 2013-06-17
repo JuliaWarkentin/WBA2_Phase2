@@ -10,6 +10,8 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smackx.pubsub.*;
 
+import xmpp.XmppSession;
+
 public class Client {
 	public static void main(String args[]) throws XMPPException, InterruptedException {
 		XmppSession xmpp = new XmppSession("hans69", "hans69");

@@ -1,4 +1,4 @@
-package application;
+package xmpp;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,18 +19,30 @@ import org.jivesoftware.smackx.pubsub.PubSubManager;
 import org.jivesoftware.smackx.pubsub.PublishModel;
 import org.jivesoftware.smackx.pubsub.SimplePayload;
 import org.jivesoftware.smackx.pubsub.listener.ItemEventListener;
-
-public class XmppSession {
-	private String host = "localhost";
+/**
+ * Klasse um den Zugriff auf XMPP zu erleichtern.
+ * Jeder User erstellet eine eigene Session.
+ * 
+ * @author Simon Klinge
+ * @author Julia Warkentin
+ *
+ */
+public class XMPPSession {
 	private String user;
 	private Connection con;
 	private PubSubManager psm;
 	private ServiceDiscoveryManager sdm;
 	
-	public XmppSession(String user, String passw) {
-		// Verbindung zum XMPP-server herstellen.
+	/**
+	 * Verbindung zum XMPP Server aufbauen
+	 * User und Passwort müssen den auf dem XMPP-Server enstprechen
+	 * 
+	 * @param user
+	 * @param passw
+	 */
+	public XMPPSession(String user, String passw) {
 		this.user = user;
-		con = new XMPPConnection(host);
+		con = new XMPPConnection(XMPPData.host);
 		try {
 			con.connect();
 		} catch (XMPPException e) {
@@ -50,7 +62,7 @@ public class XmppSession {
 	public void discoverServices() throws XMPPException {
 		System.out.println("Discovering Services...");
 		sdm = ServiceDiscoveryManager.getInstanceFor(con);
-		DiscoverItems items = sdm.discoverItems(host);
+		DiscoverItems items = sdm.discoverItems(XMPPData.host);
 		Iterator<DiscoverItems.Item> iter = items.getItems();
 		while (iter.hasNext()) {
 			DiscoverItems.Item i = iter.next();
@@ -64,7 +76,7 @@ public class XmppSession {
 				.getInstanceFor(con);
 		DiscoverItems items = null;
 		try {
-			items = mgr.discoverItems("pubsub." + host);
+			items = mgr.discoverItems("pubsub." + XMPPData.host);
 		} catch (XMPPException e) {
 			e.printStackTrace();
 			System.out.println("Discover failed");
@@ -83,7 +95,7 @@ public class XmppSession {
 				.getInstanceFor(con);
 		DiscoverItems items = null;
 		try {
-			items = mgr.discoverItems("pubsub." + host);
+			items = mgr.discoverItems("pubsub." + XMPPData.host);
 		} catch (XMPPException e) {
 			e.printStackTrace();
 			System.out.println("Discover failed");
@@ -109,21 +121,36 @@ public class XmppSession {
 		leaf.sendConfigurationForm(form);
 	}
 
-	public void pubItemInNode(String nodeID, String payload)
-			throws XMPPException {
+	public void pubItemInNode(String nodeID, String payload) {
 		// Knoten "besorgen" und Item hinzufügen
-		LeafNode node = psm.getNode(nodeID);
+		LeafNode node = getNode(nodeID);
 		SimplePayload simplePayload = new SimplePayload(nodeID, "pubsub:"+nodeID, payload);
 		PayloadItem<SimplePayload> item = new PayloadItem<SimplePayload>("expiration" + System.currentTimeMillis(), simplePayload);
 		node.publish(item);
-		System.out.println("New Item published. Count: "+node.getItems().size());
+		try {
+			System.out.println("Neues Item im Knoten: "+nodeID+" veröffentlicht. Count: "+node.getItems().size());
+		} catch (XMPPException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("Fehler beim publishen");
+		}
 	}
 
 	public void subToNode(String nodeID, ItemEventListener<Item> listener) throws XMPPException {
 		// Knoten "besorgen" und abonnieren
 		LeafNode node = psm.getNode(nodeID);
 		node.addItemEventListener(listener);
-		node.subscribe(user + "@localhost");
+		node.subscribe(user + "@" + XMPPData.host);
+	}
+	
+	public LeafNode getNode(String nodeID) {
+		try {
+			return psm.getNode(nodeID);
+		} catch (XMPPException e) {
+			e.printStackTrace();
+			System.out.println("Knoten: "+nodeID+" konnte nicht geladen werden");
+			return null;
+		}
 	}
 
 	public void disconnect() {
