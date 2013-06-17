@@ -1,4 +1,4 @@
-package webservice;
+package webservice.ressources;
 
 import java.io.IOException;
 import java.net.URI;
@@ -20,6 +20,8 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
 
+import webservice.MyMarshaller;
+
 import com.sun.jersey.api.NotFoundException;
 
 import jaxbClasses.CurrencyAttr;
@@ -35,7 +37,7 @@ import jaxbClasses.ProfilesLOCAL;
 
 
 @Path ("/products")
-public class ProductResources {
+public class ProductResource {
 	
 	@GET 
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })

@@ -1,4 +1,4 @@
-package webservice;
+package webservice.ressources;
 
 import java.io.IOException;
 import java.net.URI;
@@ -18,6 +18,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
+
+import webservice.MyMarshaller;
 
 import com.sun.jersey.api.NotFoundException;
 

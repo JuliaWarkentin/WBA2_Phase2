@@ -1,4 +1,4 @@
-package webservice;
+package webservice.ressources;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +19,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 
+import webservice.MyMarshaller;
+
 import com.sun.jersey.api.NotFoundException;
 
 import jaxbClasses.Notification;
@@ -33,7 +35,7 @@ import jaxbClasses.Profiles;
 import jaxbClasses.ProfilesLOCAL;
 
 @Path ("/notifications")
-public class NotificationResources {
+public class NotificationResource {
 	
 	@GET 
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })

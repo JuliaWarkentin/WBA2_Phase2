@@ -77,8 +77,7 @@ public class NotificationPanel extends JPanel implements MouseListener, ActionLi
 	int[] tableIDs;
 	public String[][] getTableData() {
 		// .../notification Ressource anspechen
-		String url = "http://"+SessionData.host+":4434/fridges/"+SessionData.fridgeID+"/notifications";
-	    System.out.println("URL: " + url);
+		String url = "http://"+SessionData.host+":4434/notifications";
 	    SessionData.wrs = Client.create().resource(url);
 	    
 	    // GET - daten besorgen
@@ -105,7 +104,7 @@ public class NotificationPanel extends JPanel implements MouseListener, ActionLi
 		System.out.println("Column index: "+column+" | Noti-ID: "+ tableIDs[column]);
 		
 		// .../notification/{id} Ressource anspechen
-		String url = "http://"+SessionData.host+":4434/fridges/"+SessionData.fridgeID+"/notifications/"+ tableIDs[column];
+		String url = "http://"+SessionData.host+":4434/notifications/"+ tableIDs[column];
 	    System.out.println("URL: " + url);
 	    SessionData.wrs = Client.create().resource(url);
 	    

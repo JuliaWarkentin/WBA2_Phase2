@@ -1,4 +1,4 @@
-package webservice;
+package webservice.ressources;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +18,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
+
+import webservice.MyMarshaller;
 
 import com.sun.jersey.api.NotFoundException;
 
@@ -108,7 +110,7 @@ public class FridgeResource {
 				for(int j=0; j<pdsL.getProduct().size(); j++) {
 					Fridge.ProductTypes.ProductType.Products.Product p = new Fridge.ProductTypes.ProductType.Products.Product();
 					p.setHref("/products/"+pdsL.getProduct().get(j).getId());
-					String state = ProductResources.getProductStatebyID(pdsL.getProduct().get(j).getId());
+					String state = ProductResource.getProductStatebyID(pdsL.getProduct().get(j).getId());
 					p.setState(state);
 					if(state.equals("inside")) 
 						currentStock++;

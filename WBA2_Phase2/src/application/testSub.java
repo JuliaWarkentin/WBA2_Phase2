@@ -19,33 +19,13 @@ public class testSub {
 	 */
 	public static void main(String[] args) throws XMPPException, InterruptedException {
 		Connection.DEBUG_ENABLED = true;
-		// Verbindung zum XMPP-server herstellen.
-		Connection con = new XMPPConnection("localhost");
-		con.connect();
-		con.login("hans71", "hans71");
-
-		// Pubsubmgr mit dieser Verbindung erstellen
-		PubSubManager mgr = new PubSubManager(con);
-
-		// Knoten "besorgen" und abonnieren
-		LeafNode node = mgr.getNode("testNode");
 		
-		node.addItemEventListener(new ItemEventCoordinator());
-		node.subscribe("hans71@localhost");
-		
+		XmppSession xmpp = new XmppSession("hans71", "hans71");
+		xmpp.subToNode("expiration", new ItemEventCoordinator());
 		Thread.sleep(20 * 1000);
+		xmpp.disconnect();
+		
 		System.out.println("testSub - ende");
-		con.disconnect();
+		
 	}
-	
-	public static void printNode(LeafNode node) throws XMPPException{
-		System.out.println("\nKnotenID: "+ node.getId() +"     Size: "+node.getItems().size());
-		System.out.print("Items: ");
-		for(Item item : node.getItems()){
-			System.out.print(item.getId() + " | ");
-		}
-		System.out.println();
-	}
-
-
 }

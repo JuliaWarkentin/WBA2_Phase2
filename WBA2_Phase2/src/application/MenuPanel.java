@@ -47,41 +47,5 @@ public class MenuPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		System.out.println(e.getActionCommand());
 		
-	}
-	
-	public static void main(String[] args) {
-		XmppSession xmpp = new XmppSession("hans69", "hans69");
-		xmpp.discoverNodes();
-		
-		turnonNimbus();
-		MenuPanel m = new MenuPanel();
-		NotificationPanel n = new NotificationPanel(xmpp);
-		
-		JFrame f = new JFrame("Fridgemanager!");
-		f.getContentPane().add(m);
-		f.getContentPane().add(n);
-		f.getContentPane().add(new JLabel("asd"));
-		f.addWindowListener(new WindowClosingAdapter(true));
-		f.setLocation(100, 100);
-		f.setSize(600, 400);
-		f.setVisible(true);
-	 }
-	
-	public static void turnonNimbus(){
-		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	}	
 }

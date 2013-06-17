@@ -18,9 +18,8 @@ public class TestServer {
 	    SelectorThread srv = GrizzlyServerFactory.create(url);
 	    System.out.println("Grizzly Port: " + srv.getPort() + " | " + srv.getPortLowLevel());
 	    System.out.println("URL: " + url);
-	    System.out.println("Dafuq");
 	    System.out.println(srv.toString());
-	    Thread.sleep(100000); // 100 sekunden
+	    Thread.sleep(100000); // 10 sekunden
 	    srv.stopEndpoint();
 	    System.out.println("Server AUS!");
 	}
