@@ -1,13 +1,17 @@
 package application;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import org.jivesoftware.smackx.pubsub.Item;
 import org.jivesoftware.smackx.pubsub.ItemPublishEvent;
 import org.jivesoftware.smackx.pubsub.listener.ItemEventListener;
 import org.jivesoftware.smackx.pubsub.PayloadItem;
 import org.jivesoftware.smackx.pubsub.SimplePayload;
 
-public class ItemEventCoordinator implements ItemEventListener<Item>{
-
+public class ExpirationsNodeListener implements ItemEventListener<Item>{
+	private JFrame frame;
+	
 	@Override
 	public void handlePublishedItems(ItemPublishEvent<Item> items) {
 		System.out.println("\nhandlePublishedItems");
@@ -16,6 +20,7 @@ public class ItemEventCoordinator implements ItemEventListener<Item>{
 		for(Item item : items.getItems()){
 			System.out.println("\nItem ID: " + item.getId());
 			System.out.println(((PayloadItem<SimplePayload>) item).getPayload().toXML());
+//			JOptionPane.showMessageDialog(frame, "You just received a new Notification!\n" + ((PayloadItem<SimplePayload>) item).getPayload().toXML());
 		}
 	}
 }

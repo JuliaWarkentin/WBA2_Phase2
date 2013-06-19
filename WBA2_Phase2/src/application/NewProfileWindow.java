@@ -41,7 +41,7 @@ public class NewProfileWindow extends JFrame implements ActionListener{
 	
 	public NewProfileWindow(int fridgeID, int profileID) {
 		super("Create new Profile:");
-		addWindowListener(new WindowClosingAdapter(true));
+		addWindowListener(new WindowClosingAdapter(false));
 		
 		int x = 10, y = 45, yOffset = 20;
 		int width = 80, height = 20;

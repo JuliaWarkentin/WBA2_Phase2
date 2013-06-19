@@ -23,7 +23,7 @@ public class MenuPanel extends JPanel implements ActionListener{
 	JButton buttonProfiles = new JButton("Profiles");
 	
 	public MenuPanel() {
-		setLayout(null);
+		setLayout(new FlowLayout());
 		setSize(150, 400);
 //		setBackground(Color.red);
 		

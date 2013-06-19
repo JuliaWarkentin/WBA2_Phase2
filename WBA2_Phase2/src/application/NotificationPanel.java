@@ -1,6 +1,7 @@
 package application;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -25,33 +26,28 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 
-import xmpp.XmppSession;
+import xmpp.XMPPSession;
 
 import jaxbClasses.Notification;
 import jaxbClasses.Notifications;
 
-import com.sun.jersey.api.client.Client;
+//import com.sun.jersey.api.client.Client;
 
 public class NotificationPanel extends JPanel implements MouseListener, ActionListener{
-	public static final String[] COLHEADS = { "Type", "Head", "Date" };
+	String[] COLHEADS = { "Type", "Head", "Date" };
 	JLabel label = new JLabel("Notifications");
 	JButton buttonSub = new JButton("Subscribe to...");
 	JTable table;
 	JScrollPane scroll;
 	JTextArea textArea;
 	
-	XmppSession xmpp;
-	
-	
-	public NotificationPanel(XmppSession xmpp) {
-		this.xmpp = xmpp;
-		
-		int width = 430;
+	public NotificationPanel() {
+		int width = MainFrame.width-5;
 		
 		setLayout(null);
-		setLocation(150, 0);
-		setSize(width, 400);
-//		setBackground(Color.green);
+//		setLocation(150, 100);
+		setSize(MainFrame.width, MainFrame.height);
+		setBackground(Color.green);
 		
 		table = new JTable(getTableData(), COLHEADS);
 		table.setColumnSelectionAllowed(false);
@@ -77,13 +73,11 @@ public class NotificationPanel extends JPanel implements MouseListener, ActionLi
 	}
 	
 	int[] tableIDs;
-	public String[][] getTableData() {
-		// .../notification Ressource anspechen
-		String url = "http://"+SessionData.host+":4434/notifications";
-	    SessionData.wrs = Client.create().resource(url);
-	    
-	    // GET - daten besorgen
-	    Notifications ns = SessionData.wrs.accept("application/xml").get(Notifications.class);
+	private String[][] getTableData() {
+		// GET - .../notifications
+		String url = "http://"+Client.host+":4434/notifications";
+		Client.wrs = com.sun.jersey.api.client.Client.create().resource(url);
+	    Notifications ns = Client.wrs.accept("application/xml").get(Notifications.class);
 	    
 	    // Daten auf Tabelle abbilden
 	    String[][] data = new String[ns.getNotification().size()][3];
@@ -95,32 +89,32 @@ public class NotificationPanel extends JPanel implements MouseListener, ActionLi
 	    	data[i][2] = ns.getNotification().get(i).getDate().toString();
 	    	// ID aus hyperlink speichern
 	    	String href = ns.getNotification().get(i).getHref();
-	    	tableIDs[i] = Integer.parseInt(href.substring(href.length()-1)); System.out.println(tableIDs[i]);
+	    	tableIDs[i] = Integer.parseInt(href.substring(href.length()-1)); 
 	    }
 	    System.out.println(Arrays.deepToString(data));
 		return data;
 	}
 	
-	public void updateTextArea() {
+	private void updateTextArea() {
 		int column = table.getSelectedRow();
 		System.out.println("Column index: "+column+" | Noti-ID: "+ tableIDs[column]);
 		
-		// .../notification/{id} Ressource anspechen
-		String url = "http://"+SessionData.host+":4434/notifications/"+ tableIDs[column];
+		// GET - .../notifications/{id}
+		String url = "http://"+Client.host+":4434/notifications/"+ tableIDs[column];
 	    System.out.println("URL: " + url);
-	    SessionData.wrs = Client.create().resource(url);
+	    Client.wrs = com.sun.jersey.api.client.Client.create().resource(url);
 	    
-	    // GET - daten besorgen
-	    Notification ns = SessionData.wrs.accept("application/xml").get(Notification.class);
+	   
+	    Notification ns = Client.wrs.accept("application/xml").get(Notification.class);
 	    
 	    this.textArea.setText(ns.getText());
-	    
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == ("Subscribe to...")) {
-			SubscriptionList sl = new SubscriptionList(xmpp.getNodes());
+			Client.xmpp.discoverNodes();
+			SubscriptionList sl = new SubscriptionList(Client.xmpp.getNodes());
 		}
 	}
 
@@ -133,7 +127,6 @@ public class NotificationPanel extends JPanel implements MouseListener, ActionLi
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 		updateTextArea();
 	}
 

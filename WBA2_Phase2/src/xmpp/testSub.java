@@ -1,4 +1,4 @@
-package application;
+package xmpp;
 
 import org.jivesoftware.smackx.pubsub.Item;
 import org.jivesoftware.smack.Connection;
@@ -11,19 +11,15 @@ import org.jivesoftware.smackx.pubsub.LeafNode;
 import org.jivesoftware.smackx.pubsub.PubSubManager;
 import org.jivesoftware.smackx.pubsub.PublishModel;
 
-import xmpp.XmppSession;
+import application.ExpirationsNodeListener;
+
 
 public class testSub {
-
-	/**
-	 * @param args
-	 * @throws InterruptedException 
-	 */
-	public static void main(String[] args) throws XMPPException, InterruptedException {
+	public static void main(String[] args) throws InterruptedException {
 		Connection.DEBUG_ENABLED = true;
 		
-		XmppSession xmpp = new XmppSession("hans71", "hans71");
-		xmpp.subToNode("expiration", new ItemEventCoordinator());
+		XMPPSession xmpp = new XMPPSession("hans71", "hans71");
+		xmpp.subToNode("expiration", new ExpirationsNodeListener());
 		Thread.sleep(20 * 1000);
 		xmpp.disconnect();
 		

@@ -132,7 +132,7 @@ public class NotificationResource {
 		MyMarshaller.marshall(nsL, "data/notificationsLOCAL.xml");
 		
 		// Neu erstellte URI in Repsone angeben:
-		return Response.created(new URI("/notifications/"+freeID)).build();
+		return Response.created(new URI(""+freeID)).build();
 	}
 	/*
 	@DELETE

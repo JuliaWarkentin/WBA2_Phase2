@@ -1,4 +1,4 @@
-package application;
+package xmpp;
 
 import java.util.Iterator;
 import java.util.List;
@@ -21,22 +21,12 @@ import org.jivesoftware.smackx.pubsub.PubSubManager;
 import org.jivesoftware.smackx.pubsub.PublishModel;
 import org.jivesoftware.smackx.pubsub.SimplePayload;
 
-import xmpp.XmppSession;
 
 public class testPub {
-
-	/**
-	 * @param args
-	 * @throws XMPPException
-	 * @throws InterruptedException
-	 */
-	public static void main(String[] args) throws XMPPException,
-			InterruptedException {
-		
-		XmppSession xmpp = new XmppSession("hans70", "hans70");
+	public static void main(String[] args) {
+		XMPPSession xmpp = new XMPPSession("hans70", "hans70");
 		xmpp.pubItemInNode("expiration", "<href xmlns='pubsub:expiration'>diggah...</href>");
 		xmpp.disconnect();
-		
 		System.out.println("testPub - ende");
 	}
 }

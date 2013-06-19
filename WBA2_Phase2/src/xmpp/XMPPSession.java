@@ -72,11 +72,10 @@ public class XMPPSession {
 
 	public void discoverNodes() {
 		System.out.println("Discovering Nodes...");
-		ServiceDiscoveryManager mgr = ServiceDiscoveryManager
-				.getInstanceFor(con);
+		sdm = ServiceDiscoveryManager.getInstanceFor(con);
 		DiscoverItems items = null;
 		try {
-			items = mgr.discoverItems("pubsub." + XMPPData.host);
+			items = sdm.discoverItems("pubsub." + XMPPData.host);
 		} catch (XMPPException e) {
 			e.printStackTrace();
 			System.out.println("Discover failed");
@@ -109,16 +108,21 @@ public class XMPPSession {
 		return nodeList;
 	}
 
-	public void createNode(String nodeID) throws XMPPException {
+	public void createNode(String nodeID) {
 		// Knoten erstellen und konfigurieren
-		LeafNode leaf = psm.createNode(nodeID);
+		LeafNode leaf = getNode(nodeID);
 		ConfigureForm form = new ConfigureForm(FormType.submit);
 		form.setAccessModel(AccessModel.open);
 		form.setDeliverPayloads(true);
 		form.setNotifyRetract(true);
 		form.setPersistentItems(true);
 		form.setPublishModel(PublishModel.open);
-		leaf.sendConfigurationForm(form);
+		try {
+			leaf.sendConfigurationForm(form);
+		} catch (XMPPException e) {
+			e.printStackTrace();
+			System.out.println("sendConfigurationForm failed");
+		}
 	}
 
 	public void pubItemInNode(String nodeID, String payload) {
@@ -130,17 +134,21 @@ public class XMPPSession {
 		try {
 			System.out.println("Neues Item im Knoten: "+nodeID+" veröffentlicht. Count: "+node.getItems().size());
 		} catch (XMPPException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("Fehler beim publishen");
 		}
 	}
 
-	public void subToNode(String nodeID, ItemEventListener<Item> listener) throws XMPPException {
+	public void subToNode(String nodeID, ItemEventListener<Item> listener) {
 		// Knoten "besorgen" und abonnieren
-		LeafNode node = psm.getNode(nodeID);
+		LeafNode node = getNode(nodeID);
 		node.addItemEventListener(listener);
-		node.subscribe(user + "@" + XMPPData.host);
+		try {
+			node.subscribe(user+ "@" +XMPPData.host);
+		} catch (XMPPException e) {
+			e.printStackTrace();
+			System.out.println("subToNode failed");
+		}
 	}
 	
 	public LeafNode getNode(String nodeID) {

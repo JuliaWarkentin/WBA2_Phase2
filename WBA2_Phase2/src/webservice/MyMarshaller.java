@@ -20,10 +20,10 @@ import jaxbClasses.ObjectFactory;
  *
  */
 public class MyMarshaller {
+	
 	/**
-	 * 
 	 * @param o Zu "marshallendes" Objekt
-	 * @param path Dateipfad
+	 * @param path Dateipfad auf XML-Datei
 	 */
 	public static void marshall(Object o, String path) {
 		try {
@@ -36,9 +36,9 @@ public class MyMarshaller {
 			System.out.println("Fehler beim marshallen");
 		}
 	}
+	
 	/**
-	 * 
-	 * @param path Dateipfad
+	 * @param path Dateipfad auf XML-Datei
 	 * @return Gibt JAXB-Instanz zurück
 	 */
 	public static Object unmarshall(String path) {

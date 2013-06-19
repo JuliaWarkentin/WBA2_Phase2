@@ -1,4 +1,4 @@
-package application;
+package xmpp;
 
 import org.jivesoftware.smack.Connection;
 import org.jivesoftware.smack.XMPPConnection;
@@ -10,17 +10,10 @@ import org.jivesoftware.smackx.pubsub.LeafNode;
 import org.jivesoftware.smackx.pubsub.PubSubManager;
 import org.jivesoftware.smackx.pubsub.PublishModel;
 
-import xmpp.XmppSession;
 
 public class testCreate {
-	
-	/**
-	 * @param args
-	 * @throws XMPPException 
-	 * @throws InterruptedException 
-	 */
-	public static void main(String[] args) throws XMPPException, InterruptedException {
-		XmppSession xmpp = new XmppSession("hans69", "hans69");
+	public static void main(String[] args) {
+		XMPPSession xmpp = new XMPPSession("hans69", "hans69");
 		xmpp.createNode("expiration");
 		xmpp.discoverNodes();
 		xmpp.disconnect();
