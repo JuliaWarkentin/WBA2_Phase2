@@ -35,17 +35,30 @@ public class FridgeResource {
 	
 	@GET 
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public Fridges getFridges() throws JAXBException, IOException {
-		System.out.println("getFridges");
+	public Fridges getFridges(@QueryParam("profileid") int profileID) {
 		FridgesLOCAL fsL = (FridgesLOCAL) MyMarshaller.unmarshall("data/fridgesLOCAL.xml");
 		
 		// Fridgeliste entsprechend der fridges.xsd erstellen
 		Fridges fs = new Fridges();
-		for(int i=0; i<fsL.getFridge().size();i++) {
-			Fridges.Fridge f = new Fridges.Fridge();
-			f.setHref("/fridges/"+fsL.getFridge().get(i).getId());
-			f.setName(fsL.getFridge().get(i).getName());
-			fs.getFridge().add(f);
+		if(profileID <= 0) { // Alle Kühlschränke ausgeben
+			for(int i=0; i<fsL.getFridge().size();i++) {
+				Fridges.Fridge f = new Fridges.Fridge();
+				f.setHref("/fridges/"+fsL.getFridge().get(i).getId());
+				f.setName(fsL.getFridge().get(i).getName());
+				fs.getFridge().add(f);
+			}
+		} else { // Kühlschränkte nach profileID filtern (
+			for(int i=0; i<fsL.getFridge().size();i++) {
+				// Alle Profile für jeden Kühlschrank durchgehen
+				for(int j=0; j<fsL.getFridge().get(i).getProfiles().getProfile().size(); j++) {
+					if(profileID == fsL.getFridge().get(i).getProfiles().getProfile().get(j).getId()) {
+						Fridges.Fridge f = new Fridges.Fridge();
+						f.setHref("/fridges/"+fsL.getFridge().get(i).getId());
+						f.setName(fsL.getFridge().get(i).getName());
+						fs.getFridge().add(f);
+					}
+				}
+			}
 		}
 		return fs;
 	}
@@ -65,7 +78,6 @@ public class FridgeResource {
 	@Path("/{fridgeID}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
 	public Fridge getFridge(@PathParam("fridgeID") int fridgeID) throws JAXBException, IOException, DatatypeConfigurationException {
-		System.out.println("getFridge");
 		FridgesLOCAL fsL = (FridgesLOCAL) MyMarshaller.unmarshall("data/fridgesLOCAL.xml");
 		
 		// Lokale Fridgeliste nach passender id durchsuchen. 

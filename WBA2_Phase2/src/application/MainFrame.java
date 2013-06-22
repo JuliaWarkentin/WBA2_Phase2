@@ -11,43 +11,37 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smackx.pubsub.*;
 
-
+/**
+ * Startpunkt für alle weiteren Swing-Elemente, welche in dieses Fenster plaziert werden.
+ * 
+ * @author Simon Klinge
+ * @author Julia Warkentin
+ *
+ */
 public class MainFrame {
-	public static int width = 480;
-	public static int height = 600;
-	
+	public static final int width = 480;
+	public static final int height = 600;
 	
 	public MainFrame() {
-//		MenuPanel m = new MenuPanel();
-//		NotificationPanel n = new NotificationPanel();
+		turnonNimbus();
 		TabbedPanel r = new TabbedPanel();
 		
 		JFrame f = new JFrame("Fridgemanager!");
-//		f.getContentPane().add(m);
-//		f.getContentPane().add(n);
 		f.getContentPane().add(r);
 		f.addWindowListener(new WindowClosingAdapter(true));
 		f.setLocation(100, 100);
 		f.setSize(width+17, height+30); // Addition, da Fensterrahmen Pixel einnimmt
 		f.setVisible(true);
-		turnonNimbus();
+		
 	}
 	
 	private void turnonNimbus(){
 		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e) { e.printStackTrace();
+		} catch (InstantiationException e) { e.printStackTrace();
+		} catch (IllegalAccessException e) { e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) { e.printStackTrace();
 		}
 	}
 }

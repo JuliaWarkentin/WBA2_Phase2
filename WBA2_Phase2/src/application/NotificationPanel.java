@@ -31,25 +31,24 @@ import xmpp.XMPPSession;
 import jaxbClasses.Notification;
 import jaxbClasses.Notifications;
 
-//import com.sun.jersey.api.client.Client;
-
 public class NotificationPanel extends JPanel implements MouseListener, ActionListener{
-	String[] COLHEADS = { "Type", "Head", "Date" };
-	JLabel label = new JLabel("Notifications");
-	JButton buttonSub = new JButton("Subscribe to...");
-	JTable table;
-	JScrollPane scroll;
-	JTextArea textArea;
+	private JLabel label = new JLabel("Notifications");
+	private JButton buttonSub = new JButton("Subscribe to...");
+	private String[] COLHEADS = { "Type", "Head", "Date" };
+	private JTable table; 
+	private JScrollPane scroll;
+	private JTextArea textArea;
+	private int[] notifiIDs; 
 	
 	public NotificationPanel() {
-		int width = MainFrame.width-5;
-		
 		setLayout(null);
-//		setLocation(150, 100);
 		setSize(MainFrame.width, MainFrame.height);
 		setBackground(Color.green);
 		
-		table = new JTable(getTableData(), COLHEADS);
+		int width = MainFrame.width-5;
+		
+		String[] tmp = {"Type", "Head", "Date"};
+		table = new JTable(getTableData(), tmp);
 		table.setColumnSelectionAllowed(false);
 		table.addMouseListener(this);
 		JScrollPane scroll = new JScrollPane(table);
@@ -72,42 +71,16 @@ public class NotificationPanel extends JPanel implements MouseListener, ActionLi
 		add(textArea);
 	}
 	
-	int[] tableIDs;
 	private String[][] getTableData() {
-		// GET - .../notifications
-		String url = "http://"+Client.host+":4434/notifications";
-		Client.wrs = com.sun.jersey.api.client.Client.create().resource(url);
-	    Notifications ns = Client.wrs.accept("application/xml").get(Notifications.class);
-	    
-	    // Daten auf Tabelle abbilden
-	    String[][] data = new String[ns.getNotification().size()][3];
-	    tableIDs = new int[ns.getNotification().size()];
-	    for(int i=0; i<ns.getNotification().size(); i++) {
-	    	Notifications.Notification n = new Notifications.Notification();
-	    	data[i][0] = ns.getNotification().get(i).getType();
-	    	data[i][1] = ns.getNotification().get(i).getHead();
-	    	data[i][2] = ns.getNotification().get(i).getDate().toString();
-	    	// ID aus hyperlink speichern
-	    	String href = ns.getNotification().get(i).getHref();
-	    	tableIDs[i] = Integer.parseInt(href.substring(href.length()-1)); 
-	    }
-	    System.out.println(Arrays.deepToString(data));
-		return data;
+		notifiIDs = RESTHandler.getNotificationIDs();
+		return RESTHandler.getNotificationTableData();
 	}
 	
 	private void updateTextArea() {
-		int column = table.getSelectedRow();
-		System.out.println("Column index: "+column+" | Noti-ID: "+ tableIDs[column]);
-		
-		// GET - .../notifications/{id}
-		String url = "http://"+Client.host+":4434/notifications/"+ tableIDs[column];
-	    System.out.println("URL: " + url);
-	    Client.wrs = com.sun.jersey.api.client.Client.create().resource(url);
-	    
-	   
-	    Notification ns = Client.wrs.accept("application/xml").get(Notification.class);
-	    
-	    this.textArea.setText(ns.getText());
+		int row = table.getSelectedRow();
+//		System.out.println("Column index: "+row+" | Noti-ID: "+ notifiIDs[row]);
+		if(row != -1)
+			textArea.setText(RESTHandler.getNotificationText(notifiIDs[row]));
 	}
 	
 	@Override
@@ -115,6 +88,7 @@ public class NotificationPanel extends JPanel implements MouseListener, ActionLi
 		if (e.getActionCommand() == ("Subscribe to...")) {
 			Client.xmpp.discoverNodes();
 			SubscriptionList sl = new SubscriptionList(Client.xmpp.getNodes());
+			sl.setLocation(buttonSub.getLocation());
 		}
 	}
 

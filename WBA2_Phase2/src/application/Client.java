@@ -4,6 +4,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.jivesoftware.smack.Connection;
 import org.jivesoftware.smack.XMPPConnection;
@@ -17,17 +20,21 @@ import xmpp.XMPPSession;
 public class Client {
 	public static XMPPSession xmpp;
 	public static String host = "localhost";
-	public static String portREST = "";
-	public static String portXMPP = "";
-	public static String user = "hans71";
-	public static String passw = "hans71";
-	public static int fridgeID = 1;
-	public static  WebResource wrs;
+	public static WebResource wrs;
 	
-	public Client() {
+	public static int profileID = 5;
+	public static XMLGregorianCalendar currentDate;
+	
+	public Client()  {
 		xmpp = new XMPPSession("hans70", "hans70");
 		xmpp.discoverNodes();
 		xmpp.subToNode("expiration", new ExpirationsNodeListener());
+		
+		try { 
+			currentDate = DatatypeFactory.newInstance().newXMLGregorianCalendar("2000-01-01");
+		} catch (DatatypeConfigurationException e) {
+			e.printStackTrace(); System.out.println("Error initializing currentDate...");
+		}
 		
 		MainFrame mf = new MainFrame();
 	}

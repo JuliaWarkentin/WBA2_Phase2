@@ -1,6 +1,7 @@
 package application;
 
 import java.awt.Color;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -15,10 +16,20 @@ import javax.swing.ListSelectionModel;
 import jaxbClasses.Profile;
 import jaxbClasses.Profiles;
 
+/**
+ * @author Simon Klinge
+ * @author Julia Warkentin
+ *
+ */
 public class ProfilePanel extends JPanel implements ActionListener {
+	// Auswahlliste
+	private JLabel labelProfiles = new JLabel("Existing Profiles:");
 	private JList<String> list;
+	private JScrollPane scroll;
 	private JButton buttonSelect = new JButton("Select");
+	private int[] profileIDs; // benötigt, um zu Wissen welche Listenzeile welcher profileID entspricht
 
+	// Informationen zum ausgewählten Profil
 	private JLabel labelName = new JLabel();
 	private JLabel labelBirth = new JLabel();
 	private JLabel labelGender = new JLabel();
@@ -31,30 +42,35 @@ public class ProfilePanel extends JPanel implements ActionListener {
 		setBackground(Color.pink);
 		
 		// Profilliste
+		labelProfiles.setLocation(0, 0);
+		labelProfiles.setSize(100, 25);
 		list = new JList<String>(getProfiles());
-		list.setLocation(0, 0);
-		list.setSize(MainFrame.width/3, 200);
-		list.setSelectedIndex(1);
+		list.setSelectedIndex(0);
+		JScrollPane scroll = new JScrollPane(list);
+		scroll.setLocation(0, 25);
+		scroll.setSize(MainFrame.width/3, 100);
+		
 		// Auswahlbutton
-		buttonSelect.setLocation(0, 200);
+		buttonSelect.setLocation(0, 125);
 		buttonSelect.setSize(MainFrame.width/3, 30);
 		buttonSelect.addActionListener(this);
 		
 		// Labels
-		int xOffset = 20, yOffset = 30, width = 200, height = 30;
-		labelName.setLocation(MainFrame.width/3 + xOffset, yOffset*1);
+		int xOffset = 25, yOffset = 25, width = 200, height = 30;
+		labelName.setLocation(MainFrame.width/3 + xOffset, yOffset*0);
 		labelName.setSize(width, height);
-		labelBirth.setLocation(MainFrame.width/3 + xOffset, yOffset*2);
+		labelBirth.setLocation(MainFrame.width/3 + xOffset, yOffset*1);
 		labelBirth.setSize(width, height);
-		labelGender.setLocation(MainFrame.width/3 + xOffset, yOffset*3);
+		labelGender.setLocation(MainFrame.width/3 + xOffset, yOffset*2);
 		labelGender.setSize(width, height);
-		labelHeight.setLocation(MainFrame.width/3 + xOffset, yOffset*4);
+		labelHeight.setLocation(MainFrame.width/3 + xOffset, yOffset*3);
 		labelHeight.setSize(width, height);
-		labelWeight.setLocation(MainFrame.width/3 + xOffset, yOffset*5);
+		labelWeight.setLocation(MainFrame.width/3 + xOffset, yOffset*4);
 		labelWeight.setSize(width, height);
 		updateLabels();
 		
-		add(list);
+		add(labelProfiles);
+		add(scroll);
 		add(buttonSelect);
 		add(labelName);
 		add(labelBirth);
@@ -63,32 +79,13 @@ public class ProfilePanel extends JPanel implements ActionListener {
 		add(labelWeight);
 	}
 	
-	int[] profileIDs;
 	private String[] getProfiles() {
-		// GET - .../profiles
-		String url = "http://" + Client.host + ":4434/profiles";
-		Client.wrs = com.sun.jersey.api.client.Client.create().resource(url);
-		Profiles ps = Client.wrs.accept("application/xml").get(Profiles.class);
-
-		String[] names = new String[ps.getProfile().size()];
-		profileIDs = new int[ps.getProfile().size()];
-		for (int i = 0; i < ps.getProfile().size(); i++) {
-			names[i] = ps.getProfile().get(i).getName();
-			// ID aus Referenz entnehmen
-			String href = ps.getProfile().get(i).getHref();
-			profileIDs[i] = Integer.parseInt(href.substring(href.length()-1)); 
-			System.out.println(profileIDs[i]);
-		}
-		System.out.println(Arrays.toString(names));
-		return names;
+		profileIDs = RESTHandler.getProfileIDs();
+		return RESTHandler.getProfiles();
 	}
 	
 	private void updateLabels() {
-		int column = list.getSelectedIndex();
-		// GET - .../profiles/{id}
-		String url = "http://" + Client.host + ":4434/profiles/" + profileIDs[column];
-		Client.wrs = com.sun.jersey.api.client.Client.create().resource(url);
-		Profile p = Client.wrs.accept("application/xml").get(Profile.class);
+		Profile p = RESTHandler.getProfile(profileIDs[list.getSelectedIndex()]);
 		
 		labelName.setText  	("Name:         " + p.getName());
 		labelBirth.setText 	("Birthdate:    " + p.getBirthdate().toString());
@@ -97,6 +94,8 @@ public class ProfilePanel extends JPanel implements ActionListener {
 		labelWeight.setText	("Weight:       " + p.getWeight());
 		
 		TabbedPanel.loginLabel.setText("\"Logged in\" as " + p.getName());
+		Client.profileID = profileIDs[list.getSelectedIndex()];
+		System.out.println("New ProfileID: "+Client.profileID);
 	}
 
 	@Override
@@ -105,4 +104,5 @@ public class ProfilePanel extends JPanel implements ActionListener {
 			updateLabels();
 		}
 	}
+	
 }

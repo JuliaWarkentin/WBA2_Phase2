@@ -39,7 +39,7 @@ public class MyMarshaller {
 	
 	/**
 	 * @param path Dateipfad auf XML-Datei
-	 * @return Gibt JAXB-Instanz zurück
+	 * @return JAXB-Instanz zurück
 	 */
 	public static Object unmarshall(String path) {
 		try {

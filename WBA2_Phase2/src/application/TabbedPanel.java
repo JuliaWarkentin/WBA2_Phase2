@@ -3,50 +3,46 @@ package application;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
+/**
+ * Vereint die drei Oberflächen: FridgePanel, NotificatonPanel und ProfilePanel
+ * in einem TabbedPane. Zusätzlich ein Label, das anzeigt welches Profil zurzeit 
+ * ausgewählt ist.
+ * 
+ * @author Simon Klinge
+ * @author Julia Warkentin
+ *
+ */
 public class TabbedPanel extends JPanel {
-	JTabbedPane tp = new JTabbedPane();
-	NotificationPanel n = new NotificationPanel();
-	ProfilePanel p = new ProfilePanel();
+	private JTabbedPane tp = new JTabbedPane();
+	private FridgePanel f = new FridgePanel();
+	private NotificationPanel n = new NotificationPanel();
+	private ProfilePanel p = new ProfilePanel();
 	
 	public static JLabel loginLabel = new JLabel(); 
 
 	public TabbedPanel() {
-		
-//		for (int i = 0; i < 5; ++i) {
-//			JPanel panel = new JPanel();
-//			panel.add(new JLabel("Karte " + i));
-//			JButton next = new JButton("Weiter");
-//			next.addActionListener(new NextTabActionListener());
-//			panel.add(next);
-//			tp.addTab("Tab" + i, panel);
-//		}
 		setLayout(null);
 		tp.setLocation(0, 0);
 		tp.setSize(MainFrame.width, MainFrame.height);
-		
-		tp.addTab("Fridges", new JPanel());
+		tp.addTab("Fridges", f);
 		tp.addTab("Notifications", n);
 		tp.addTab("Profiles", p);
 		add(tp, null);
-		
 		loginLabel.setLocation(250, 0);
-		loginLabel.setSize(300, 20);
+		loginLabel.setSize(MainFrame.width-250, 20);
 		add(loginLabel);
-	}
-
-	class NextTabActionListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-//			int tab = tp.getSelectedIndex();
-//			tab = (tab >= tp.getTabCount() - 1 ? 0 : tab + 1);
-//			tp.setSelectedIndex(tab);
-//			((JPanel) tp.getSelectedComponent()).requestDefaultFocus();
-		}
 	}
 }

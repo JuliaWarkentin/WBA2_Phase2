@@ -29,7 +29,6 @@ public class SubscriptionList extends JFrame implements ActionListener {
 		// setUndecorated(true);
 		// getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 		setSize(220, 230);
-		setLocation(100, 100);
 		setVisible(true);
 
 		jList = new JList<String>();

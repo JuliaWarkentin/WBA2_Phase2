@@ -77,7 +77,10 @@ public class ProfileResource {
 			 	break;
 			 }
 		}
-		System.out.println(psL.getProfile().get(indexFound).getName());
+		if(indexFound == -1) {
+			System.out.println("Profil nicht gefunden!"); 
+			return null; // Server liefert dadurch Statuscode 204, müsste eigentlich 404 sein.
+		}
 		return createProfile(psL.getProfile().get(indexFound));
 	}
 	

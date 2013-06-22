@@ -38,8 +38,8 @@ public class Server {
 	    
 	    // Prüfe jeden Tag den Datenbestand. Simuliere über mehrere Tage hinweg
 	    NotificationService s = new NotificationService();
-	    TimeSimulator ts = new TimeSimulator(1, 2015, 1, 10);
-	    for(int i=0; i<10; i++) { // 10-Tage
+	    TimeSimulator ts = new TimeSimulator(60, 2011, 1, 10);
+	    for(int i=0; i<1; i++) { // 10-Tage
 	    	ts.printCurrentDate();
 	    	s.checkProducts(ts.getXMLDate());
 	    	ts.sleep1Day();
