@@ -57,15 +57,12 @@ public class ProfileResource {
 			}
 		}
 		else {	// Profile nach Namen ausgeben
-			System.out.print("QuerySearch on Profiles: "+queryName);
 			for(int i=0; i<psL.getProfile().size(); i++){
-				System.out.println(" compared with "+psL.getProfile().get(i).getName());
 				if(queryName.equals(psL.getProfile().get(i).getName())) {
 					p = new Profiles.Profile();
 					p.setHref("/profiles/"+psL.getProfile().get(i).getId()); 	// Hyperlink für mehr Details
 					p.setName(psL.getProfile().get(i).getName());				// und Name
 					ps.getProfile().add(p);
-					System.out.println("Siehst du mich?!");
 				}
 			}
 		}
@@ -152,12 +149,12 @@ public class ProfileResource {
 		// Neu erstellte URI im Response angeben:
 		return Response.created(new URI("/profiles/"+freeID)).build();
 	}
-	/*
+	
 	@DELETE
 	@Path("/{profileID}")
-	public void deleteProfile(@PathParam("profileID") int profileID, @PathParam("fridgeID") int fridgeID) throws JAXBException {
+	public void deleteProfile(@PathParam("profileID") int profileID) throws JAXBException {
 		ProfilesLOCAL psL = (ProfilesLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeID + "/profilesLOCAL.xml");
+				unmarshall("data/profilesLOCAL.xml");
 		
 		//Suche Profil
 		boolean found = false;
@@ -173,9 +170,6 @@ public class ProfileResource {
 		}
 		
 		// Änderung übernehmen und speichern.
-		MyMarshaller.marshall(psL, "data/fridges/"+ fridgeID + "/profilesLOCAL.xml");
+		MyMarshaller.marshall(psL, "data/profilesLOCAL.xml");
 	}
-	
-	
-	*/
 }

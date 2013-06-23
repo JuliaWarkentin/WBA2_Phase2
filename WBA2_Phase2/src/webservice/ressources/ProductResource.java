@@ -51,7 +51,7 @@ public class ProductResource {
 	
 	@GET 
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
-	public Products getProducts() throws JAXBException {
+	public Products getProducts(@QueryParam("profileid") int profileID) throws JAXBException {
 		ProductsLOCAL psL = (ProductsLOCAL) MyMarshaller.unmarshall("data/productsLOCAL.xml");
 		ProductTypesLOCAL ptsL = (ProductTypesLOCAL) MyMarshaller.unmarshall("data/producttypesLOCAL.xml");
 		
@@ -229,18 +229,16 @@ public class ProductResource {
 		return Response.created(new URI("/products/"+freeID)).build();
 	}
 	
-	/*
+	
 	@DELETE
 	@Path("/{productID}")
-	public void deleteProduct(@PathParam("productID") int productID, @PathParam("producttypeID") int producttypeID, @PathParam("fridgeID") int fridgeID) throws JAXBException {
-		ProductsLOCAL psL = (ProductsLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeID + "/productsLOCAL.xml");
+	public void deleteProduct(@PathParam("productID") int productID) throws JAXBException {
+		ProductsLOCAL psL = (ProductsLOCAL) MyMarshaller.unmarshall("data/productsLOCAL.xml");
 		
 		//Suche Produkt
 		boolean found = false;
 		for(int i=0; i<psL.getProduct().size(); i++){
-			if(psL.getProduct().get(i).getId() == productID && 
-					psL.getProduct().get(i).getProductTypeID() == producttypeID) { // gefunden?
+			if(psL.getProduct().get(i).getId() == productID) { // gefunden?
 				found = true;
 				psL.getProduct().remove(i); // löschen
 				break;
@@ -251,17 +249,6 @@ public class ProductResource {
 		}
 		
 		// Änderung übernehmen und speichern.
-		MyMarshaller.marshall(psL, "data/fridges/"+ fridgeID + "/productsLOCAL.xml");
+		MyMarshaller.marshall(psL, "data/productsLOCAL.xml");
 	}
-	
-	private String getProfileNameByID(int profileid, int fridgeID) throws JAXBException{
-		ProfilesLOCAL psL = (ProfilesLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeID + "/profilesLOCAL.xml");
-		for(ProfilesLOCAL.Profile p : psL.getProfile()){
-			if(p.getId() == profileid)
-				return p.getName();
-		}
-		System.out.println("getProfileNameByID fehlgeschlagen!");
-		return null;
-	}*/
 }

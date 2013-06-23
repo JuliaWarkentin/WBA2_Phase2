@@ -13,8 +13,17 @@ import javax.swing.JRootPane;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 
+import xmpp.XMPPData;
+
+import application.Client;
+import application.ExpirationsNodeListener;
 import application.swing.WindowClosingAdapter;
 
+/**
+ * @author Simon Klinge
+ * @author Julia Warkentin
+ *
+ */
 public class SubscripeToFrame extends JFrame implements ActionListener {
 	private JList<String> jList;
 	private JButton buttonSub;
@@ -75,6 +84,7 @@ public class SubscripeToFrame extends JFrame implements ActionListener {
 				String value = lm.getElementAt(sel[i]);
 				System.out.println("  " + value + " subscribed");
 				subscriptionList.add(value);
+				Client.xmpp.subToNode(XMPPData.expirationNodeID, new ExpirationsNodeListener());
 			}
 			updateNodeList();
 		}

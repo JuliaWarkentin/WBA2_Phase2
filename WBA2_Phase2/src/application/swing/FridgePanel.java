@@ -21,12 +21,18 @@ import javax.swing.table.TableModel;
 import application.Client;
 import application.RESTHandler;
 import application.swing.popups.AddProductFrame;
+import application.swing.popups.ProductInformationFrame;
 
 import jaxbClasses.Fridge;
 import jaxbClasses.Fridges;
 import jaxbClasses.Notifications;
 import jaxbClasses.Profiles;
 
+/**
+ * @author Simon Klinge
+ * @author Julia Warkentin
+ *
+ */
 public class FridgePanel extends JPanel implements ActionListener, FocusListener {
 	public static int selectedFridgeID;
 	public static int selectedProducttypeID;
@@ -53,6 +59,7 @@ public class FridgePanel extends JPanel implements ActionListener, FocusListener
 	
 	private JButton buttonAdd = new JButton("Add Product");
 	private JButton buttonConsume = new JButton("Consume Product");
+	private JButton buttonShowInfo = new JButton("Show Information");
 	
 	// Errorlabel
 	private JLabel labelError = new JLabel("");
@@ -106,21 +113,22 @@ public class FridgePanel extends JPanel implements ActionListener, FocusListener
 		scrollTable = new JScrollPane(table);
 		scrollTable.setLocation(0, 200);
 		scrollTable.setSize(fullwidth, 100);
-		width = 200; height = 25;
-		buttonAdd.setLocation(fullwidth/2 - width, 300);
-		buttonAdd.setSize(width, height);
+		width = 130; height = 25;
+		buttonAdd.setBounds(0, 300, width, height);
 		buttonAdd.addActionListener(this);
-		buttonConsume.setLocation(fullwidth/2, 300);
-		buttonConsume.setSize(width, height);
+		buttonConsume.setBounds(width, 300, width, height);
 		buttonConsume.addActionListener(this);
-		
+		buttonShowInfo.setBounds(fullwidth - width, 300, width, height);
+		buttonShowInfo.addActionListener(this);
 		scrollTable.setVisible(false);
 		buttonConsume.setVisible(false);
 		buttonAdd.setVisible(false);
+		buttonShowInfo.setVisible(false);
 		
 		add(scrollTable);
 		add(buttonAdd);
 		add(buttonConsume);
+		add(buttonShowInfo);
 		
 		labelError.setBounds(fullwidth/2 - 100, 425, 200, 25);
 		labelError.setForeground(Color.red);
@@ -162,6 +170,7 @@ public class FridgePanel extends JPanel implements ActionListener, FocusListener
 			scrollTable.setVisible(true);
 			buttonConsume.setVisible(true);
 			buttonAdd.setVisible(true);
+			buttonShowInfo.setVisible(true);
 		}
 		
 		// Produkt hinzufügen?
@@ -182,6 +191,22 @@ public class FridgePanel extends JPanel implements ActionListener, FocusListener
 		// Produkt verbrauchen?
 		if(e.getActionCommand() == "Consume Product") {
 			
+		}
+		
+		// Informationen anzeigen?
+		if(e.getActionCommand() == "Show Information") {
+			int row = table.getSelectedRow();
+			if(row == -1) { // Muss eine Zeile ausgewählt haben
+				labelError.setText("Select a Producttype first...");
+			} else {
+				labelError.setText("");
+				selectedProducttypeID = producttypeIDs[row];
+				ProductInformationFrame ptf = new ProductInformationFrame(
+						RESTHandler.getProducttype(selectedProducttypeID));
+				ptf.setSize(330, 400);
+				ptf.setLocation(buttonShowInfo.getLocation());
+				ptf.setVisible(true);
+			}
 		}
 	}
 

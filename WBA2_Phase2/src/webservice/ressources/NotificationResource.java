@@ -55,7 +55,6 @@ public class NotificationResource {
 		// Liste der Notifications aus notificationLOCAL.xml ensprechend der notifications.xsd (REST) zusammenbauen
 		Notifications ns = new Notifications();
 		Notifications.Notification n;
-		System.out.println(nsL.getNotification().size());
 		for(int i=0; i<nsL.getNotification().size(); i++){
 			n = new Notifications.Notification();
 			n.setHref("/notifications/"+ nsL.getNotification().get(i).getId());
@@ -144,12 +143,12 @@ public class NotificationResource {
 		// Neu erstellte URI in Repsone angeben:
 		return Response.created(new URI(""+freeID)).build();
 	}
-	/*
+	
 	@DELETE
 	@Path("/{notificationID}")
-	public void deleteProduct(@PathParam("notificationID") int notificationID, @PathParam("fridgeID") int fridgeID) throws JAXBException {
+	public void deleteProduct(@PathParam("notificationID") int notificationID) throws JAXBException {
 		NotificationsLOCAL nsL = (NotificationsLOCAL) MyMarshaller.
-				unmarshall("data/fridges/"+ fridgeID + "/notificationsLOCAL.xml");
+				unmarshall("data/notificationsLOCAL.xml");
 		
 		//Suche Nachricht
 		boolean found = false;
@@ -165,18 +164,7 @@ public class NotificationResource {
 		}
 		
 		// Änderung übernehmen und speichern.
-		MyMarshaller.marshall(nsL, "data/fridges/"+ fridgeID + "/notificationsLOCAL.xml");
+		MyMarshaller.marshall(nsL, "data/notificationsLOCAL.xml");
 	}
-	
-	@PUT
-	@Path("/{id}")
-	@Consumes({ MediaType.APPLICATION_XML})
-	public Response createProfileByID(@PathParam("id") int id, @PathParam("fridgeID") int fridgeID, Profile p) throws JAXBException, IOException {
-		Data.writeProfile(fridgeID, id,
-				p.getName(), p.getBirthdate().toString(), p.getGender(), 
-				""+ p.getHeight(), ""+ p.getWeight());
-		System.out.println("name: "+p.getName());
-		return null;
-	}
-	*/
+
 }

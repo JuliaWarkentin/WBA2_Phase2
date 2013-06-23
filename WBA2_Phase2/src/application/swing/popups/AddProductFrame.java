@@ -30,7 +30,11 @@ import application.swing.MainFrame;
 import application.swing.WindowClosingAdapter;
 
 import com.sun.jersey.api.client.ClientResponse;
-
+/**
+ * @author Simon Klinge
+ * @author Julia Warkentin
+ *
+ */
 public class AddProductFrame extends JFrame implements ActionListener {
 	// Label und Anzahl des Produkts
 	String productName;
@@ -89,7 +93,7 @@ public class AddProductFrame extends JFrame implements ActionListener {
 		buttonBack.addActionListener(this);
 		add(buttonBack);
 		
-		labelConfirm.setBounds(x+xOffset*0, y+yOffset*4, width*2, height);
+		labelConfirm.setBounds(x+xOffset*0, y+yOffset*4, width*4, height);
 		labelConfirm.setForeground(MainFrame.colorSuccess);
 		add(labelConfirm);
 	}

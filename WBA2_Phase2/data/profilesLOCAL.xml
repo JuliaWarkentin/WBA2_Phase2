@@ -1,39 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <profilesLOCAL xmlns="http://www.teamklinge.de/fridgemanager/schemas">
     <profile id="4">
-        <name>Bernd</name>
+        <name>Bernd Stromberg</name>
         <birthdate>1970-01-01</birthdate>
         <gender>m</gender>
-        <height>180.0</height>
+        <height>180.4</height>
         <weight>70.0</weight>
+    </profile>
+    <profile id="8">
+        <name>Dr. Otto</name>
+        <birthdate>1980-01-01</birthdate>
+        <gender>m</gender>
+        <height>172.0</height>
+        <weight>81.0</weight>
     </profile>
     <profile id="5">
         <name>Berthold Heisterkamm</name>
         <birthdate>1980-01-01</birthdate>
         <gender>m</gender>
-        <height>170.0</height>
+        <height>171.0</height>
         <weight>80.0</weight>
     </profile>
     <profile id="6">
         <name>Wieland Schlehufer</name>
         <birthdate>1980-01-01</birthdate>
         <gender>m</gender>
-        <height>170.0</height>
-        <weight>80.0</weight>
-    </profile>
-    <profile id="7">
-        <name>Dr. Otto</name>
-        <birthdate>1980-01-01</birthdate>
-        <gender>m</gender>
-        <height>170.0</height>
-        <weight>80.0</weight>
-    </profile>
-    <profile id="8">
-        <name>Deine Muddah</name>
-        <birthdate>1980-01-01</birthdate>
-        <gender>m</gender>
-        <height>170.0</height>
-        <weight>80.0</weight>
+        <height>156.0</height>
+        <weight>56.0</weight>
     </profile>
     <profile id="1">
         <name>Luigi Sommer</name>
@@ -57,13 +50,6 @@
         <weight>65.0</weight>
     </profile>
     <profile id="9">
-        <name>Luigi Sommer</name>
-        <birthdate>1990-01-01</birthdate>
-        <gender>m</gender>
-        <height>170.0</height>
-        <weight>65.0</weight>
-    </profile>
-    <profile id="10">
         <name>Luigi Sommer</name>
         <birthdate>1990-01-01</birthdate>
         <gender>m</gender>

@@ -34,7 +34,7 @@ import jaxbClasses.ProfilesLOCAL;
 /**
  * Implementiert:
  * 	/fridges			GET, POST
- *  /fridges/{id}  		GET, PUT, DELETE
+ *  /fridges/{id}  		GET, PUT
  * 
  * @author Simon Klinge
  * @author Julia Warkentin
@@ -48,7 +48,6 @@ public class FridgeResource {
 	public Fridges getFridges(@QueryParam("profileid") int profileID) {
 		FridgesLOCAL fsL = (FridgesLOCAL) MyMarshaller.unmarshall("data/fridgesLOCAL.xml");
 		
-		System.out.println("fasdhfkljasdhfklajsdhfklajsdhf: "+profileID);
 		
 		// Fridgeliste entsprechend der fridges.xsd erstellen
 		Fridges fs = new Fridges();

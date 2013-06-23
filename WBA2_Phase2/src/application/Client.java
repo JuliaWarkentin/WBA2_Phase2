@@ -19,6 +19,11 @@ import com.sun.jersey.api.client.WebResource;
 
 import xmpp.XMPPSession;
 
+/**
+ * @author Simon Klinge
+ * @author Julia Warkentin
+ *
+ */
 public class Client {
 	public static XMPPSession xmpp;
 	public static String host = "localhost";
@@ -30,7 +35,6 @@ public class Client {
 	public Client()  {
 		xmpp = new XMPPSession("hans70", "hans70");
 		xmpp.discoverNodes();
-		xmpp.subToNode("expiration", new ExpirationsNodeListener());
 		
 		try { 
 			currentDate = DatatypeFactory.newInstance().newXMLGregorianCalendar("2000-01-01");

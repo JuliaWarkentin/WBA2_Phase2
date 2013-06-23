@@ -32,7 +32,7 @@ import jaxbClasses.ProfilesLOCAL;
 /**
  * Implementiert:
  * 	/producttypes		GET, POST
- *  /producttypes/{id}  GET, DELETE
+ *  /producttypes/{id}  GET
  * 
  * @author Simon Klinge
  * @author Julia Warkentin
@@ -86,6 +86,11 @@ public class ProducttypeResource {
 		ProductType pt = new ProductType();
 		pt.setName(ptL.getName());
 		pt.setDescription(ptL.getDescription());
+		// Gewicht
+		ProductType.Weight w = new ProductType.Weight();
+		w.setValue(ptL.getWeight().getValue());
+		w.setUnit(ptL.getWeight().getUnit());
+		pt.setWeight(w);
 		// Zutaten
 		ProductType.Ingredients ingredients = new ProductType.Ingredients();
 		ingredients.getIngredient().addAll(ptL.getIngredients().getIngredient());
@@ -104,6 +109,8 @@ public class ProducttypeResource {
 		nutrients.setRoughage(ptL.getNutrients().getRoughage());
 		nutrients.setSodium(ptL.getNutrients().getSodium());
 		pt.setNutrients(nutrients);
+		// Preis und Barcode
+		pt.setBarcode(pt.getBarcode());
 		return pt;
 	}
 	

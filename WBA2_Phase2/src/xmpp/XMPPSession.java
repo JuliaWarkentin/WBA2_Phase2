@@ -59,10 +59,15 @@ public class XMPPSession {
 		sdm = new ServiceDiscoveryManager(con);
 	}
 
-	public void discoverServices() throws XMPPException {
+	public void discoverServices() {
 		System.out.println("Discovering Services...");
 		sdm = ServiceDiscoveryManager.getInstanceFor(con);
-		DiscoverItems items = sdm.discoverItems(XMPPData.host);
+		DiscoverItems items = null;
+		try {
+			items = sdm.discoverItems(XMPPData.host);
+		} catch (XMPPException e) {
+			e.printStackTrace();
+		}
 		Iterator<DiscoverItems.Item> iter = items.getItems();
 		while (iter.hasNext()) {
 			DiscoverItems.Item i = iter.next();
@@ -89,6 +94,9 @@ public class XMPPSession {
 		}
 	}
 
+	/**
+	 * @return Liste aller NodeID´s
+	 */
 	public List<String> getNodes() {
 		ServiceDiscoveryManager mgr = ServiceDiscoveryManager
 				.getInstanceFor(con);

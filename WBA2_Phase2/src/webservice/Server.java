@@ -20,7 +20,7 @@ import com.sun.jersey.api.container.grizzly.GrizzlyServerFactory;
 /**
  * Einstiegspunkt für den Server. Stellt REST-Schnittstelle bereit.
  * Darüber hinaus werden Daten für alle Kühlschränke geprüft und 
- * evt. Nachrichten auf dem XMPP-Server übermittelt.
+ * ggf. Nachrichten auf dem XMPP-Server übermittelt.
  * 
  * @author Simon Klinge
  * @author Julia Warkentin
@@ -44,7 +44,8 @@ public class Server {
 	    
 	    // Prüfe jeden Tag den Datenbestand. Simuliere über mehrere Tage hinweg
 	    NotificationService s = new NotificationService();
-	    TimeSimulator ts = new TimeSimulator(2, 2001, 1, 10);
+	    int secondsPerDay = 10;
+	    TimeSimulator ts = new TimeSimulator(secondsPerDay, 2001, 1, 10);
 	    for(int i=0; i<10; i++) { // 10-Tage
 	    	ts.printCurrentDate();
 	    	s.checkProducts(ts.getXMLDate());

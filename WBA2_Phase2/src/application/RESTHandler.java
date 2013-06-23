@@ -5,6 +5,8 @@ import java.util.Arrays;
 import javax.ws.rs.core.MediaType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import webservice.Helper;
+
 import com.sun.jersey.api.client.ClientResponse;
 
 import jaxbClasses.CurrencyAttr;
@@ -14,6 +16,7 @@ import jaxbClasses.Notification;
 import jaxbClasses.Notifications;
 import jaxbClasses.Product;
 import jaxbClasses.ProductType;
+import jaxbClasses.ProductTypes;
 import jaxbClasses.Profile;
 import jaxbClasses.Profiles;
 
@@ -117,7 +120,7 @@ public final class RESTHandler {
 		int[] IDs = new int[ps.getProfile().size()];
 		for (int i = 0; i < ps.getProfile().size(); i++) {
 			// ID aus Referenz entnehmen
-			IDs[i] = getID(ps.getProfile().get(i).getHref()); 
+			IDs[i] = Helper.getID(ps.getProfile().get(i).getHref()); 
 		}
 		return IDs;
 	}
@@ -145,7 +148,7 @@ public final class RESTHandler {
 	    int[] IDs = new int[ns.getNotification().size()];
 	    for(int i=0; i<ns.getNotification().size(); i++) {
 	    	// ID aus hyperlink entnehmen
-	    	IDs[i] = getID(ns.getNotification().get(i).getHref()); 
+	    	IDs[i] = Helper.getID(ns.getNotification().get(i).getHref()); 
 	    }
 		return IDs;
 	}
@@ -184,18 +187,20 @@ public final class RESTHandler {
 		for (int i = 0; i < f.getProductTypes().getProductType().size(); i++) {
 			// ID aus Referenz entnehmen
 			String href = f.getProductTypes().getProductType().get(i).getHref();
-			IDs[i] = getID(href); 
+			IDs[i] = Helper.getID(href); 
 		}
 		System.out.println("getProducttypeIDs returns: "+Arrays.toString(IDs));
 		return IDs;
 	}
 	
-	public static String getProducttypeName(int producttypeID) {
+	public static ProductType getProducttype(int producttypeID) {
 		// GET - .../notifications/{id}
-		String url = "http://"+Client.host+":4434/producttype/"+producttypeID;
+		String url = "http://"+Client.host+":4434/producttypes/"+producttypeID;
 	    Client.wrs = com.sun.jersey.api.client.Client.create().resource(url);
-	    return Client.wrs.accept("application/xml").get(ProductType.class).getName();
+	    return Client.wrs.accept("application/xml").get(ProductType.class);
 	}
+	
+//	public static
 	
 	public static int addProduct(int producttypeID, int fridgeID,
 			int profileID, XMLGregorianCalendar inputDate,
@@ -231,13 +236,5 @@ public final class RESTHandler {
 		ClientResponse r = Client.wrs.type(MediaType.APPLICATION_XML).post(ClientResponse.class, p);
 		System.out.println("addProduct: "+r);
 		return r.getStatus();
-	}
-	
-	/**
-	 * @param href im Format: .../xxx/{id}
-	 * @return id aus dem übergebenem Hyperlink
-	 */
-	private static int getID(String href) {
-		return Integer.parseInt(href.substring(href.lastIndexOf("/")+1));
 	}
 }

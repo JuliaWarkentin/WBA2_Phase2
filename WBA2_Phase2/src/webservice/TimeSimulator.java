@@ -50,7 +50,6 @@ public class TimeSimulator {
 	 * @return Liefert das Datum als typisches XML Format
 	 */
 	public XMLGregorianCalendar getXMLDate() {
-		System.out.println(cal.get(Calendar.YEAR) +"-"+ cal.get(Calendar.MONTH) +"-"+ cal.get(Calendar.DAY_OF_MONTH));
 		try {
 			XMLGregorianCalendar xmlDate = DatatypeFactory.newInstance().newXMLGregorianCalendar();
 			xmlDate.setDay(cal.get(Calendar.DAY_OF_MONTH));

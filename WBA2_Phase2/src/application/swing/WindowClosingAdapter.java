@@ -4,6 +4,11 @@ import java.awt.event.*;
 
 import application.Client;
 
+/**
+ * @author Simon Klinge
+ * @author Julia Warkentin
+ *
+ */
 public class WindowClosingAdapter extends WindowAdapter {
 	boolean kill;
 

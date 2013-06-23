@@ -35,6 +35,11 @@ import xmpp.XMPPSession;
 import jaxbClasses.Notification;
 import jaxbClasses.Notifications;
 
+/**
+ * @author Simon Klinge
+ * @author Julia Warkentin
+ *
+ */
 public class NotificationPanel extends JPanel implements MouseListener, ActionListener {
 	private JLabel label = new JLabel("Notifications");
 	private JButton buttonSub = new JButton("Subscribe to...");

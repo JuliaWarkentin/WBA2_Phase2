@@ -13,6 +13,11 @@ import org.jivesoftware.smackx.pubsub.SimplePayload;
 import application.swing.MainFrame;
 import application.swing.TabbedPanel;
 
+/**
+ * @author Simon Klinge
+ * @author Julia Warkentin
+ *
+ */
 public class ExpirationsNodeListener implements ItemEventListener<Item>{
 	
 	@Override

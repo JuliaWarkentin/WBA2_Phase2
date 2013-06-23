@@ -11,4 +11,5 @@ public class XMPPData {
 	public static final String host = "localhost";
 	public static final String expirationNodeID = "expiration";
 	public static final String stolenNodeID = "stolen";
+	// ...
 }

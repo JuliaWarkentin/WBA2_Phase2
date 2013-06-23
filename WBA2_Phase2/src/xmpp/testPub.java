@@ -25,7 +25,7 @@ import org.jivesoftware.smackx.pubsub.SimplePayload;
 public class testPub {
 	public static void main(String[] args) {
 		XMPPSession xmpp = new XMPPSession("hans70", "hans70");
-		xmpp.pubItemInNode("expiration", "<href xmlns='pubsub:expiration'>diggah...</href>");
+		xmpp.pubItemInNode("expiration", "<href xmlns='pubsub:expiration'>test...</href>");
 		xmpp.disconnect();
 		System.out.println("testPub - ende");
 	}

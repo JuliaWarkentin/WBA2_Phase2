@@ -15,6 +15,11 @@ import javax.swing.SpinnerNumberModel;
 
 import application.swing.WindowClosingAdapter;
 
+/**
+ * @author Simon Klinge
+ * @author Julia Warkentin
+ *
+ */
 public class NewProfileFrame extends JFrame implements ActionListener{
 	/// UI-Elements
 	// Beschriftungen

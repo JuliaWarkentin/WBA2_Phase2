@@ -29,12 +29,17 @@ import jaxbClasses.Profiles;
 
 import com.sun.jersey.api.client.*;
 
+/**
+ * @author Simon Klinge
+ * @author Julia Warkentin
+ *
+ */
 public class TestClient {
 
 	public static  WebResource wrs;
 	
 	public static void main(String[] args) throws JAXBException, DatatypeConfigurationException {
-	    testPUTfridges();
+	    testDELETE("http://localhost:4434/products/20");
 	}
 	
 	// test ok
@@ -42,7 +47,7 @@ public class TestClient {
 		String url = "http://localhost:4434/profiles";
 		wrs = Client.create().resource(url);
 		Profile p = new Profile();
-	    p.setName("Luigi Sommer");
+	    p.setName("Dr. Test");
 	    p.setBirthdate(DatatypeFactory.newInstance().newXMLGregorianCalendar("1990-01-01"));
 	    p.setGender("m");
 	    p.setHeight(170f);
@@ -163,44 +168,12 @@ public class TestClient {
 			System.out.println(r.toString());
 		}
 	}
-	/*
-	public static void testPUT() throws DatatypeConfigurationException {
-		// PUT-Test
-	    System.out.println("\nPUT.");
-	    Profile p = new Profile();
-	    p.setName("Salad Fingers");
-	    p.setBirthdate(DatatypeFactory.newInstance().newXMLGregorianCalendar("1990-01-01"));
-	    p.setGender("m");
-	    p.setHeight(170f);
-	    p.setWeight(65f);
-	    ClientResponse r = wrs.type(MediaType.APPLICATION_XML).put(ClientResponse.class, p);
-//	    wrs.type(MediaType.APPLICATION_XML).put(String.class, 
-//	    		"<?xml version=\"1.0\" encoding=\"UTF-8\"?><p:profile xmlns:p=\"http://meinnamespace.meinefirma.de\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://meinnamespace.meinefirma.de profile.xsd \"><p:name>Julia</p:name><p:birthdate>2001-01-01</p:birthdate><p:gender>m</p:gender><p:height>170</p:height><p:weight>60</p:weight><p:currentPurchaseValue>0</p:currentPurchaseValue><p:lastMonthPurchaseValue>0</p:lastMonthPurchaseValue><p:recentBoughtProducts/><p:recentConsumedProducts/></p:profile>");
-	    System.out.println("ende Client");
-	}
 	
-	public static void testPOSTproducttypes(){
-		ProductType pt = new ProductType();
-		ProductType.ProductInformation ppt = new ProductType.ProductInformation();
-		ppt.setName("delikato Joghurt Dressing Light");
-		pt.setProductInformation(ppt);
-		
-		ProductType.StockData stockdata = new ProductType.StockData();
-		stockdata.setMinstock(3);
-		stockdata.setStock(3);
-		pt.setStockData(stockdata);
-		
-		ClientResponse r = wrs.type(MediaType.APPLICATION_XML).post(ClientResponse.class, pt);
-	    System.out.println(r.getStatus());
-	}
-	
-	public static void testDELETE(){
+	// test ok
+	public static void testDELETE(String url){
+		// DELETE
+		wrs = Client.create().resource(url);
 		ClientResponse r = wrs.type(MediaType.APPLICATION_XML).delete(ClientResponse.class);
 		System.out.println(r.toString());
 	}
-	
-	public static void printClientResponse(){
-		
-	}
-	*/
 }

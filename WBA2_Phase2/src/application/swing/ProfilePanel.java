@@ -58,7 +58,7 @@ public class ProfilePanel extends JPanel implements ActionListener {
 		buttonSelect.addActionListener(this);
 		
 		// Labels
-		int xOffset = 50, yOffset = 50, width = 200, height = 30;
+		int xOffset = 50, yOffset = 25, width = 200, height = 30;
 		labelName.setLocation(MainFrame.width/3 + xOffset, yOffset*0);
 		labelName.setSize(width, height);
 		labelBirth.setLocation(MainFrame.width/3 + xOffset, yOffset*1);

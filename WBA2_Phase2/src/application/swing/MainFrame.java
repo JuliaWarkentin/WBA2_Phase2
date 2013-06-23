@@ -25,12 +25,12 @@ import org.jivesoftware.smackx.pubsub.*;
 public class MainFrame {
 	public static final int width = 480, height =600,
 			posX = 100, posY = 100;
-	public static Color colorError = new Color(255,150,150);
+	public static Color colorError = new Color(150,0,0);
 	public static Color colorSuccess = new Color(0,150,0);
 	
 	public static JFrame frame;
 	public MainFrame() {
-		setSwingDesign(false); 
+		setSwingDesign(false); // bitte true setzen, falls Design nicht gefunden wird oder verkehrt aussieht. 
 		TabbedPanel r = new TabbedPanel();
 		
 		frame = new JFrame("Fridgemanager!");
@@ -41,9 +41,6 @@ public class MainFrame {
 		frame.setVisible(true);
 	}
 	
-	/**
-	 * @param crossPlatform bitte true setzen, falls Design nicht gefunden wird oder falsch aussieht. 
-	 */
 	private void setSwingDesign(boolean crossPlatform) {
 		if (!crossPlatform) {
 			try { 
