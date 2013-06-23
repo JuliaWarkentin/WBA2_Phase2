@@ -19,6 +19,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 
+import webservice.Helper;
 import webservice.MyMarshaller;
 
 import com.sun.jersey.api.NotFoundException;
@@ -34,6 +35,15 @@ import jaxbClasses.Profile;
 import jaxbClasses.Profiles;
 import jaxbClasses.ProfilesLOCAL;
 
+/**
+ * Implementiert:
+ * 	/notifications			GET, POST
+ *  /notifications/{id}  	GET, DELETE
+ * 
+ * @author Simon Klinge
+ * @author Julia Warkentin
+ *
+ */
 @Path ("/notifications")
 public class NotificationResource {
 	
@@ -119,7 +129,7 @@ public class NotificationResource {
 		notification.setId(freeID);
 		NotificationsLOCAL.Notification.Profile p = new NotificationsLOCAL.Notification.Profile();
 		String href = n.getSendTo().getProfile().getHref();
-		p.setId(Integer.parseInt(href.substring(href.lastIndexOf("/")+1))); // ID aus der href beziehen
+		p.setId(Helper.getID(href)); // ID aus der href beziehen
 		notification.setProfile(p);
 		notification.setType(n.getType());
 		notification.setDate(n.getDate());

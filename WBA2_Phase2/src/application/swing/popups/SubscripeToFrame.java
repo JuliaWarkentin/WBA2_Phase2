@@ -1,4 +1,4 @@
-package application;
+package application.swing.popups;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -13,14 +13,16 @@ import javax.swing.JRootPane;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 
-public class SubscriptionList extends JFrame implements ActionListener {
+import application.swing.WindowClosingAdapter;
+
+public class SubscripeToFrame extends JFrame implements ActionListener {
 	private JList<String> jList;
 	private JButton buttonSub;
 	private JButton buttonBack;
 	private List<String> nodeList;
 	private List<String> subscriptionList;
 
-	public SubscriptionList(List<String> nodeList) {
+	public SubscripeToFrame(List<String> nodeList) {
 		super("Choose Subscriptions");
 		this.nodeList = nodeList;
 		subscriptionList = new ArrayList<String>();

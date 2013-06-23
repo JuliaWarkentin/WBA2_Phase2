@@ -1,6 +1,8 @@
-package application;
+package application.swing;
 
 import java.awt.event.*;
+
+import application.Client;
 
 public class WindowClosingAdapter extends WindowAdapter {
 	boolean kill;

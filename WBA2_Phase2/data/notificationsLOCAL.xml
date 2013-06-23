@@ -147,4 +147,32 @@
         <head>Product expired</head>
         <text>Your Product 'Milsani Frische Vollmilch' in Fridge 'Bernds Kühlschrank' expired today! 2001-01-15</text>
     </notification>
+    <notification id="22">
+        <profile id="4"/>
+        <type>warning</type>
+        <date>2001-01-15</date>
+        <head>Product expired</head>
+        <text>Your Product 'Milsani Frische Vollmilch' in Fridge 'Bernds Kühlschrank' expired today! 2001-01-15</text>
+    </notification>
+    <notification id="23">
+        <profile id="4"/>
+        <type>warning</type>
+        <date>2001-01-15</date>
+        <head>Product expired</head>
+        <text>Your Product 'Milsani Frische Vollmilch' in Fridge 'Bernds Kühlschrank' expired today! 2001-01-15</text>
+    </notification>
+    <notification id="24">
+        <profile id="4"/>
+        <type>warning</type>
+        <date>2001-01-15</date>
+        <head>Product expired</head>
+        <text>Your Product 'Milsani Frische Vollmilch' in Fridge 'Bernds Kühlschrank' expired today! 2001-01-15</text>
+    </notification>
+    <notification id="25">
+        <profile id="4"/>
+        <type>warning</type>
+        <date>2001-01-15</date>
+        <head>Product expired</head>
+        <text>Your Product 'Milsani Frische Vollmilch' in Fridge 'Bernds Kühlschrank' expired today! 2001-01-15</text>
+    </notification>
 </notificationsLOCAL>

@@ -2,10 +2,18 @@ package application;
 
 import java.util.Arrays;
 
+import javax.ws.rs.core.MediaType;
+import javax.xml.datatype.XMLGregorianCalendar;
+
+import com.sun.jersey.api.client.ClientResponse;
+
+import jaxbClasses.CurrencyAttr;
 import jaxbClasses.Fridge;
 import jaxbClasses.Fridges;
 import jaxbClasses.Notification;
 import jaxbClasses.Notifications;
+import jaxbClasses.Product;
+import jaxbClasses.ProductType;
 import jaxbClasses.Profile;
 import jaxbClasses.Profiles;
 
@@ -55,6 +63,13 @@ public final class RESTHandler {
 			fridgeIDs[i] = Integer.parseInt(href.substring(href.length()-1)); 
 		}
 		return fridgeIDs;
+	}
+	
+	public static String getFridgeName(int fridgeID) {
+		// GET - .../fridges/{id}
+		String url = "http://" + Client.host + ":4434/fridges/"+fridgeID;
+		Client.wrs = com.sun.jersey.api.client.Client.create().resource(url);
+		return Client.wrs.accept("application/xml").get(Fridge.class).getName();
 	}
 	
 	public static String[][] getFridgeTableData(int fridgeID) {
@@ -155,10 +170,67 @@ public final class RESTHandler {
 	public static String getNotificationText(int notifiID) {
 		// GET - .../notifications/{id}
 		String url = "http://"+Client.host+":4434/notifications/"+notifiID;
-	    System.out.println("URL: " + url);
 	    Client.wrs = com.sun.jersey.api.client.Client.create().resource(url);
-	   
 	    return Client.wrs.accept("application/xml").get(Notification.class).getText();
+	}
+	
+	public static int[] getProducttypeIDs(int fridgeID) {
+		// GET - .../fridges/{id}
+		String url = "http://" + Client.host + ":4434/fridges/"+fridgeID;
+		Client.wrs = com.sun.jersey.api.client.Client.create().resource(url);
+		Fridge f = Client.wrs.accept("application/xml").get(Fridge.class);
+		
+		int[] IDs = new int[f.getProductTypes().getProductType().size()];
+		for (int i = 0; i < f.getProductTypes().getProductType().size(); i++) {
+			// ID aus Referenz entnehmen
+			String href = f.getProductTypes().getProductType().get(i).getHref();
+			IDs[i] = getID(href); 
+		}
+		System.out.println("getProducttypeIDs returns: "+Arrays.toString(IDs));
+		return IDs;
+	}
+	
+	public static String getProducttypeName(int producttypeID) {
+		// GET - .../notifications/{id}
+		String url = "http://"+Client.host+":4434/producttype/"+producttypeID;
+	    Client.wrs = com.sun.jersey.api.client.Client.create().resource(url);
+	    return Client.wrs.accept("application/xml").get(ProductType.class).getName();
+	}
+	
+	public static int addProduct(int producttypeID, int fridgeID,
+			int profileID, XMLGregorianCalendar inputDate,
+			XMLGregorianCalendar expirationDate, float price) {
+		// POST - .../products
+		String url = "http://localhost:4434/products";
+		Client.wrs = com.sun.jersey.api.client.Client.create().resource(url);
+
+		Product p = new Product();
+
+		Product.ProductType pt = new Product.ProductType();
+		pt.setHref("/producttypes/"+producttypeID);
+		p.setProductType(pt);
+
+		Product.InFridge f = new Product.InFridge();
+		f.setHref("/fridges/"+fridgeID);
+		p.setInFridge(f);
+
+		p.setInputdate(inputDate);
+		p.setExpirationdate(expirationDate);
+		
+		Product.Owner po = new Product.Owner();
+		Product.Owner.Profile pop = new Product.Owner.Profile();
+		
+		pop.setHref("/profile/"+profileID);
+		po.setProfile(pop);
+		p.setOwner(po);
+		Product.PriceWas priceWas = new Product.PriceWas();
+		priceWas.setCurrency(CurrencyAttr.EUR);
+		priceWas.setValue(price);
+		p.setPriceWas(priceWas);
+		
+		ClientResponse r = Client.wrs.type(MediaType.APPLICATION_XML).post(ClientResponse.class, p);
+		System.out.println("addProduct: "+r);
+		return r.getStatus();
 	}
 	
 	/**

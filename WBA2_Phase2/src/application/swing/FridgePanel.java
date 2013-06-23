@@ -1,4 +1,4 @@
-package application;
+package application.swing;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -18,6 +18,10 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import application.Client;
+import application.RESTHandler;
+import application.swing.popups.AddProductFrame;
+
 import jaxbClasses.Fridge;
 import jaxbClasses.Fridges;
 import jaxbClasses.Notifications;
@@ -35,7 +39,7 @@ public class FridgePanel extends JPanel implements ActionListener, FocusListener
 	private boolean isFridgeSelected;
 	private int[] fridgeIDs; // zu wissen, welche Zeile welcher ID entspricht
 	
-	// Options
+	// Optionen
 	private JLabel labelSelectedFridge = new JLabel("Please select a Fridge...");
 	private ButtonGroup groupShow = new ButtonGroup();
 	private JRadioButton rbShowMine = new JRadioButton("Show only my own Products");
@@ -45,6 +49,7 @@ public class FridgePanel extends JPanel implements ActionListener, FocusListener
 	private String[] columnNames = {"Producttype", "Stock"};
 	private JTable table; 
 	private JScrollPane scrollTable;
+	private int[] producttypeIDs; 
 	
 	private JButton buttonAdd = new JButton("Add Product");
 	private JButton buttonConsume = new JButton("Consume Product");
@@ -55,7 +60,7 @@ public class FridgePanel extends JPanel implements ActionListener, FocusListener
 	public FridgePanel() {
 		setLayout(null);
 		setSize(MainFrame.width, MainFrame.height);
-		setBackground(Color.white);
+//		setBackground(Color.white);
 		
 		// Fridgeliste
 		labelFridgelist.setLocation(0, 0);
@@ -128,32 +133,10 @@ public class FridgePanel extends JPanel implements ActionListener, FocusListener
 		return RESTHandler.getFridges(Client.profileID);
 	}
 	
-	int[] producttypeIDs;
-	private String getFridgeName(int fridgeID) {
-		producttypeIDs = getProducttypeIDs(fridgeID);
-		// GET - .../fridges/{id}
-		String url = "http://" + Client.host + ":4434/fridges/"+fridgeID;
-		Client.wrs = com.sun.jersey.api.client.Client.create().resource(url);
-		Fridge f = Client.wrs.accept("application/xml").get(Fridge.class);
-		
-		return f.getName();
-	}
 	
-	private int[] getProducttypeIDs(int fridgeID) {
-		// GET - .../fridges/{id}
-		String url = "http://" + Client.host + ":4434/fridges/"+fridgeID;
-		Client.wrs = com.sun.jersey.api.client.Client.create().resource(url);
-		Fridge f = Client.wrs.accept("application/xml").get(Fridge.class);
-		
-		int[] IDs = new int[f.getProductTypes().getProductType().size()];
-		for (int i = 0; i < f.getProductTypes().getProductType().size(); i++) {
-			// ID aus Referenz entnehmen
-			String href = f.getProductTypes().getProductType().get(i).getHref();
-			System.out.println("HREF: "+href);
-			IDs[i] = Integer.parseInt(href.substring(href.lastIndexOf("/")+1)); 
-		}
-		System.out.println("producttypeIDs: "+Arrays.toString(producttypeIDs));
-		return IDs;
+	private String getFridgeName(int fridgeID) {
+		producttypeIDs = RESTHandler.getProducttypeIDs(fridgeID);
+		return RESTHandler.getFridgeName(fridgeID);
 	}
 	
 	private String[][] getTableData(int fridgeID) {
@@ -183,14 +166,16 @@ public class FridgePanel extends JPanel implements ActionListener, FocusListener
 		
 		// Produkt hinzufügen?
 		if(e.getActionCommand() == "Add Product") {
-			if(table.getSelectedRow() == -1) { // Muss eine Zeile ausgewählt haben
-				labelError.setText("Select a Produkttyp first...");
+			int row = table.getSelectedRow();
+			if(row == -1) { // Muss eine Zeile ausgewählt haben
+				labelError.setText("Select a Producttype first...");
 			} else {
 				labelError.setText("");
-				String name = (String) table.getModel().getValueAt(table.getSelectedRow(), 0);
-				System.out.println("Produktname aus Table... : "+name);
+				selectedProducttypeID = producttypeIDs[row];
+				String name = (String) table.getModel().getValueAt(row, 0);
 				AddProductFrame addProductFrame = new AddProductFrame(name);
-				addProductFrame.setLocation(buttonAdd.getLocation());
+				addProductFrame.setLocation(buttonAdd.getLocation().x + MainFrame.posX, 
+						buttonAdd.getLocation().y + MainFrame.posY);
 			}
 		}
 		

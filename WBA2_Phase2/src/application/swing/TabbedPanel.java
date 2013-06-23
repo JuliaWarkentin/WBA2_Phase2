@@ -1,4 +1,4 @@
-package application;
+package application.swing;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -26,7 +26,7 @@ import javax.swing.event.AncestorListener;
  *
  */
 public class TabbedPanel extends JPanel {
-	private JTabbedPane tp = new JTabbedPane();
+	public static JTabbedPane tp = new JTabbedPane();
 	private FridgePanel f = new FridgePanel();
 	private NotificationPanel n = new NotificationPanel();
 	private ProfilePanel p = new ProfilePanel();

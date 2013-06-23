@@ -19,8 +19,8 @@ import jaxbClasses.ObjectFactory;
  * @author Julia Warkentin
  *
  */
-public class MyMarshaller {
-	
+public final class MyMarshaller { private MyMarshaller() {}
+
 	/**
 	 * @param o Zu "marshallendes" Objekt
 	 * @param path Dateipfad auf XML-Datei
@@ -32,8 +32,7 @@ public class MyMarshaller {
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			marshaller.marshal(o, new File(path));
 		} catch (JAXBException e) {
-			e.printStackTrace();
-			System.out.println("Fehler beim marshallen");
+			e.printStackTrace(); System.out.println("Fehler beim marshallen");
 		}
 	}
 	
@@ -47,8 +46,7 @@ public class MyMarshaller {
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			return unmarshaller.unmarshal(new File(path));
 		} catch (JAXBException e) {
-			e.printStackTrace();
-			System.out.println("Fehler beim unmarshallen");
+			e.printStackTrace(); System.out.println("Fehler beim unmarshallen");
 			return null;
 		}
 	}

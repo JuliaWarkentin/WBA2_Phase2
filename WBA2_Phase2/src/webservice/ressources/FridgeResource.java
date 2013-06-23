@@ -19,6 +19,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 
+import webservice.Helper;
 import webservice.MyMarshaller;
 
 import com.sun.jersey.api.NotFoundException;
@@ -30,6 +31,15 @@ import jaxbClasses.ProductTypesLOCAL;
 import jaxbClasses.Profile;
 import jaxbClasses.ProfilesLOCAL;
 
+/**
+ * Implementiert:
+ * 	/fridges			GET, POST
+ *  /fridges/{id}  		GET, PUT, DELETE
+ * 
+ * @author Simon Klinge
+ * @author Julia Warkentin
+ *
+ */
 @Path ("/fridges")
 public class FridgeResource {
 	
@@ -37,6 +47,8 @@ public class FridgeResource {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.TEXT_XML })
 	public Fridges getFridges(@QueryParam("profileid") int profileID) {
 		FridgesLOCAL fsL = (FridgesLOCAL) MyMarshaller.unmarshall("data/fridgesLOCAL.xml");
+		
+		System.out.println("fasdhfkljasdhfklajsdhfklajsdhf: "+profileID);
 		
 		// Fridgeliste entsprechend der fridges.xsd erstellen
 		Fridges fs = new Fridges();
@@ -175,7 +187,7 @@ public class FridgeResource {
 		FridgesLOCAL.Fridge.Profiles ps = new FridgesLOCAL.Fridge.Profiles();
 		FridgesLOCAL.Fridge.Profiles.Profile p = new FridgesLOCAL.Fridge.Profiles.Profile();
 		String href = f.getProfiles().getProfile().get(0).getHref();
-		p.setId(Integer.parseInt(href.substring(href.lastIndexOf("/")+1))); // ID aus href beziehen
+		p.setId(Helper.getID(href)); // ID aus href beziehen
 		ps.getProfile().add(p);
 		fridge.setProfiles(ps);
 		
@@ -234,7 +246,7 @@ public class FridgeResource {
 		for(int i=0; i<f.getProfiles().getProfile().size(); i++) {
 			p = new FridgesLOCAL.Fridge.Profiles.Profile();
 			String href = f.getProfiles().getProfile().get(i).getHref();
-			p.setId(Integer.parseInt(href.substring(href.lastIndexOf("/")+1))); // ID aus href beziehen
+			p.setId(Helper.getID(href)); // ID aus href beziehen
 			ps.getProfile().add(p);
 		}
 		fridge.setProfiles(ps);
@@ -246,7 +258,7 @@ public class FridgeResource {
 		for(int i=0; i<f.getProductTypes().getProductType().size(); i++) {
 			pt = new FridgesLOCAL.Fridge.ProductTypes.ProductType();
 			String href = f.getProductTypes().getProductType().get(i).getHref();
-			pt.setId(Integer.parseInt(href.substring(href.lastIndexOf("/")+1)));
+			pt.setId(Helper.getID(href));
 			
 			sd = new FridgesLOCAL.Fridge.ProductTypes.ProductType.StockData();
 			sd.setMinStock(f.getProductTypes().getProductType().get(i).getStockData().getMinStock());
@@ -259,7 +271,7 @@ public class FridgeResource {
 			for(int j=0; j<f.getProductTypes().getProductType().get(i).getProducts().getProduct().size(); j++) {
 				product = new FridgesLOCAL.Fridge.ProductTypes.ProductType.Products.Product();
 				href = f.getProductTypes().getProductType().get(i).getProducts().getProduct().get(j).getHref();
-				product.setId(Integer.parseInt(href.substring(href.lastIndexOf("/")+1)));
+				product.setId(Helper.getID(href));
 				pds.getProduct().add(product);
 			}
 			pt.setProducts(pds);

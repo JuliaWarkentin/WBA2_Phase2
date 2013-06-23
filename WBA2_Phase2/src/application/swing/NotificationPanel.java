@@ -1,4 +1,4 @@
-package application;
+package application.swing;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -26,24 +26,25 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 
+import application.Client;
+import application.RESTHandler;
+import application.swing.popups.SubscripeToFrame;
+
 import xmpp.XMPPSession;
 
 import jaxbClasses.Notification;
 import jaxbClasses.Notifications;
 
-public class NotificationPanel extends JPanel implements MouseListener, ActionListener{
+public class NotificationPanel extends JPanel implements MouseListener, ActionListener {
 	private JLabel label = new JLabel("Notifications");
 	private JButton buttonSub = new JButton("Subscribe to...");
-	private String[] COLHEADS = { "Type", "Head", "Date" };
 	private JTable table; 
-	private JScrollPane scroll;
 	private JTextArea textArea;
 	private int[] notifiIDs; 
 	
 	public NotificationPanel() {
 		setLayout(null);
 		setSize(MainFrame.width, MainFrame.height);
-		setBackground(Color.green);
 		
 		int width = MainFrame.width-5;
 		
@@ -87,7 +88,7 @@ public class NotificationPanel extends JPanel implements MouseListener, ActionLi
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == ("Subscribe to...")) {
 			Client.xmpp.discoverNodes();
-			SubscriptionList sl = new SubscriptionList(Client.xmpp.getNodes());
+			SubscripeToFrame sl = new SubscripeToFrame(Client.xmpp.getNodes());
 			sl.setLocation(buttonSub.getLocation());
 		}
 	}
@@ -101,6 +102,7 @@ public class NotificationPanel extends JPanel implements MouseListener, ActionLi
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		TabbedPanel.tp.setTitleAt(1, "Notifications");
 		updateTextArea();
 	}
 

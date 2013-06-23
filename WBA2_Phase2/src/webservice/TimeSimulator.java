@@ -34,7 +34,7 @@ public class TimeSimulator {
 	
 	/**
 	 * Prozess schläft um ein Tag ein, also soviele Sekunden wie in secondsperDay
-	 * stehen.
+	 * angegeben wurden.
 	 */
 	public void sleep1Day() {
 		try {
@@ -57,9 +57,6 @@ public class TimeSimulator {
 			xmlDate.setMonth(cal.get(Calendar.MONTH));
 			xmlDate.setYear(cal.get(Calendar.YEAR));
 			return xmlDate;
-			
-//			return DatatypeFactory.newInstance().newXMLGregorianCalendar(
-//					cal.get(Calendar.YEAR) +"-"+ cal.get(Calendar.MONTH) +"-"+ cal.get(Calendar.DAY_OF_MONTH));
 		} catch (DatatypeConfigurationException e) {
 			e.printStackTrace();
 			return null;

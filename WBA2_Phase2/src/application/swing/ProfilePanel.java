@@ -1,4 +1,4 @@
-package application;
+package application.swing;
 
 import java.awt.Color;
 
@@ -12,6 +12,9 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+
+import application.Client;
+import application.RESTHandler;
 
 import jaxbClasses.Profile;
 import jaxbClasses.Profiles;
@@ -39,7 +42,6 @@ public class ProfilePanel extends JPanel implements ActionListener {
 	public ProfilePanel() {
 		setLayout(null);
 		setSize(MainFrame.width, MainFrame.height);
-		setBackground(Color.pink);
 		
 		// Profilliste
 		labelProfiles.setLocation(0, 0);
@@ -56,7 +58,7 @@ public class ProfilePanel extends JPanel implements ActionListener {
 		buttonSelect.addActionListener(this);
 		
 		// Labels
-		int xOffset = 25, yOffset = 25, width = 200, height = 30;
+		int xOffset = 50, yOffset = 50, width = 200, height = 30;
 		labelName.setLocation(MainFrame.width/3 + xOffset, yOffset*0);
 		labelName.setSize(width, height);
 		labelBirth.setLocation(MainFrame.width/3 + xOffset, yOffset*1);

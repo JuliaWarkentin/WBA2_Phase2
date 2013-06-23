@@ -70,8 +70,8 @@ public class NotificationService {
 				ClientResponse r = Server.wrs.type(MediaType.APPLICATION_XML).post(ClientResponse.class, n);
 				System.out.println(r.toString());
 				// Referenz publishen
-				System.out.println("location: "+r.getLocation());
-				Server.xmpp.pubItemInNode(XMPPData.expirationNodeID, "<href xmlns='pubsub:expiration'>JUNGE!</href>");
+				Server.xmpp.pubItemInNode(XMPPData.expirationNodeID, 
+						"<href xmlns='pubsub:expiration'>"+r.getLocation()+"</href>");
 			}
 		}
 	}

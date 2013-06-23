@@ -1,10 +1,13 @@
-package application;
+package application.swing.popups;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,39 +16,47 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
 import javax.ws.rs.core.MediaType;
+import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import jaxbClasses.CurrencyAttr;
 import jaxbClasses.Product;
 
+import application.Client;
+import application.RESTHandler;
+import application.swing.FridgePanel;
+import application.swing.MainFrame;
+import application.swing.WindowClosingAdapter;
+
 import com.sun.jersey.api.client.ClientResponse;
 
 public class AddProductFrame extends JFrame implements ActionListener {
 	// Label und Anzahl des Produkts
+	String productName;
 	JLabel labelProducttyp = new JLabel("Added Amound: ");
-	JSpinner spinnerCount = new JSpinner(new SpinnerNumberModel(1, 1, 20, 1));
+	JSpinner spinnerAmount = new JSpinner(new SpinnerNumberModel(1, 1, 20, 1));
 	
 	// Verfallsdatum
 	JLabel labelExpDate = new JLabel("Expirationdate: ");
 	JSpinner spinnerDate = new JSpinner(new SpinnerDateModel());
 	
 	// Preis
-	JLabel labelPrice = new JLabel("Price was: ");
-	JSpinner spinnerPrice = new JSpinner(new SpinnerNumberModel(1d, 1d, 20d, 0.10d));
+	JLabel labelPrice = new JLabel("Price was (€): ");
+	JSpinner spinnerPrice = new JSpinner(new SpinnerNumberModel(1d, 1d, 20d, 0.1d));
 	
 	// Buttons
 	JButton buttonAdd = new JButton("Add");
 	JButton buttonBack = new JButton("Close");
 	
 	// Bestätigung
-	JLabel labelCorfirm = new JLabel("jhgfg");
+	JLabel labelConfirm = new JLabel("");
 	
-	public AddProductFrame(String producttyp) {
-		super("Adding \""+ producttyp+"\"");
+	public AddProductFrame(String productName) {
+		super("Adding \""+ productName +"\"");
+		this.productName = productName;
 		setLayout(null);
 		setSize(250, 175);
-		setLocation(100, 100);
 		setVisible(true);
 		addWindowListener(new WindowClosingAdapter(false));
 		
@@ -53,9 +64,9 @@ public class AddProductFrame extends JFrame implements ActionListener {
 		
 		// Label und Anzahl des Produkts
 		labelProducttyp.setBounds(x+xOffset*0, y+yOffset*0, width, height);
-		spinnerCount.setBounds(x+xOffset*1, y+yOffset*0, width, height);
+		spinnerAmount.setBounds(x+xOffset*1, y+yOffset*0, width, height);
 		add(labelProducttyp);
-		add(spinnerCount);
+		add(spinnerAmount);
 		
 		// Verfallsdatum
 		spinnerDate.setEditor(new JSpinner.DateEditor(spinnerDate, "yyyy.MM.dd"));
@@ -70,7 +81,7 @@ public class AddProductFrame extends JFrame implements ActionListener {
 		add(labelPrice);
 		add(spinnerPrice);
 		
-		// Schalter
+		// Buttons
 		buttonAdd.setBounds(x+xOffset*0, y+yOffset*3, width, height);
 		buttonBack.setBounds(x+xOffset*1, y+yOffset*3, width, height);
 		buttonAdd.addActionListener(this);
@@ -78,52 +89,47 @@ public class AddProductFrame extends JFrame implements ActionListener {
 		buttonBack.addActionListener(this);
 		add(buttonBack);
 		
-		labelCorfirm.setBounds(x+xOffset*0, y+yOffset*4, width, height);
-		labelCorfirm.setForeground(new Color(50, 255, 50));
-		add(labelCorfirm);
+		labelConfirm.setBounds(x+xOffset*0, y+yOffset*4, width*2, height);
+		labelConfirm.setForeground(MainFrame.colorSuccess);
+		add(labelConfirm);
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println(e.getActionCommand());
+	private void addProducts() {
+		// Verfallsdatum aus spinnerDate entnehmen und zu XMLGregorianCalendar formatieren
+		Date d = (Date)(spinnerDate.getModel().getValue());
+		GregorianCalendar c = new GregorianCalendar();
+		c.setTime(d);
+		
+		XMLGregorianCalendar expDate = null;
+		try {
+			expDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+			expDate.setTime(0, 0, 0);
+		} catch (DatatypeConfigurationException e) {
+			e.printStackTrace();
+		}
+		int amount = Integer.parseInt(""+spinnerAmount.getModel().getValue());
+		int createdCnt = 0;
+		for(int i=0; i<amount; i++) {
+			if(RESTHandler.addProduct(FridgePanel.selectedProducttypeID, 
+					FridgePanel.selectedFridgeID, 
+					Client.profileID, 
+					Client.currentDate, 
+					expDate, 
+					Float.parseFloat(""+spinnerPrice.getValue())) == 201) // Erfolgreich angelegt?
+				createdCnt++; 
+		}
+		
+		// Erfolgsmeldung anzeigen
+		labelConfirm.setText("+"+createdCnt+" '"+productName+"' successfully added!");
 	}
 	
-	private String addProduct(int producttypeID, int fridgeID, int profileID,
-			XMLGregorianCalendar inputDate, XMLGregorianCalendar expirationDate,
-			float priceWas) {
-		// POST - .../products
-		String url = "http://localhost:4434/products";
-		Client.wrs = com.sun.jersey.api.client.Client.create().resource(url);
-		
-		Product p = new Product();
-		
-		Product.ProductType pt = new Product.ProductType();
-		pt.setHref("/producttypes/2"); 
-		pt.setName("ignored");
-		p.setProductType(pt);
-		
-		Product.InFridge f = new Product.InFridge();
-		f.setHref("/fridges/1");
-		f.setName("ignored");
-		p.setInFridge(f);
-		
-//		p.setInputdate(DatatypeFactory.newInstance().newXMLGregorianCalendar("2000-01-01"));
-//		p.setExpirationdate(DatatypeFactory.newInstance().newXMLGregorianCalendar("2000-01-02"));
-		Product.Owner po = new Product.Owner();
-		Product.Owner.Profile pro = new Product.Owner.Profile();
-		pro.setHref("/profile/4");
-		pro.setName("willbeignored");
-		po.setProfile(pro);
-		p.setOwner(po);
-		Product.PriceWas priceWas = new Product.PriceWas();
-		priceWas.setCurrency(CurrencyAttr.EUR);
-		priceWas.setValue(0.99f);
-		p.setPriceWas(priceWas);
-		
-		ClientResponse r = Client.wrs.type(MediaType.APPLICATION_XML).post(ClientResponse.class, p);
-	    System.out.println(r.toString());
-	    
-	    return null;
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		System.out.println(e.getActionCommand());
+		if(e.getActionCommand() == "Add") {
+			addProducts();
+		}
 	}
+	
+	
 }

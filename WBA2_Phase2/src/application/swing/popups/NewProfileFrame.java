@@ -1,4 +1,4 @@
-package application;
+package application.swing.popups;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +13,9 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
 
-public class NewProfileWindow extends JFrame implements ActionListener{
+import application.swing.WindowClosingAdapter;
+
+public class NewProfileFrame extends JFrame implements ActionListener{
 	/// UI-Elements
 	// Beschriftungen
 	JLabel labelName = new JLabel("Name");
@@ -39,7 +41,7 @@ public class NewProfileWindow extends JFrame implements ActionListener{
 	JButton buttonCreate = new JButton("Create Profile!");
 	JButton buttonCancel = new JButton("Cancel");
 	
-	public NewProfileWindow(int fridgeID, int profileID) {
+	public NewProfileFrame(int fridgeID, int profileID) {
 		super("Create new Profile:");
 		addWindowListener(new WindowClosingAdapter(false));
 		

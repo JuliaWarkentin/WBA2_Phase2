@@ -20,11 +20,13 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
 
+import webservice.Helper;
 import webservice.MyMarshaller;
 
 import com.sun.jersey.api.NotFoundException;
 
 import jaxbClasses.CurrencyAttr;
+import jaxbClasses.FridgesLOCAL;
 import jaxbClasses.Product;
 import jaxbClasses.ProductType;
 import jaxbClasses.ProductTypes;
@@ -35,7 +37,15 @@ import jaxbClasses.Profile;
 import jaxbClasses.Profiles;
 import jaxbClasses.ProfilesLOCAL;
 
-
+/**
+ * Implementiert:
+ * 	/products			GET, POST
+ *  /products/{id}  	GET, DELETE
+ * 
+ * @author Simon Klinge
+ * @author Julia Warkentin
+ *
+ */
 @Path ("/products")
 public class ProductResource {
 	
@@ -76,11 +86,9 @@ public class ProductResource {
 		
 		// Liste nach passender id durchsuchen. Index merken
 		ProductsLOCAL.Product pL = new ProductsLOCAL.Product();
-		int indexFound = -1;
 		for (int i=0; i<psL.getProduct().size(); i++) {
 			 if(psL.getProduct().get(i).getId() == productID){
 				 pL = psL.getProduct().get(i);
-				 indexFound = i;
 			 	break;
 			 }
 		}
@@ -144,14 +152,15 @@ public class ProductResource {
 		return null;
 	}
 	
+	private int maxProducts = 50; // Maximale Anzahl von Produkten die insgesamt angelegt werden können
 	@POST
 	@Consumes({ MediaType.APPLICATION_XML})
-	public Response addProduct(@PathParam("fridgeID") int fridgeID, @PathParam("producttypeID") int producttypeID, Product p) throws JAXBException, URISyntaxException{
+	public Response addProduct(Product p) throws JAXBException, URISyntaxException{
 		ProductsLOCAL psL = (ProductsLOCAL) MyMarshaller.unmarshall("data/productsLOCAL.xml");
-		
+		FridgesLOCAL fsL = (FridgesLOCAL) MyMarshaller.unmarshall("data/fridgesLOCAL.xml");
 		// Nach einer freien Product-id suchen
-		int freeID = -1; boolean found;
-		for(int i=1; i<=50 && freeID==-1; i++){
+		int freeID = -1; boolean found; String href;
+		for(int i=1; i<=maxProducts && freeID==-1; i++){
 			found = true;
 			for(ProductsLOCAL.Product  product: psL.getProduct()){
 				if(product.getId() == i) { // id belegt?
@@ -162,18 +171,40 @@ public class ProductResource {
 			if(found) // id noch frei?
 				freeID = i; // übernehmen
 		}
+		if(freeID == -1) { // Keine freie id´s gefunden
+			return Response.serverError().build();
+		}
+
+		// id´s aus Referenz entnehmen
+		int inFridgeID = Helper.getID(p.getInFridge().getHref());
+		int producttypeID = Helper.getID(p.getProductType().getHref());
 		
-		// Neues Product anlegen
+		// Referenz auf das Produkt in entspechenden Kühlschrank speichern
+		// -> Kühlschrank suchen
+		for(int i=0; i < fsL.getFridge().size(); i++) {
+			if(inFridgeID == fsL.getFridge().get(i).getId()) {
+				// Kühlschrank gefunden. Nun Suche Produkttyp
+				for(int j=0; j < fsL.getFridge().get(i).getProductTypes().getProductType().size(); j++) {
+					if(producttypeID == fsL.getFridge().get(i).getProductTypes().getProductType().get(j).getId()) {
+						// Produkttype gefunden. Füge Produkt-ID hinzu!
+						FridgesLOCAL.Fridge.ProductTypes.ProductType.Products.Product prdct = new FridgesLOCAL.Fridge.ProductTypes.ProductType.Products.Product();
+						prdct.setId(freeID);
+						fsL.getFridge().get(i).getProductTypes().getProductType().get(j).getProducts().getProduct().add(prdct);
+					}
+				}
+			}
+		}
+		
+		// Neues Produkt anlegen
 		ProductsLOCAL.Product product = new ProductsLOCAL.Product();
 		product.setId(freeID);
 		ProductsLOCAL.Product.ProductType pt = new ProductsLOCAL.Product.ProductType();
-		String href = p.getProductType().getHref();
-		pt.setId(Integer.parseInt(href.substring(href.lastIndexOf("/")+1))); // ID aus href beziehen
+		pt.setId(producttypeID);
 		product.setProductType(pt);
 		
 		ProductsLOCAL.Product.Fridge f = new ProductsLOCAL.Product.Fridge();
 		href = p.getInFridge().getHref();
-		f.setId(Integer.parseInt(href.substring(href.lastIndexOf("/")+1)));
+		f.setId(inFridgeID);
 		product.setFridge(f);
 		
 		product.setInputDate(p.getInputdate());
@@ -181,7 +212,7 @@ public class ProductResource {
 		
 		ProductsLOCAL.Product.Profile profile = new ProductsLOCAL.Product.Profile();
 		href = p.getOwner().getProfile().getHref();
-		profile.setId(Integer.parseInt(href.substring(href.lastIndexOf("/")+1)));
+		profile.setId(Helper.getID(href));
 		product.setProfile(profile);	// aus Hyperlink profileID bestimmen
 		product.setState("inside"); 	// Eine neu angelegte Product-Instanz immer erst "inside"
 		ProductsLOCAL.Product.PriceWas priceWas = new ProductsLOCAL.Product.PriceWas();
@@ -192,6 +223,7 @@ public class ProductResource {
 		
 		// Daten auf Platte speichern
 		MyMarshaller.marshall(psL, "data/productsLOCAL.xml");
+		MyMarshaller.marshall(fsL, "data/fridgesLOCAL.xml");
 		
 		// Neu erstellte URI in Response angeben:
 		return Response.created(new URI("/products/"+freeID)).build();

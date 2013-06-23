@@ -13,6 +13,8 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smackx.pubsub.*;
 
+import application.swing.MainFrame;
+
 import com.sun.jersey.api.client.WebResource;
 
 import xmpp.XMPPSession;

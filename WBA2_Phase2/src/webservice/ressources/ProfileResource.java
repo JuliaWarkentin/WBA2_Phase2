@@ -28,6 +28,15 @@ import jaxbClasses.Profile;
 import jaxbClasses.Profiles;
 import jaxbClasses.ProfilesLOCAL;
 
+/**
+ * Implementiert:
+ * 	/profiles		GET, POST
+ *  /profiles/{id}  GET, DELETE
+ * 
+ * @author Simon Klinge
+ * @author Julia Warkentin
+ *
+ */
 @Path ("/profiles")
 public class ProfileResource {
 	

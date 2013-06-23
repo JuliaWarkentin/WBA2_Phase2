@@ -29,7 +29,15 @@ import jaxbClasses.ProductTypesLOCAL;
 import jaxbClasses.Profiles;
 import jaxbClasses.ProfilesLOCAL;
 
-
+/**
+ * Implementiert:
+ * 	/producttypes		GET, POST
+ *  /producttypes/{id}  GET, DELETE
+ * 
+ * @author Simon Klinge
+ * @author Julia Warkentin
+ *
+ */
 @Path ("/producttypes")
 public class ProducttypeResource {
 	
