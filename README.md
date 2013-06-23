@@ -12,4 +12,4 @@ Julia Warketnin (11082815)
 ### Ausfühung
 * Als erstes die "main.java" für den Webservice starten, kurz danach die "main.java" für die Clientapplikation. 
 * In der Applikation unter dem Reiter "Notifications" -> "Subscribe to..." (es erscheint eine Liste aller NodeID´s) -> "expiration" auswählen und abonnieren. Nicht zuviel Zeit lassen,
-* denn das Startdatum für den Server und der Datenbestand in den Kühlschränken ist so gestellt, das nach etwa 40 Sekunden ein Produkt abläuft und der Server eine Nachricht "published". Ansonsten in Server.java den Wert für seconsPerDay erhöhen.
+* denn das Startdatum für den Server und der Datenbestand in den Kühlschränken ist so gestellt, das nach etwa 40 Sekunden ein Produkt abläuft und der Server eine Nachricht "published". Bei Bedarf in Server.java den Wert für seconsPerDay erhöhen.
