@@ -65,4 +65,59 @@
         <expirationDate>2000-01-02</expirationDate>
         <priceWas currency="EUR">0.99</priceWas>
     </product>
+       <product id="7">
+        <productType id="3"/>
+        <fridge id="1"/>
+        <profile id="4"/>
+        <state>inside</state>
+        <inputDate>2000-01-01</inputDate>
+        <expirationDate>2002-01-02</expirationDate>
+        <priceWas currency="EUR">0.99</priceWas>
+    </product>
+       <product id="8">
+        <productType id="3"/>
+        <fridge id="1"/>
+        <profile id="5"/>
+        <state>inside</state>
+        <inputDate>2000-01-01</inputDate>
+        <expirationDate>2002-01-02</expirationDate>
+        <priceWas currency="EUR">0.99</priceWas>
+    </product>
+       <product id="9">
+        <productType id="5"/>
+        <fridge id="1"/>
+        <profile id="4"/>
+        <state>inside</state>
+        <inputDate>2000-01-01</inputDate>
+        <expirationDate>2003-01-02</expirationDate>
+        <priceWas currency="EUR">0.99</priceWas>
+    </product>
+       <product id="10">
+        <productType id="5"/>
+        <fridge id="3"/>
+        <profile id="4"/>
+        <state>inside</state>
+        <inputDate>2000-01-01</inputDate>
+        <expirationDate>2003-01-02</expirationDate>
+        <priceWas currency="EUR">0.99</priceWas>
+    </product>
+       <product id="11">
+        <productType id="5"/>
+        <fridge id="1"/>
+        <profile id="4"/>
+        <state>consumed</state>
+        <inputDate>2000-01-01</inputDate>
+        <outputDate>2000-01-02</outputDate>
+        <expirationDate>2001-01-02</expirationDate>
+        <priceWas currency="EUR">0.99</priceWas>
+    </product>
+       <product id="12">
+        <productType id="4"/>
+        <fridge id="2"/>
+        <profile id="8"/>
+        <state>inside</state>
+        <inputDate>2000-01-01</inputDate>
+        <expirationDate>2000-01-02</expirationDate>
+        <priceWas currency="EUR">0.99</priceWas>
+    </product>
 </productsLOCAL>
