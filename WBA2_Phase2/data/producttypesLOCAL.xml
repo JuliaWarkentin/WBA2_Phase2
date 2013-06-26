@@ -69,4 +69,74 @@
 		<p:currentPrice currency="EUR">1.49</p:currentPrice>
 		<p:barcode>29066889</p:barcode>
 	</p:productType>
+	<p:productType id="3">
+		<p:name>Snickers</p:name>
+		<p:weight unit="g">50</p:weight>
+		<p:description>Schokoriegel aus frischer Vollmilch gefüllt mit knackigen Erdnüssen.
+		</p:description>
+		<p:ingredients>
+			<p:ingredient>Zucker</p:ingredient>
+			<p:ingredient>Glukosesirup</p:ingredient>
+			<p:ingredient>Erdnüsse</p:ingredient>
+			<p:ingredient>Magermilchpulver</p:ingredient>
+			<p:ingredient>Kakaomasse</p:ingredient>
+		</p:ingredients>
+		<p:nutrients>
+			<p:caloricValue unit="kcal">484</p:caloricValue>
+			<p:protein>8.7</p:protein>
+			<p:carbohydrates>60.2</p:carbohydrates>
+			<p:ofwichsugar>51.6</p:ofwichsugar>
+			<p:fat>22.9</p:fat>
+			<p:ofwichsaturates>8.4</p:ofwichsaturates>
+			<p:roughage>0</p:roughage>
+			<p:sodium>0</p:sodium>
+		</p:nutrients>
+		<p:currentPrice currency="EUR">0.70</p:currentPrice>
+		<p:barcode>000159461122</p:barcode>
+	</p:productType>
+	<p:productType id="4">
+		<p:name>Butter</p:name>
+		<p:weight unit="g">250</p:weight>
+		<p:description> Leckere Butter aus frischer Vollmilch. Jetzt noch länger haltbar.
+		</p:description>
+		<p:ingredients>
+			<p:ingredient>pasteurierte Milch</p:ingredient>
+			<p:ingredient>Emulgatoren</p:ingredient>
+		</p:ingredients>
+		<p:nutrients>
+			<p:caloricValue unit="kcal">500</p:caloricValue>
+			<p:protein>6.8</p:protein>
+			<p:carbohydrates>3.2</p:carbohydrates>
+			<p:ofwichsugar>1.1</p:ofwichsugar>
+			<p:fat>23.5</p:fat>
+			<p:ofwichsaturates>10.5</p:ofwichsaturates>
+			<p:roughage>5.8</p:roughage>
+			<p:sodium>6.2</p:sodium>
+		</p:nutrients>
+		<p:currentPrice currency="EUR">0.59</p:currentPrice>
+		<p:barcode>728310394</p:barcode>
+	</p:productType>
+	<p:productType id="5">
+		<p:name>Krombacher Weizen</p:name>
+		<p:weight unit="litre">0.33</p:weight>
+		<p:description>Feinstes Bräu. Mit 2.5% Alkohol.
+		</p:description>
+		<p:ingredients>
+			<p:ingredient>Wasser</p:ingredient>
+			<p:ingredient>Malz</p:ingredient>
+			<p:ingredient>Hopfen</p:ingredient>
+		</p:ingredients>
+		<p:nutrients>
+			<p:caloricValue unit="kcal">45</p:caloricValue>
+			<p:protein>0.01</p:protein>
+			<p:carbohydrates>4.5</p:carbohydrates>
+			<p:ofwichsugar>3.12</p:ofwichsugar>
+			<p:fat>0</p:fat>
+			<p:ofwichsaturates>0</p:ofwichsaturates>
+			<p:roughage>0</p:roughage>
+			<p:sodium>0.05</p:sodium>
+		</p:nutrients>
+		<p:currentPrice currency="EUR">1.24</p:currentPrice>
+		<p:barcode>273876113</p:barcode>
+	</p:productType>
 </p:productTypesLOCAL>
